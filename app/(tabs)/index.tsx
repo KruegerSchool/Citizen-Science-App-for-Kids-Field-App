@@ -1,11 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 // landing page for the app which contains the project login or project change
 // functionality
-const Index = () => {
-  const [projectCode, onChangeValue] = React.useState("");
+const LandingPage = () => {
+  const [projectCode, onChangeValue] = React.useState<string>("");
 
   return (
     <SafeAreaProvider>
@@ -16,7 +16,7 @@ const Index = () => {
           alignItems: "center",
         }}
       >
-        <Text>Citizen Science App for Kids - Landing Page</Text>
+        <Text style={styles.title}>CITIZEN SCIENCE APP FOR KIDS</Text>
         <TextInput
           style={styles.input}
           onChangeText={onChangeValue}
@@ -26,15 +26,22 @@ const Index = () => {
           placeholderTextColor="#000000"
           textAlign="center"
         />
+        <Button title="Join Project" onPress={() => joinProject(projectCode)} />
       </SafeAreaView>
     </SafeAreaProvider>
   );
-}
+};
 
 const styles = StyleSheet.create({
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    alignSelf: "center",
+  },
   input: {
-    height: 40,
-    width: "50%",
+    height: 50,
+    width: "75%",
+    fontSize: 20,
     margin: 12,
     borderWidth: 1,
     padding: 10,
@@ -42,4 +49,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Index;
+const joinProject = (code: string) => {
+  // function to join a project using the provided code
+  // placeholder alert for testing at this stage - TK
+  Alert.alert(`Joining project with code: ${code}`);
+};
+
+export default LandingPage;
