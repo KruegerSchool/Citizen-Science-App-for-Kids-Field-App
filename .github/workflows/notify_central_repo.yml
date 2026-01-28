@@ -1,9 +1,11 @@
+# workflow generated with Copilot to assist in auto-sync functionality
 name: Notify Parent Repository
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   trigger-sync:
