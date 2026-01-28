@@ -1,19 +1,15 @@
 import { Button, Text, View } from "react-native";
 import { StyleSheet } from "react-native";
 
-// project details screen for the app
-// displays information about the project goals, and data collection
-// requirements
-export default function ProjectScreen() {
+// add description
+export default function AddObservation() {
   return (
     <View>
       <View style={styles.back}>
         <Button title="Back" onPress={() => {}} />
       </View>
       <View style={styles.mainContent}>
-        <Text>PROJECT TITLE</Text>
-        <Text>DESCRIPTION</Text>
-        <Text>OBSERVATION DETAILS</Text>
+        <Text>ADD OBSERVATION</Text>
       </View>
     </View>
   );
