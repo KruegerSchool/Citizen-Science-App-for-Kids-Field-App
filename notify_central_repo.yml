@@ -1,0 +1,18 @@
+name: Notify Parent Repository
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  trigger-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger subtree sync in parent repo
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.PAT_TOKEN }}  # Personal Access Token with repo scope
+          repository: KruegerSchool/citizen-science-app-for-kids
+          event-type: subtree-sync
+          client-payload: '{"subtree": "field_app", "ref": "${{ github.sha }}"}'
