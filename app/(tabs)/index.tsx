@@ -1,14 +1,21 @@
 import React from "react";
-import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { Keyboard, Button, StyleSheet, Text, TextInput, TouchableWithoutFeedback, Platform } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { alert } from "react-native-alert-queue";
+
+const dissmissMobileKeyboard = () => {
+  if (Platform.OS !== 'web') {
+    Keyboard.dismiss();
+  }
+}
 
 // landing page for the app which contains the project login or project change
-// functionality
+// functionality adapted from starter app template from expo
 const LandingPage = () => {
   const [projectCode, onChangeValue] = React.useState<string>("");
 
   return (
-    <SafeAreaProvider>
+    <TouchableWithoutFeedback onPress={() => {dissmissMobileKeyboard()}}>
       <SafeAreaView
         style={{
           flex: 1,
@@ -28,7 +35,7 @@ const LandingPage = () => {
         />
         <Button title="Join Project" onPress={() => joinProject(projectCode)} />
       </SafeAreaView>
-    </SafeAreaProvider>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -41,6 +48,7 @@ const styles = StyleSheet.create({
   input: {
     height: 50,
     width: "75%",
+    maxWidth: 300,
     fontSize: 20,
     margin: 12,
     borderWidth: 1,
@@ -49,10 +57,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const joinProject = (code: string) => {
+const joinProject  = async (code: string) => {
   // function to join a project using the provided code
   // placeholder alert for testing at this stage - TK
-  Alert.alert(`Joining project with code: ${code}`);
+  const result = await alert.confirm({
+    message: `Joining project with code: ${code}.`,
+  });
 };
 
 export default LandingPage;

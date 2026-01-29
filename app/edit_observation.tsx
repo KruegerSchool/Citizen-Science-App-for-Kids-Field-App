@@ -1,17 +1,27 @@
-import { Button, Text, View } from "react-native";
-import { StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
+import { Button, Text, View, StyleSheet, TextInput } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { alert } from "react-native-alert-queue";
 
 // add description
-export default function AddObservation() {
+export default function EditObservation() {
+  
+  const router = useRouter();
+
   return (
-    <View>
+    <SafeAreaView>
       <View style={styles.back}>
-        <Button title="Back" onPress={() => {}} />
+        <Button title="Back" onPress={() => router.back()} />
       </View>
       <View style={styles.mainContent}>
-        <Text>EDIT OBSERVATION</Text>
+        <Text style={{fontWeight: "bold", fontSize: 18, padding: 10}}>EDIT OBSERVATION</Text>
+        <Text>DEV NOTE: To be dynamically generated based on observation data.</Text>
+        <TextInput style={styles.input} defaultValue="Placeholder Obs 2"/>
+        <View style={{paddingTop: 20}}>
+          <Button title="Save" onPress={() => {alert.show({message:"Save button pressed"})}} />
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -23,5 +33,13 @@ const styles = StyleSheet.create({
   mainContent: {
     justifyContent: "center",
     alignItems: "center",
+  },
+  input: {
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    maxWidth: 800,
+    padding: 10,
+    marginTop: 10,
   },
 });

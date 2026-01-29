@@ -1,18 +1,23 @@
 import { Stack } from "expo-router";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { AlertContainer } from "react-native-alert-queue";
 
-// default routing for app
+// stack routing for app
 export default function RootLayout() {
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="add_observation"
-        options={{ title: "Add Observation", presentation: "modal" }}
-      />
-      <Stack.Screen
-        name="edit_observation"
-        options={{ title: "Edit Observation", presentation: "modal" }}
-      />
-    </Stack>
+    <SafeAreaProvider>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(tabs)" options={{}} />
+        <Stack.Screen
+          name="add_observation"
+          options={{ title: "Add Observation", presentation: "modal" }}
+        />
+        <Stack.Screen
+          name="edit_observation"
+          options={{ title: "Edit Observation", presentation: "modal" }}
+        />
+      </Stack>
+      <AlertContainer />
+    </SafeAreaProvider>
   );
 }
