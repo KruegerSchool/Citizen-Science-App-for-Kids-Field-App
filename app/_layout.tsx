@@ -17,6 +17,7 @@ export default function RootLayout() {
           options={{ title: "Edit Observation", presentation: "modal" }}
         />
       </Stack>
+      {/* allows alert messages from react-native-alert-queue to be used throughout */}
       <AlertContainer />
     </SafeAreaProvider>
   );

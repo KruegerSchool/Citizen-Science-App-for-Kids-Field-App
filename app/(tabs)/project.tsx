@@ -47,6 +47,7 @@ export default function ProjectScreen() {
   );
 }
 
+// styles for the project details screen
 const styles = StyleSheet.create({
   back: {
     alignItems: "flex-start",

@@ -3,6 +3,9 @@ import { Keyboard, Button, StyleSheet, Text, TextInput, TouchableWithoutFeedback
 import { SafeAreaView } from "react-native-safe-area-context";
 import { alert } from "react-native-alert-queue";
 
+// implements a function to allow the number keyboard to be dismissed on mobile
+// devices by clicking outside of the keyboard. disabled for web as it does not
+// allow user to click text input box when active
 const dissmissMobileKeyboard = () => {
   if (Platform.OS !== 'web') {
     Keyboard.dismiss();

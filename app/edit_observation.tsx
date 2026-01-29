@@ -3,7 +3,9 @@ import { Button, Text, View, StyleSheet, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { alert } from "react-native-alert-queue";
 
-// add description
+// allows student who created the observation to edit the content and save as
+// a method of error correction
+
 export default function EditObservation() {
   
   const router = useRouter();
@@ -18,6 +20,7 @@ export default function EditObservation() {
         <Text>DEV NOTE: To be dynamically generated based on observation data.</Text>
         <TextInput style={styles.input} defaultValue="Placeholder Obs 2"/>
         <View style={{paddingTop: 20}}>
+          {/* alert used to demo save button */}
           <Button title="Save" onPress={() => {alert.show({message:"Save button pressed"})}} />
         </View>
       </View>
@@ -25,6 +28,7 @@ export default function EditObservation() {
   );
 }
 
+// styles
 const styles = StyleSheet.create({
   back: {
     margin: 10,

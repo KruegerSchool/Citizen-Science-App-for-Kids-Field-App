@@ -31,7 +31,7 @@ const DATA: ItemData[] = [
 // displays the list of observations made in the project. observations made by
 // the user have an edit button
 export default function ObservationsScreen() {
-  // router for navigation
+
   const router = useRouter();
 
   return (
@@ -52,7 +52,7 @@ export default function ObservationsScreen() {
           OBSERVATIONS LIST
         </Text>
 
-        {/* testing flatlist, would need alternate row styling for readability. */}
+        {/* testing flatlist, may need alternate row styling for readability. added borders for now */}
         <FlatList
           data={DATA}
           ListHeaderComponent={

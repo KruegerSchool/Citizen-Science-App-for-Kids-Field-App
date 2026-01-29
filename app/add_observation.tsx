@@ -5,7 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Selector } from "rn-selector";
 import { Label } from "@react-navigation/elements";
 
-
+// options for dropdown list example
 const options = [
               { label: "Bird 1", value: "bird1" },
               { label: "Bird 2", value: "bird2" },
@@ -13,11 +13,13 @@ const options = [
             ];
 
 
-// add description
+// page to add an observation to the project. options are based on the project
+// details provided by the admin user when setting up the project
 export default function AddObservation() {
 
   const router = useRouter();
 
+  // state for selected value in dropdown example
   const [selectedValue, setSelectedValue] = useState('');
 
   return (
@@ -50,6 +52,7 @@ export default function AddObservation() {
   );
 }
 
+// styles for the add observation screen
 const styles = StyleSheet.create({
   back: {
     margin: 10,
