@@ -1,5 +1,13 @@
 import React from "react";
-import { Keyboard, Button, StyleSheet, Text, TextInput, TouchableWithoutFeedback, Platform } from "react-native";
+import {
+  Keyboard,
+  Button,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  Platform,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { alert } from "react-native-alert-queue";
 
@@ -7,10 +15,10 @@ import { alert } from "react-native-alert-queue";
 // devices by clicking outside of the keyboard. disabled for web as it does not
 // allow user to click text input box when active
 const dissmissMobileKeyboard = () => {
-  if (Platform.OS !== 'web') {
+  if (Platform.OS !== "web") {
     Keyboard.dismiss();
   }
-}
+};
 
 // landing page for the app which contains the project login or project change
 // functionality adapted from starter app template from expo
@@ -18,7 +26,11 @@ const LandingPage = () => {
   const [projectCode, onChangeValue] = React.useState<string>("");
 
   return (
-    <TouchableWithoutFeedback onPress={() => {dissmissMobileKeyboard()}}>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        dissmissMobileKeyboard();
+      }}
+    >
       <SafeAreaView
         style={{
           flex: 1,
@@ -60,7 +72,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const joinProject  = async (code: string) => {
+const joinProject = async (code: string) => {
   // function to join a project using the provided code
   // placeholder alert for testing at this stage - TK
   const result = await alert.confirm({

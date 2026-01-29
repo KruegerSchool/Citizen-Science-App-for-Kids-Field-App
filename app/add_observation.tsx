@@ -7,20 +7,18 @@ import { Label } from "@react-navigation/elements";
 
 // options for dropdown list example
 const options = [
-              { label: "Bird 1", value: "bird1" },
-              { label: "Bird 2", value: "bird2" },
-              { label: "Bird 3", value: "bird3" },
-            ];
-
+  { label: "Bird 1", value: "bird1" },
+  { label: "Bird 2", value: "bird2" },
+  { label: "Bird 3", value: "bird3" },
+];
 
 // page to add an observation to the project. options are based on the project
 // details provided by the admin user when setting up the project
 export default function AddObservation() {
-
   const router = useRouter();
 
   // state for selected value in dropdown example
-  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue, setSelectedValue] = useState("");
 
   return (
     <SafeAreaView>
@@ -28,23 +26,30 @@ export default function AddObservation() {
         <Button title="Back" onPress={() => router.back()} />
       </View>
       <View style={styles.mainContent}>
-        <Text style={{
-          fontWeight: "bold",
-          fontSize: 18,
-          padding: 10,
-        }}>ADD OBSERVATION PAGE</Text>
-        <Text style={styles.textPadding}>DEV NOTE: To be dynamically generated based on project info from admin.</Text>
-        <Label style={{paddingTop: 20}}>Text Input Example</Label>
+        <Text
+          style={{
+            fontWeight: "bold",
+            fontSize: 18,
+            padding: 10,
+          }}
+        >
+          ADD OBSERVATION PAGE
+        </Text>
+        <Text style={styles.textPadding}>
+          DEV NOTE: To be dynamically generated based on project info from
+          admin.
+        </Text>
+        <Label style={{ paddingTop: 20 }}>Text Input Example</Label>
         <TextInput style={styles.input} placeholder="Enter text here" />
-        <Label style={{paddingTop: 20}}>Dropdown Example</Label>
+        <Label style={{ paddingTop: 20 }}>Dropdown Example</Label>
         <View style={styles.container}>
           <Selector
             options={options}
             selectedValue={selectedValue}
             onValueChange={(value) => setSelectedValue(value)}
             placeholder="Select a bird"
-            styles={{dropdown: {maxWidth:300}}}
-            searchConfig={{searchable: true, placeholder: "Search birds"}}
+            styles={{ dropdown: { maxWidth: 300 } }}
+            searchConfig={{ searchable: true, placeholder: "Search birds" }}
           />
         </View>
       </View>
@@ -78,18 +83,18 @@ const styles = StyleSheet.create({
   header: {
     fontWeight: "bold",
     fontSize: 18,
-    padding: 10, 
+    padding: 10,
   },
   // example from rn-selector docs
   container: {
-    justifyContent: 'center',
+    justifyContent: "center",
     flex: 1,
-    backgroundColor: '#ecf0f1',
-    width: '75%',
+    backgroundColor: "#ecf0f1",
+    width: "75%",
     maxWidth: 300,
     padding: 8,
     paddingHorizontal: 16,
     gap: 16,
-    color: '#000000',
+    color: "#000000",
   },
 });

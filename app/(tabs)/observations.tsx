@@ -31,7 +31,6 @@ const DATA: ItemData[] = [
 // displays the list of observations made in the project. observations made by
 // the user have an edit button
 export default function ObservationsScreen() {
-
   const router = useRouter();
 
   return (
@@ -43,12 +42,16 @@ export default function ObservationsScreen() {
           maxWidth: 800,
           alignSelf: "center",
           padding: 16,
-        }}>
-        <Text style={{ 
-          fontWeight: "bold",
-          fontSize: 18, 
-          padding: 10,
-          alignSelf: "center",}}>
+        }}
+      >
+        <Text
+          style={{
+            fontWeight: "bold",
+            fontSize: 18,
+            padding: 10,
+            alignSelf: "center",
+          }}
+        >
           OBSERVATIONS LIST
         </Text>
 
@@ -67,10 +70,12 @@ export default function ObservationsScreen() {
               }}
             >
               <Text style={{ fontWeight: "bold", fontSize: 16 }}>Student</Text>
-              <Text style={{ fontWeight: "bold", fontSize: 16 }}>Observation</Text>
+              <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+                Observation
+              </Text>
               <Text style={{ fontWeight: "bold", fontSize: 16 }}>Action</Text>
             </View>
-          }              
+          }
           renderItem={({ item }) => (
             <View
               style={{

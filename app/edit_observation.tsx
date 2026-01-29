@@ -7,7 +7,6 @@ import { alert } from "react-native-alert-queue";
 // a method of error correction
 
 export default function EditObservation() {
-  
   const router = useRouter();
 
   return (
@@ -16,12 +15,21 @@ export default function EditObservation() {
         <Button title="Back" onPress={() => router.back()} />
       </View>
       <View style={styles.mainContent}>
-        <Text style={{fontWeight: "bold", fontSize: 18, padding: 10}}>EDIT OBSERVATION</Text>
-        <Text>DEV NOTE: To be dynamically generated based on observation data.</Text>
-        <TextInput style={styles.input} defaultValue="Placeholder Obs 2"/>
-        <View style={{paddingTop: 20}}>
+        <Text style={{ fontWeight: "bold", fontSize: 18, padding: 10 }}>
+          EDIT OBSERVATION
+        </Text>
+        <Text>
+          DEV NOTE: To be dynamically generated based on observation data.
+        </Text>
+        <TextInput style={styles.input} defaultValue="Placeholder Obs 2" />
+        <View style={{ paddingTop: 20 }}>
           {/* alert used to demo save button */}
-          <Button title="Save" onPress={() => {alert.show({message:"Save button pressed"})}} />
+          <Button
+            title="Save"
+            onPress={() => {
+              alert.show({ message: "Save button pressed" });
+            }}
+          />
         </View>
       </View>
     </SafeAreaView>

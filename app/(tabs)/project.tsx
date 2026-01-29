@@ -6,7 +6,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 // displays information about the project goals, and data collection
 // requirements
 export default function ProjectScreen() {
-
   const router = useRouter();
 
   return (
@@ -21,28 +20,37 @@ export default function ProjectScreen() {
           maxWidth: 800,
           alignSelf: "center",
           padding: 16,
-        }}>
+        }}
+      >
         <View style={styles.mainContent}>
           <Text style={styles.headers}>THIS IS AN EXAMPLE PROJECT TITLE</Text>
           <Text style={styles.headers}>DESCRIPTION</Text>
           <View style={styles.descriptionBox}>
             <Text style={styles.descriptionText}>
-              This is a placeholder description for the project. It would contain
-              information about the project's goals, data collection methods, and
-              any other relevant details that students might need to know as part
-              of collecting observations.
+              This is a placeholder description for the project. It would
+              contain information about the project's goals, data collection
+              methods, and any other relevant details that students might need
+              to know as part of collecting observations.
             </Text>
           </View>
           <Text style={styles.headers}>OBSERVATION DETAILS</Text>
           <View style={styles.descriptionBox}>
-            <Text style={styles.observationDetails}>1. Type of data to be collected: e.g., bird sightings, rain frequency, insect counts, etc.</Text>
-            <Text style={styles.observationDetails}>2. Frequency of observations.</Text>
+            <Text style={styles.observationDetails}>
+              1. Type of data to be collected: e.g., bird sightings, rain
+              frequency, insect counts, etc.
+            </Text>
+            <Text style={styles.observationDetails}>
+              2. Frequency of observations.
+            </Text>
             <Text style={styles.observationDetails}>3. ...</Text>
             <Text style={styles.observationDetails}>4. ...</Text>
-            <Text style={styles.observationDetails}>5. Images for comparison, for example, types of birds to be counted.</Text>
+            <Text style={styles.observationDetails}>
+              5. Images for comparison, for example, types of birds to be
+              counted.
+            </Text>
           </View>
         </View>
-      </View> 
+      </View>
     </SafeAreaView>
   );
 }
