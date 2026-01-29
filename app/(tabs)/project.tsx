@@ -28,7 +28,7 @@ export default function ProjectScreen() {
           <View style={styles.descriptionBox}>
             <Text style={styles.descriptionText}>
               This is a placeholder description for the project. It would
-              contain information about the project's goals, data collection
+              contain information about the project goals, data collection
               methods, and any other relevant details that students might need
               to know as part of collecting observations.
             </Text>

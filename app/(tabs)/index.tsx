@@ -78,6 +78,8 @@ const joinProject = async (code: string) => {
   const result = await alert.confirm({
     message: `Joining project with code: ${code}.`,
   });
+  console.log(result);
+  return;
 };
 
 export default LandingPage;
