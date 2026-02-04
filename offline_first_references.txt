@@ -1,0 +1,7 @@
+https://dev.to/zidanegimiga/building-offline-first-applications-with-react-native-3626 examples with netinfo
+https://zustand.docs.pmnd.rs/getting-started/introduction for local / app centralized state management
+
+https://reactnative.directory/package/react-native-mmkv-storage persistent local storage
+
+consider for later
+https://redux.js.org/introduction/getting-started potential for syncing logic?
