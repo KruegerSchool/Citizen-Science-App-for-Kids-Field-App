@@ -1,5 +1,5 @@
 /**
- * @fileoverview Project details screen. Allows user to join a project by
+ * Project details screen. Allows user to join a project by
  * using a project code.
  */
 

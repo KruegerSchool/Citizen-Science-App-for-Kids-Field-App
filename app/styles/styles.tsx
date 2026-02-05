@@ -1,5 +1,5 @@
 /**
- * @fileoverview Central file for all the styles used in the app.
+ * Central file for all the styles used in the app.
  */
 
 import { StyleSheet } from "react-native";
@@ -40,6 +40,12 @@ const landingStyles = StyleSheet.create({
     fontWeight: "bold",
     alignSelf: "center",
   },
+  project: {
+    fontSize: 24,
+    margin: 10,
+    alignSelf: "center",
+    fontWeight: "bold",
+  },
   input: {
     height: 50,
     width: "75%",
@@ -52,4 +58,13 @@ const landingStyles = StyleSheet.create({
   },
 });
 
-export { projectStyles, landingStyles };
+const debug = StyleSheet.create({
+  debug_text: {
+    marginTop: 20,
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#9c1e2e",
+  },
+});
+
+export { projectStyles, landingStyles, debug };

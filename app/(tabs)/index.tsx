@@ -9,13 +9,13 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { alert } from "react-native-alert-queue";
-import { landingStyles } from "../styles/styles";
+import { landingStyles, debug } from "../styles/styles";
 import useConnectionStatus from "../stores/network_status";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// implements a function to allow the number keyboard to be dismissed on mobile
-// devices by clicking outside of the keyboard. disabled for web as it does not
-// allow user to click text input box when active
+// implements a function to allow the keyboard to be dismissed on mobile
+// devices by registering a touch outside of the keyboard. disabled for
+//  web as it does not allow user to click text input box when active
 const dissmissMobileKeyboard = () => {
   if (Platform.OS !== "web") {
     Keyboard.dismiss();
@@ -60,11 +60,25 @@ const LandingPage = () => {
 
   // function to join a project using the provided code
   const joinProject = async (code: string) => {
+    // force whitespace
+    code = code.trim();
+
+    // validate project code length
+    if (code.length < 8) {
+      alert.show({
+        title: "Invalid Project Code",
+        message: "Project code must be 8 characters long.",
+        buttons: [{ text: "OK" }],
+        confetti: true,
+      });
+      return;
+    }
 
     // placeholder alert for testing at this stage - TK
     const result: boolean = await alert.confirm({
       message: `Joining project with code: ${code}.`,
     });
+
     if (result === true) {
       console.log(result + " - joined: " + code);
       // save project code to persistent storage
@@ -84,6 +98,52 @@ const LandingPage = () => {
     }
   };
 
+  // determine which version of page is loaded
+  const dynamicRenderingLandingPage = () => {
+    if (storedProjectCode === "") {
+      return (
+        <SafeAreaView>
+          <TextInput
+            style={landingStyles.input}
+            onChangeText={onChangeValue}
+            inputMode="text"
+            autoCapitalize="characters"
+            maxLength={8}
+            placeholder="Enter Project Code"
+            placeholderTextColor="#000000"
+            textAlign="center"
+          />
+          <Button
+            title="Join Project"
+            onPress={() => joinProject(projectCode)}
+          />
+        </SafeAreaView>
+      );
+    } else {
+      return (
+        <SafeAreaView>
+          <Text style={landingStyles.project}>Current Project: {storedProjectCode}</Text>
+          <Button
+            title="Change Project"
+            onPress={() => {
+              try {
+                // remove project code from persistent storage and set to empty string
+                console.log("Removing project code from storage");
+                AsyncStorage.removeItem("project_code");
+                setStoredProjectCode("");
+              } catch (e) {
+                console.error(
+                  "Failed to remove project code from storage: ",
+                  e,
+                );
+              }
+            }}
+          />
+        </SafeAreaView>
+      );
+    }
+  };
+
   // Landing page rendering
   return (
     <TouchableWithoutFeedback
@@ -99,22 +159,14 @@ const LandingPage = () => {
         }}
       >
         <Text style={landingStyles.title}>CITIZEN SCIENCE APP FOR KIDS</Text>
-        <TextInput
-          style={landingStyles.input}
-          onChangeText={onChangeValue}
-          value={projectCode}
-          keyboardType="numeric"
-          placeholder="Enter Project Code"
-          placeholderTextColor="#000000"
-          textAlign="center"
-        />
-        <Button title="Join Project" onPress={() => joinProject(projectCode)} />
+        {/* dynamically render page depending on whether a project code is actively stored */}
+        {dynamicRenderingLandingPage()}
         {/* debugging display for network connection status */}
-        <Text style={{ marginTop: 20, fontSize: 16 }}>
+        <Text style={debug.debug_text}>
           Network Status: {connectionStatusText(isConnected)}
         </Text>
         {/* display current project code from persistent storage */}
-        <Text style={{ marginTop: 10, fontSize: 16 }}>
+        <Text style={debug.debug_text}>
           Current Project Code: {storedProjectCode}
         </Text>
       </SafeAreaView>
