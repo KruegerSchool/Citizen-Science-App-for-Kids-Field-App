@@ -39,6 +39,9 @@ const landingStyles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     alignSelf: "center",
+    // for debugging purposes
+    backgroundColor: "purple",
+    color: "white",
   },
   project: {
     fontSize: 24,
@@ -47,14 +50,12 @@ const landingStyles = StyleSheet.create({
     fontWeight: "bold",
   },
   input: {
-    height: 50,
     width: "75%",
     maxWidth: 300,
-    fontSize: 20,
     margin: 12,
-    borderWidth: 1,
     padding: 10,
-    backgroundColor: "#ffffff",
+    backgroundColor: "pink",
+    alignSelf: "center",
   },
 });
 
@@ -63,8 +64,10 @@ const debug = StyleSheet.create({
     marginTop: 20,
     fontSize: 16,
     fontWeight: "bold",
+    backgroundColor: "orange",
     color: "#9c1e2e",
   },
 });
 
+export default { projectStyles, landingStyles, debug };
 export { projectStyles, landingStyles, debug };

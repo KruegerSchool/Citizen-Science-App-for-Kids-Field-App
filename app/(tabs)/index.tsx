@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import {
   Keyboard,
-  Button,
   Text,
-  TextInput,
-  TouchableWithoutFeedback,
+  Pressable,
   Platform,
+  Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { alert } from "react-native-alert-queue";
 import { landingStyles, debug } from "../styles/styles";
 import useConnectionStatus from "../stores/network_status";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Button, Input } from 'rn-inkpad';
 
 // implements a function to allow the keyboard to be dismissed on mobile
 // devices by registering a touch outside of the keyboard. disabled for
@@ -60,14 +60,13 @@ const LandingPage = () => {
 
   // function to join a project using the provided code
   const joinProject = async (code: string) => {
-    // force whitespace
-    code = code.trim();
+    code = code.trim().toUpperCase();
 
     // validate project code length
-    if (code.length < 8) {
+    if (code.length !== 8) {
       alert.show({
         title: "Invalid Project Code",
-        message: "Project code must be 8 characters long.",
+        message: "Project codes are exactly 8 characters long, please try again.",
         buttons: [{ text: "OK" }],
         confetti: true,
       });
@@ -102,35 +101,46 @@ const LandingPage = () => {
   const dynamicRenderingLandingPage = () => {
     if (storedProjectCode === "") {
       return (
-        <SafeAreaView>
-          <TextInput
+        <SafeAreaView style={{width: "100%", backgroundColor: "lightyellow" }}>
+          {/* TODO: need to consider different input box for web */}
+          <Input
             style={landingStyles.input}
-            onChangeText={onChangeValue}
-            inputMode="text"
-            autoCapitalize="characters"
-            maxLength={8}
+            borderRadius={5}
+            label="Project Code"
+            value={projectCode}
             placeholder="Enter Project Code"
-            placeholderTextColor="#000000"
-            textAlign="center"
+            placeholderColor="grey"
+            type='outlined'
+            onChangeText={onChangeValue}
+            textStyle={{ fontSize: 24 }}
           />
           <Button
-            title="Join Project"
+            text="Join Project"
+            buttonColor="#007AFF"
+            color="#FFFFFF"
+            rounded={true}
+            style={{ maxWidth: 200, alignSelf: "center", margin: 10 }}
             onPress={() => joinProject(projectCode)}
           />
         </SafeAreaView>
       );
     } else {
       return (
-        <SafeAreaView>
+        <SafeAreaView style={{backgroundColor: "yellow" }}>
           <Text style={landingStyles.project}>Current Project: {storedProjectCode}</Text>
           <Button
-            title="Change Project"
+            text="Change Project"
+            buttonColor="#007AFF"
+            color="#FFFFFF"
+            rounded={true}
+            style={{ maxWidth: 200, alignSelf: "center", margin: 10 }}
             onPress={() => {
               try {
                 // remove project code from persistent storage and set to empty string
                 console.log("Removing project code from storage");
                 AsyncStorage.removeItem("project_code");
                 setStoredProjectCode("");
+                onChangeValue("");
               } catch (e) {
                 console.error(
                   "Failed to remove project code from storage: ",
@@ -146,19 +156,27 @@ const LandingPage = () => {
 
   // Landing page rendering
   return (
-    <TouchableWithoutFeedback
+    <Pressable
       onPress={() => {
         dissmissMobileKeyboard();
       }}
+      style={{ backgroundColor: "palegreen", flex: 1 }}
+      disabled={Platform.OS === "web"}
     >
       <SafeAreaView
         style={{
           flex: 1,
+          // debugging
+          backgroundColor: "lightblue",
           justifyContent: "center",
           alignItems: "center",
         }}
       >
         <Text style={landingStyles.title}>CITIZEN SCIENCE APP FOR KIDS</Text>
+        <Image
+          source={{uri:"https://placehold.co/300x200.png?text=Placeholder+for+Logo"}}
+          style={{ width: 300, height: 200, margin: 10 }}
+        />
         {/* dynamically render page depending on whether a project code is actively stored */}
         {dynamicRenderingLandingPage()}
         {/* debugging display for network connection status */}
@@ -170,7 +188,7 @@ const LandingPage = () => {
           Current Project Code: {storedProjectCode}
         </Text>
       </SafeAreaView>
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 };
 
