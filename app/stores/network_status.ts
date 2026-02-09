@@ -6,10 +6,12 @@
 
 import { create } from "zustand";
 
+// creates type for connection status
 type ConnectionState = {
   isConnected: boolean | null;
 };
 
+// creates type for action to update connection status
 type ConnectionActions = {
   setIsConnected: (status: boolean) => void;
 };

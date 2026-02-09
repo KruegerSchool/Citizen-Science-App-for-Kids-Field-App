@@ -101,7 +101,7 @@ const LandingPage = () => {
   const dynamicRenderingLandingPage = () => {
     if (storedProjectCode === "") {
       return (
-        <SafeAreaView style={{width: "100%", backgroundColor: "lightyellow" }}>
+        <SafeAreaView style={{width: "100%" }}>
           {/* TODO: need to consider different input box for web */}
           <Input
             style={landingStyles.input}
@@ -126,7 +126,7 @@ const LandingPage = () => {
       );
     } else {
       return (
-        <SafeAreaView style={{backgroundColor: "yellow" }}>
+        <SafeAreaView>
           <Text style={landingStyles.project}>Current Project: {storedProjectCode}</Text>
           <Button
             text="Change Project"
@@ -160,14 +160,12 @@ const LandingPage = () => {
       onPress={() => {
         dissmissMobileKeyboard();
       }}
-      style={{ backgroundColor: "palegreen", flex: 1 }}
+      style={{ flex: 1 }}
       disabled={Platform.OS === "web"}
     >
       <SafeAreaView
         style={{
           flex: 1,
-          // debugging
-          backgroundColor: "lightblue",
           justifyContent: "center",
           alignItems: "center",
         }}

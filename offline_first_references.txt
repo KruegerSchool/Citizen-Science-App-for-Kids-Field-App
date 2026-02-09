@@ -7,7 +7,7 @@ https://react-native-async-storage.github.io/2.0/ persistent local storage
 
 consider for later
 https://redux.js.org/introduction/getting-started potential for syncing logic?
-
+https://watermelondb.dev/docs
 
 alert references
 https://github.com/xxsnakerxx/react-native-alert-queue
