@@ -16,7 +16,7 @@ import { Button, Input } from 'rn-inkpad';
 // implements a function to allow the keyboard to be dismissed on mobile
 // devices by registering a touch outside of the keyboard. disabled for
 //  web as it does not allow user to click text input box when active
-const dissmissMobileKeyboard = () => {
+const dismissMobileKeyboard = () => {
   if (Platform.OS !== "web") {
     Keyboard.dismiss();
   }
@@ -60,7 +60,9 @@ const LandingPage = () => {
 
   // function to join a project using the provided code
   const joinProject = async (code: string) => {
-    code = code.trim().toUpperCase();
+    // remove spaces from input
+    // reference: https://stackoverflow.com/questions/10800355/remove-whitespaces-inside-a-string-in-javascript 
+    code = code.replace(/\s/g, "").toUpperCase();
 
     // validate project code length
     if (code.length !== 8) {
@@ -68,7 +70,6 @@ const LandingPage = () => {
         title: "Invalid Project Code",
         message: "Project codes are exactly 8 characters long, please try again.",
         buttons: [{ text: "OK" }],
-        confetti: true,
       });
       return;
     }
@@ -158,7 +159,7 @@ const LandingPage = () => {
   return (
     <Pressable
       onPress={() => {
-        dissmissMobileKeyboard();
+        dismissMobileKeyboard();
       }}
       style={{ flex: 1 }}
       disabled={Platform.OS === "web"}
@@ -173,6 +174,7 @@ const LandingPage = () => {
         <Text style={landingStyles.title}>CITIZEN SCIENCE APP FOR KIDS</Text>
         <Image
           source={{uri:"https://placehold.co/300x200.png?text=Placeholder+for+Logo"}}
+          alt="Logo for Citizen Science App for Kids"
           style={{ width: 300, height: 200, margin: 10 }}
         />
         {/* dynamically render page depending on whether a project code is actively stored */}
