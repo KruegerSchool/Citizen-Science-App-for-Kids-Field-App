@@ -1,35 +1,165 @@
-import React from "react";
-import {
-  Keyboard,
-  Button,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableWithoutFeedback,
-  Platform,
-} from "react-native";
+import React, { useState, useEffect } from "react";
+import { Keyboard, Text, Pressable, Platform, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { alert } from "react-native-alert-queue";
+import { landingStyles, debug } from "../styles/styles";
+import useConnectionStatus from "../stores/network_status";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Button, Input } from "rn-inkpad";
 
-// implements a function to allow the number keyboard to be dismissed on mobile
-// devices by clicking outside of the keyboard. disabled for web as it does not
-// allow user to click text input box when active
-const dissmissMobileKeyboard = () => {
+// implements a function to allow the keyboard to be dismissed on mobile
+// devices by registering a touch outside of the keyboard. disabled for
+//  web as it does not allow user to click text input box when active
+const dismissMobileKeyboard = () => {
   if (Platform.OS !== "web") {
     Keyboard.dismiss();
   }
 };
+
+// function to return current network connection status text for testing
+function connectionStatusText(isConnected: boolean | null) {
+  if (isConnected === null) {
+    return "Checking network connection...";
+  } else if (isConnected) {
+    return "ONLINE";
+  } else {
+    return "OFFLINE";
+  }
+}
 
 // landing page for the app which contains the project login or project change
 // functionality adapted from starter app template from expo
 const LandingPage = () => {
   const [projectCode, onChangeValue] = React.useState<string>("");
 
+  // code to dynamically update project code text in page when changed
+  const [storedProjectCode, setStoredProjectCode] = useState<string>("");
+
+  const isConnected = useConnectionStatus((state) => state.isConnected);
+
+  // load stored project code on component mount
+  useEffect(() => {
+    const loadStoredProjectCode = async () => {
+      try {
+        const value = await AsyncStorage.getItem("project_code");
+        if (value !== null) {
+          setStoredProjectCode(value);
+        }
+      } catch (e) {
+        console.error("Failed to read value from storage: ", e);
+      }
+    };
+    loadStoredProjectCode();
+  }, []);
+
+  // function to join a project using the provided code
+  const joinProject = async (code: string) => {
+    // remove spaces from input
+    // reference: https://stackoverflow.com/questions/10800355/remove-whitespaces-inside-a-string-in-javascript
+    code = code.replace(/\s/g, "").toUpperCase();
+
+    // validate project code length
+    if (code.length !== 8) {
+      alert.show({
+        title: "Invalid Project Code",
+        message:
+          "Project codes are exactly 8 characters long, please try again.",
+        buttons: [{ text: "OK" }],
+      });
+      return;
+    }
+
+    // placeholder alert for testing at this stage - TK
+    const result: boolean = await alert.confirm({
+      message: `Joining project with code: ${code}.`,
+    });
+
+    if (result === true) {
+      console.log(result + " - joined: " + code);
+      // save project code to persistent storage
+      try {
+        await AsyncStorage.setItem("project_code", code);
+        console.log("Project code saved to storage: ", code);
+
+        // refresh displayed value from storage
+        const savedValue = await AsyncStorage.getItem("project_code");
+        setStoredProjectCode(savedValue ?? "");
+      } catch (e) {
+        console.error("Failed to save project code to storage: ", e);
+      }
+    } else {
+      console.log(result + " - cancelled joining for code: " + code);
+      return;
+    }
+  };
+
+  // determine which version of page is loaded
+  const dynamicRenderingLandingPage = () => {
+    if (storedProjectCode === "") {
+      return (
+        <SafeAreaView style={{ width: "100%" }}>
+          {/* TODO: need to consider different input box for web */}
+          <Input
+            style={landingStyles.input}
+            borderRadius={5}
+            label="Project Code"
+            value={projectCode}
+            placeholder="Enter Project Code"
+            placeholderColor="grey"
+            type="outlined"
+            onChangeText={onChangeValue}
+            textStyle={{ fontSize: 24 }}
+          />
+          <Button
+            text="Join Project"
+            buttonColor="#007AFF"
+            color="#FFFFFF"
+            rounded={true}
+            style={{ maxWidth: 200, alignSelf: "center", margin: 10 }}
+            onPress={() => joinProject(projectCode)}
+          />
+        </SafeAreaView>
+      );
+    } else {
+      return (
+        <SafeAreaView>
+          <Text style={landingStyles.project}>
+            Current Project: {storedProjectCode}
+          </Text>
+          <Button
+            text="Change Project"
+            buttonColor="#007AFF"
+            color="#FFFFFF"
+            rounded={true}
+            style={{ maxWidth: 200, alignSelf: "center", margin: 10 }}
+            onPress={() => {
+              try {
+                // remove project code from persistent storage and set to empty string
+                console.log("Removing project code from storage");
+                AsyncStorage.removeItem("project_code");
+                setStoredProjectCode("");
+                onChangeValue("");
+              } catch (e) {
+                console.error(
+                  "Failed to remove project code from storage: ",
+                  e,
+                );
+              }
+            }}
+          />
+        </SafeAreaView>
+      );
+    }
+  };
+
+  // Landing page rendering
   return (
-    <TouchableWithoutFeedback
+    <Pressable
       onPress={() => {
-        dissmissMobileKeyboard();
+        dismissMobileKeyboard();
       }}
+      style={{ flex: 1 }}
+      disabled={Platform.OS === "web"}
     >
       <SafeAreaView
         style={{
@@ -38,48 +168,27 @@ const LandingPage = () => {
           alignItems: "center",
         }}
       >
-        <Text style={styles.title}>CITIZEN SCIENCE APP FOR KIDS</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangeValue}
-          value={projectCode}
-          keyboardType="numeric"
-          placeholder="Enter Project Code"
-          placeholderTextColor="#000000"
-          textAlign="center"
+        <Text style={landingStyles.title}>CITIZEN SCIENCE APP FOR KIDS</Text>
+        <Image
+          source={{
+            uri: "https://placehold.co/300x200.png?text=Placeholder+for+Logo",
+          }}
+          alt="Logo for Citizen Science App for Kids"
+          style={{ width: 300, height: 200, margin: 10 }}
         />
-        <Button title="Join Project" onPress={() => joinProject(projectCode)} />
+        {/* dynamically render page depending on whether a project code is actively stored */}
+        {dynamicRenderingLandingPage()}
+        {/* debugging display for network connection status */}
+        <Text style={debug.debug_text}>
+          Network Status: {connectionStatusText(isConnected)}
+        </Text>
+        {/* display current project code from persistent storage */}
+        <Text style={debug.debug_text}>
+          Current Project Code: {storedProjectCode}
+        </Text>
       </SafeAreaView>
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
-};
-
-const styles = StyleSheet.create({
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    alignSelf: "center",
-  },
-  input: {
-    height: 50,
-    width: "75%",
-    maxWidth: 300,
-    fontSize: 20,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    backgroundColor: "#ffffff",
-  },
-});
-
-const joinProject = async (code: string) => {
-  // function to join a project using the provided code
-  // placeholder alert for testing at this stage - TK
-  const result = await alert.confirm({
-    message: `Joining project with code: ${code}.`,
-  });
-  console.log(result);
-  return;
 };
 
 export default LandingPage;
