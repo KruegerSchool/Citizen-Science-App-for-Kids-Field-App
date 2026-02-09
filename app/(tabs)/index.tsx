@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  Keyboard,
-  Text,
-  Pressable,
-  Platform,
-  Image,
-} from "react-native";
+import { Keyboard, Text, Pressable, Platform, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { alert } from "react-native-alert-queue";
 import { landingStyles, debug } from "../styles/styles";
 import useConnectionStatus from "../stores/network_status";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Button, Input } from 'rn-inkpad';
+import { Button, Input } from "rn-inkpad";
 
 // implements a function to allow the keyboard to be dismissed on mobile
 // devices by registering a touch outside of the keyboard. disabled for
@@ -61,14 +55,15 @@ const LandingPage = () => {
   // function to join a project using the provided code
   const joinProject = async (code: string) => {
     // remove spaces from input
-    // reference: https://stackoverflow.com/questions/10800355/remove-whitespaces-inside-a-string-in-javascript 
+    // reference: https://stackoverflow.com/questions/10800355/remove-whitespaces-inside-a-string-in-javascript
     code = code.replace(/\s/g, "").toUpperCase();
 
     // validate project code length
     if (code.length !== 8) {
       alert.show({
         title: "Invalid Project Code",
-        message: "Project codes are exactly 8 characters long, please try again.",
+        message:
+          "Project codes are exactly 8 characters long, please try again.",
         buttons: [{ text: "OK" }],
       });
       return;
@@ -102,7 +97,7 @@ const LandingPage = () => {
   const dynamicRenderingLandingPage = () => {
     if (storedProjectCode === "") {
       return (
-        <SafeAreaView style={{width: "100%" }}>
+        <SafeAreaView style={{ width: "100%" }}>
           {/* TODO: need to consider different input box for web */}
           <Input
             style={landingStyles.input}
@@ -111,7 +106,7 @@ const LandingPage = () => {
             value={projectCode}
             placeholder="Enter Project Code"
             placeholderColor="grey"
-            type='outlined'
+            type="outlined"
             onChangeText={onChangeValue}
             textStyle={{ fontSize: 24 }}
           />
@@ -128,7 +123,9 @@ const LandingPage = () => {
     } else {
       return (
         <SafeAreaView>
-          <Text style={landingStyles.project}>Current Project: {storedProjectCode}</Text>
+          <Text style={landingStyles.project}>
+            Current Project: {storedProjectCode}
+          </Text>
           <Button
             text="Change Project"
             buttonColor="#007AFF"
@@ -173,7 +170,9 @@ const LandingPage = () => {
       >
         <Text style={landingStyles.title}>CITIZEN SCIENCE APP FOR KIDS</Text>
         <Image
-          source={{uri:"https://placehold.co/300x200.png?text=Placeholder+for+Logo"}}
+          source={{
+            uri: "https://placehold.co/300x200.png?text=Placeholder+for+Logo",
+          }}
           alt="Logo for Citizen Science App for Kids"
           style={{ width: 300, height: 200, margin: 10 }}
         />
