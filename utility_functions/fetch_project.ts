@@ -3,6 +3,7 @@
 // any changes
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { alert } from "react-native-alert-queue";
 
 export default async function fetchProject(projectId: string) {
   const url = `https://csafk-277534145495.us-east4.run.app/api/student/project/${projectId}`;
@@ -10,7 +11,11 @@ export default async function fetchProject(projectId: string) {
   console.log(url);
   const response = await fetch(url);
   if (response.status !== 200) {
-    throw new Error(`Failed to fetch project data: ${response.status}`);
+    alert.show({
+      title: "Invalid Project Code",
+      message: "The project code you entered is invalid. Please try again.",
+      buttons: [{ text: "OK" }],
+    });
   }
 
   const projectData = await response.json();
