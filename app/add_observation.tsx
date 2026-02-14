@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useRouter } from "expo-router";
-import { Button, Text, View, StyleSheet, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Button, Text, View, TextInput } from "react-native";
 import { Selector } from "rn-selector";
 import { Label } from "@react-navigation/elements";
+import { appStyles, obsAddEdit } from "./styles/styles";
 
 // options for dropdown list example
 const options = [
@@ -21,28 +22,20 @@ export default function AddObservation() {
   const [selectedValue, setSelectedValue] = useState("");
 
   return (
-    <SafeAreaView>
-      <View style={styles.back}>
+    <SafeAreaView style={obsAddEdit.page}>
+      <View style={appStyles.backButton}>
         <Button title="Back" onPress={() => router.back()} />
       </View>
-      <View style={styles.mainContent}>
-        <Text
-          style={{
-            fontWeight: "bold",
-            fontSize: 18,
-            padding: 10,
-          }}
-        >
-          ADD OBSERVATION PAGE
-        </Text>
-        <Text style={styles.textPadding}>
+      <View style={obsAddEdit.mainContent}>
+        <Text style={obsAddEdit.title}>NEW OBSERVATION</Text>
+        <Text style={obsAddEdit.textPadding}>
           DEV NOTE: To be dynamically generated based on project info from
           admin.
         </Text>
         <Label style={{ paddingTop: 20 }}>Text Input Example</Label>
-        <TextInput style={styles.input} placeholder="Enter text here" />
+        <TextInput style={obsAddEdit.input} placeholder="Enter text here" />
         <Label style={{ paddingTop: 20 }}>Dropdown Example</Label>
-        <View style={styles.container}>
+        <View style={obsAddEdit.dropdownContainer}>
           <Selector
             options={options}
             selectedValue={selectedValue}
@@ -56,45 +49,3 @@ export default function AddObservation() {
     </SafeAreaView>
   );
 }
-
-// styles for the add observation screen
-const styles = StyleSheet.create({
-  back: {
-    margin: 10,
-    alignItems: "flex-start",
-  },
-  mainContent: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  input: {
-    height: 50,
-    width: "75%",
-    maxWidth: 300,
-    fontSize: 20,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    backgroundColor: "#ffffff",
-  },
-  textPadding: {
-    padding: 10,
-  },
-  header: {
-    fontWeight: "bold",
-    fontSize: 18,
-    padding: 10,
-  },
-  // example from rn-selector docs
-  container: {
-    justifyContent: "center",
-    flex: 1,
-    backgroundColor: "#ecf0f1",
-    width: "75%",
-    maxWidth: 300,
-    padding: 8,
-    paddingHorizontal: 16,
-    gap: 16,
-    color: "#000000",
-  },
-});
