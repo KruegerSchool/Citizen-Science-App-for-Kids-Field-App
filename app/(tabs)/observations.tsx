@@ -1,6 +1,9 @@
 import { useRouter } from "expo-router";
-import { Button, FlatList, Text, View } from "react-native";
+import { FlatList, Text, Platform, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { observationStyles } from "../styles/styles";
+import { Button, FloatingActionButton } from "rn-inkpad";
+import { appStyles } from "../styles/styles";
 
 // placeholder data adapted from https://reactnative.dev/docs/flatlist#listheadercomponent
 type ItemData = {
@@ -35,23 +38,8 @@ export default function ObservationsScreen() {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View
-        style={{
-          flex: 1,
-          width: "100%",
-          maxWidth: 800,
-          alignSelf: "center",
-          padding: 16,
-        }}
-      >
-        <Text
-          style={{
-            fontWeight: "bold",
-            fontSize: 18,
-            padding: 10,
-            alignSelf: "center",
-          }}
-        >
+      <View style={observationStyles.page}>
+        <Text style={observationStyles.header}>
           OBSERVATIONS LIST
         </Text>
 
@@ -60,54 +48,41 @@ export default function ObservationsScreen() {
           data={DATA}
           ListHeaderComponent={
             <View
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginHorizontal: 14,
-                paddingTop: 10,
-              }}
+              style={observationStyles.listHeader}
             >
-              <Text style={{ fontWeight: "bold", fontSize: 16 }}>Student</Text>
-              <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+              <Text style={observationStyles.listHeaderText}>Student</Text>
+              <Text style={observationStyles.listHeaderText}>
                 Observation
               </Text>
-              <Text style={{ fontWeight: "bold", fontSize: 16 }}>Action</Text>
+              <Text style={observationStyles.listHeaderText}>Action</Text>
             </View>
           }
           renderItem={({ item }) => (
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                borderColor: "#000000",
-                alignItems: "center",
-                borderWidth: 1,
-                padding: 10,
-                margin: 5,
-              }}
-            >
+            <View style={observationStyles.listItem}>
               <Text>{item.student}</Text>
               <Text>{item.title}</Text>
               {/* this will need to be a dynamic route for editing */}
               {/* currently sets button to disabled if it doesn't belong to Student 2 (hard coded) */}
               {/* https://react.dev/learn/conditional-rendering putting  this here for if conditional rendering gets complicated in JSX/TS */}
               <Button
-                title="Edit"
+                text="Edit"            
+                buttonColor="#007AFF"
+                color="#FFFFFF"
+                rounded={true}
+                style={appStyles.button}
                 disabled={item.student !== "Student 2"}
                 onPress={() => router.push(`/edit_observation`)}
               />
             </View>
           )}
         />
-        <View style={{ maxWidth: 300, alignSelf: "center" }}>
-          <Button
-            title="New Observation"
-            onPress={() => router.push("/add_observation")}
-          />
-        </View>
+        <FloatingActionButton
+          align="bottom-right"
+          onPress ={() => router.push("/add_observation")}
+          backgroundColor = "#007AFF"
+          // temp fix for tab bar formatting
+          {...Platform.OS !== "web" ? { marginVertical: -10 } : { marginVertical: 25 }}
+        />
       </View>
     </SafeAreaView>
   );

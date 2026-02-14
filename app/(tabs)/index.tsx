@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Keyboard, Text, Pressable, Platform, Image } from "react-native";
+import { Keyboard, Text, Pressable, Platform, Image, View, KeyboardAvoidingView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { alert } from "react-native-alert-queue";
-import { landingStyles, debug } from "../styles/styles";
-import useConnectionStatus from "../stores/network_status";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { appStyles, landingStyles, debug } from "../styles/styles";
 import { Button, Input } from "rn-inkpad";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import fetchProject from "../../utility_functions/fetch_project";
 
 // implements a function to allow the keyboard to be dismissed on mobile
 // devices by registering a touch outside of the keyboard. disabled for
@@ -16,26 +16,12 @@ const dismissMobileKeyboard = () => {
   }
 };
 
-// function to return current network connection status text for testing
-function connectionStatusText(isConnected: boolean | null) {
-  if (isConnected === null) {
-    return "Checking network connection...";
-  } else if (isConnected) {
-    return "ONLINE";
-  } else {
-    return "OFFLINE";
-  }
-}
-
 // landing page for the app which contains the project login or project change
 // functionality adapted from starter app template from expo
 const LandingPage = () => {
-  const [projectCode, onChangeValue] = React.useState<string>("");
-
-  // code to dynamically update project code text in page when changed
+  // state management
+  const [projectCode, onChangeValue] = useState<string>("");
   const [storedProjectCode, setStoredProjectCode] = useState<string>("");
-
-  const isConnected = useConnectionStatus((state) => state.isConnected);
 
   // load stored project code on component mount
   useEffect(() => {
@@ -69,27 +55,39 @@ const LandingPage = () => {
       return;
     }
 
-    // placeholder alert for testing at this stage - TK
     const result: boolean = await alert.confirm({
       message: `Joining project with code: ${code}.`,
     });
 
-    if (result === true) {
-      console.log(result + " - joined: " + code);
-      // save project code to persistent storage
-      try {
-        await AsyncStorage.setItem("project_code", code);
-        console.log("Project code saved to storage: ", code);
-
-        // refresh displayed value from storage
-        const savedValue = await AsyncStorage.getItem("project_code");
-        setStoredProjectCode(savedValue ?? "");
-      } catch (e) {
-        console.error("Failed to save project code to storage: ", e);
-      }
-    } else {
+    if (!result) {
       console.log(result + " - cancelled joining for code: " + code);
       return;
+    }
+
+    try {
+      console.log("Fetching project data for code: ", code);
+      // fetch project data first — only save if successful
+      await fetchProject(code);
+
+      // save project code to persistent storage
+      await AsyncStorage.setItem("project_code", code);
+      console.log("Project code saved to storage: ", code);
+
+      // update array list to append new project code (testing this function)
+      const value = await AsyncStorage.getItem("array_list");
+      const arrayList: string[] = JSON.parse(value || "[]");
+      arrayList.push(code);
+      await AsyncStorage.setItem("array_list", JSON.stringify(arrayList));
+
+      // refresh displayed value
+      setStoredProjectCode(code);
+    } catch (e) {
+      console.error("Failed to join project: ", e);
+      alert.show({
+        title: "Error",
+        message: "Failed to join the project. Please try again.",
+        buttons: [{ text: "OK" }],
+      });
     }
   };
 
@@ -97,8 +95,7 @@ const LandingPage = () => {
   const dynamicRenderingLandingPage = () => {
     if (storedProjectCode === "") {
       return (
-        <SafeAreaView style={{ width: "100%" }}>
-          {/* TODO: need to consider different input box for web */}
+        <View style={{ width: "100%" }}>
           <Input
             style={landingStyles.input}
             borderRadius={5}
@@ -115,14 +112,14 @@ const LandingPage = () => {
             buttonColor="#007AFF"
             color="#FFFFFF"
             rounded={true}
-            style={{ maxWidth: 200, alignSelf: "center", margin: 10 }}
+            style={appStyles.button}
             onPress={() => joinProject(projectCode)}
           />
-        </SafeAreaView>
+        </View>
       );
     } else {
       return (
-        <SafeAreaView>
+        <View>
           <Text style={landingStyles.project}>
             Current Project: {storedProjectCode}
           </Text>
@@ -131,7 +128,7 @@ const LandingPage = () => {
             buttonColor="#007AFF"
             color="#FFFFFF"
             rounded={true}
-            style={{ maxWidth: 200, alignSelf: "center", margin: 10 }}
+            style={appStyles.button}
             onPress={() => {
               try {
                 // remove project code from persistent storage and set to empty string
@@ -147,47 +144,34 @@ const LandingPage = () => {
               }
             }}
           />
-        </SafeAreaView>
+        </View>
       );
     }
   };
 
   // Landing page rendering
   return (
-    <Pressable
-      onPress={() => {
-        dismissMobileKeyboard();
-      }}
-      style={{ flex: 1 }}
-      disabled={Platform.OS === "web"}
-    >
-      <SafeAreaView
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Text style={landingStyles.title}>CITIZEN SCIENCE APP FOR KIDS</Text>
-        <Image
-          source={{
-            uri: "https://placehold.co/300x200.png?text=Placeholder+for+Logo",
+    <SafeAreaView style={{ flex: 1 }}>
+      <KeyboardAvoidingView 
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}>
+        <Pressable
+          onPress={() => {
+            dismissMobileKeyboard();
           }}
-          alt="Logo for Citizen Science App for Kids"
-          style={{ width: 300, height: 200, margin: 10 }}
-        />
-        {/* dynamically render page depending on whether a project code is actively stored */}
-        {dynamicRenderingLandingPage()}
-        {/* debugging display for network connection status */}
-        <Text style={debug.debug_text}>
-          Network Status: {connectionStatusText(isConnected)}
-        </Text>
-        {/* display current project code from persistent storage */}
-        <Text style={debug.debug_text}>
-          Current Project Code: {storedProjectCode}
-        </Text>
-      </SafeAreaView>
-    </Pressable>
+          style={landingStyles.page}
+          disabled={Platform.OS === "web"}
+        >
+          <Text style={landingStyles.title}>CITIZEN SCIENCE APP FOR KIDS</Text>
+          <Image
+            source={require('../../assets/images/chat_gpt_logo-1_rm_background.png')}
+            alt="Logo for Citizen Science App for Kids"
+            style={landingStyles.image}
+          />
+          {dynamicRenderingLandingPage()}
+        </Pressable>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
