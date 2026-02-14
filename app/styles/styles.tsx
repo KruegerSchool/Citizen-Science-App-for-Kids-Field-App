@@ -1,21 +1,19 @@
 /**
  * Central file for all the styles used in the app.
  */
-
-import { StyleSheet } from "react-native";
-import { Platform } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 // general app styles
 const appStyles = StyleSheet.create({
   button: {
-    maxWidth: 200, 
-    alignSelf: "center", 
-  },  
+    maxWidth: 200,
+    alignSelf: "center",
+  },
   backButton: {
     alignItems: "flex-start",
     margin: 10,
   },
-})
+});
 
 const projectStyles = StyleSheet.create({
   page: {
@@ -47,7 +45,7 @@ const projectStyles = StyleSheet.create({
   observationDetails: {
     padding: 10,
   },
-})
+});
 
 const landingStyles = StyleSheet.create({
   title: {
@@ -70,18 +68,18 @@ const landingStyles = StyleSheet.create({
     margin: 12,
     padding: 10,
     alignSelf: "center",
-    outline: 'none',
+    outline: "none",
     minWidth: 0,
-    boxSizing: 'border-box',
-    ...Platform.OS === "web" ? { maxWidth: 400 } : {maxWidth: 300 },
-  },  
+    boxSizing: "border-box",
+    ...(Platform.OS === "web" ? { maxWidth: 400 } : { maxWidth: 300 }),
+  },
   image: {
-    width: 400, 
-    height: 400, 
-    maxWidth: '75%', 
-    resizeMode: 'contain',
-  }
-})
+    width: 400,
+    height: 400,
+    maxWidth: "75%",
+    resizeMode: "contain",
+  },
+});
 
 const observationStyles = StyleSheet.create({
   page: {
@@ -110,16 +108,16 @@ const observationStyles = StyleSheet.create({
     fontSize: 16,
   },
   listItem: {
-     flex: 1,
-     flexDirection: "row",
-     justifyContent: "space-between",
-     borderColor: "#000000",
-     alignItems: "center",
-     borderWidth: 1,
-     padding: 10,
-     margin: 5,
-  }
-})
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderColor: "#000000",
+    alignItems: "center",
+    borderWidth: 1,
+    padding: 10,
+    margin: 5,
+  },
+});
 
 const obsAddEdit = StyleSheet.create({
   page: {
@@ -152,7 +150,7 @@ const obsAddEdit = StyleSheet.create({
     maxWidth: 400,
     alignSelf: "center",
   },
-})
+});
 
 const debug = StyleSheet.create({
   debug_text: {
@@ -162,8 +160,21 @@ const debug = StyleSheet.create({
     backgroundColor: "orange",
     color: "#9c1e2e",
   },
+});
 
-})
-
-export default { appStyles, projectStyles, landingStyles, observationStyles, obsAddEdit, debug };
-export { appStyles, projectStyles, landingStyles, observationStyles, obsAddEdit, debug };
+export default {
+  appStyles,
+  projectStyles,
+  landingStyles,
+  observationStyles,
+  obsAddEdit,
+  debug,
+};
+export {
+  appStyles,
+  projectStyles,
+  landingStyles,
+  observationStyles,
+  obsAddEdit,
+  debug,
+};

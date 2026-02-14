@@ -27,9 +27,7 @@ export default function AddObservation() {
         <Button title="Back" onPress={() => router.back()} />
       </View>
       <View style={obsAddEdit.mainContent}>
-        <Text style={obsAddEdit.title}>
-          NEW OBSERVATION
-        </Text>
+        <Text style={obsAddEdit.title}>NEW OBSERVATION</Text>
         <Text style={obsAddEdit.textPadding}>
           DEV NOTE: To be dynamically generated based on project info from
           admin.

@@ -1,41 +1,43 @@
 import React from "react";
 import { Tabs } from "expo-router";
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 // defining the tab layout and routing for the app
 export default function TabLayout() {
-
   return (
-    <Tabs screenOptions={{
-      animation: "shift", 
-      headerShown: false,
-      tabBarLabelStyle: {
-        fontSize: 12,
-        fontWeight: "bold",
-      },
-      tabBarActiveTintColor: "#007AFF",
-      tabBarAllowFontScaling: true,
-      tabBarHideOnKeyboard: true,
-      }}>
+    <Tabs
+      screenOptions={{
+        animation: "shift",
+        headerShown: false,
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: "bold",
+        },
+        tabBarActiveTintColor: "#007AFF",
+        tabBarAllowFontScaling: true,
+        tabBarHideOnKeyboard: true,
+      }}
+    >
       {/* TODO investigate custom tabs to allow for disabling before project code is entered */}
-      <Tabs.Screen 
-        name="index" 
-        options={{ 
+      <Tabs.Screen
+        name="index"
+        options={{
           title: "Home",
-          tabBarIcon: () => <FontAwesome name="home" size={24} /> 
-        }} 
+          tabBarIcon: () => <FontAwesome name="home" size={24} />,
+        }}
       />
-      <Tabs.Screen name="project"
-        options={{ 
+      <Tabs.Screen
+        name="project"
+        options={{
           title: "Project Details",
-          tabBarIcon: () => <FontAwesome name="file-text-o" size={24} />
-         }} 
+          tabBarIcon: () => <FontAwesome name="file-text-o" size={24} />,
+        }}
       />
       <Tabs.Screen
         name="observations"
         options={{
           title: "Observations",
-          tabBarIcon: () => <FontAwesome name="list-ul" size={24} />
+          tabBarIcon: () => <FontAwesome name="list-ul" size={24} />,
         }}
       />
     </Tabs>

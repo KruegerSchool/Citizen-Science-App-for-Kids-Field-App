@@ -1,9 +1,8 @@
 import { useRouter } from "expo-router";
 import { FlatList, Text, Platform, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { observationStyles } from "../styles/styles";
+import { appStyles, observationStyles } from "../styles/styles";
 import { Button, FloatingActionButton } from "rn-inkpad";
-import { appStyles } from "../styles/styles";
 
 // placeholder data adapted from https://reactnative.dev/docs/flatlist#listheadercomponent
 type ItemData = {
@@ -39,21 +38,15 @@ export default function ObservationsScreen() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={observationStyles.page}>
-        <Text style={observationStyles.header}>
-          OBSERVATIONS LIST
-        </Text>
+        <Text style={observationStyles.header}>OBSERVATIONS LIST</Text>
 
         {/* testing flatlist, may need alternate row styling for readability. added borders for now */}
         <FlatList
           data={DATA}
           ListHeaderComponent={
-            <View
-              style={observationStyles.listHeader}
-            >
+            <View style={observationStyles.listHeader}>
               <Text style={observationStyles.listHeaderText}>Student</Text>
-              <Text style={observationStyles.listHeaderText}>
-                Observation
-              </Text>
+              <Text style={observationStyles.listHeaderText}>Observation</Text>
               <Text style={observationStyles.listHeaderText}>Action</Text>
             </View>
           }
@@ -65,7 +58,7 @@ export default function ObservationsScreen() {
               {/* currently sets button to disabled if it doesn't belong to Student 2 (hard coded) */}
               {/* https://react.dev/learn/conditional-rendering putting  this here for if conditional rendering gets complicated in JSX/TS */}
               <Button
-                text="Edit"            
+                text="Edit"
                 buttonColor="#007AFF"
                 color="#FFFFFF"
                 rounded={true}
@@ -78,10 +71,12 @@ export default function ObservationsScreen() {
         />
         <FloatingActionButton
           align="bottom-right"
-          onPress ={() => router.push("/add_observation")}
-          backgroundColor = "#007AFF"
+          onPress={() => router.push("/add_observation")}
+          backgroundColor="#007AFF"
           // temp fix for tab bar formatting
-          {...Platform.OS !== "web" ? { marginVertical: -10 } : { marginVertical: 25 }}
+          {...(Platform.OS !== "web"
+            ? { marginVertical: -10 }
+            : { marginVertical: 25 })}
         />
       </View>
     </SafeAreaView>

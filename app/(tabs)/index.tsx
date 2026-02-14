@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Keyboard, Text, Pressable, Platform, Image, View, KeyboardAvoidingView } from "react-native";
+import {
+  Keyboard,
+  Text,
+  Pressable,
+  Platform,
+  Image,
+  View,
+  KeyboardAvoidingView,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { alert } from "react-native-alert-queue";
-import { appStyles, landingStyles, debug } from "../styles/styles";
+import { appStyles, landingStyles } from "../styles/styles";
 import { Button, Input } from "rn-inkpad";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import fetchProject from "../../utility_functions/fetch_project";
@@ -152,9 +160,10 @@ const LandingPage = () => {
   // Landing page rendering
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}>
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+      >
         <Pressable
           onPress={() => {
             dismissMobileKeyboard();
@@ -164,7 +173,7 @@ const LandingPage = () => {
         >
           <Text style={landingStyles.title}>CITIZEN SCIENCE APP FOR KIDS</Text>
           <Image
-            source={require('../../assets/images/chat_gpt_logo-1_rm_background.png')}
+            source={require("../../assets/images/chat_gpt_logo-1_rm_background.png")}
             alt="Logo for Citizen Science App for Kids"
             style={landingStyles.image}
           />

@@ -23,4 +23,3 @@ export default async function fetchProject(projectId: string) {
     ["project_fields", JSON.stringify(projectData.data.fields)],
   ]);
 }
- 
