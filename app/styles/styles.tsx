@@ -65,10 +65,10 @@ const landingStyles = StyleSheet.create({
     fontWeight: "bold",
   },
   joinView: {
-    width: "100%", 
-    display: "flex", 
-    flexDirection: "row", 
-    justifyContent: "center", 
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
   },
   input: {

@@ -4,6 +4,6 @@ import { useStudentID } from "../app/stores/project_info";
 
 export default function generateStudentID() {
   const randomNumber = Math.floor(Math.random() * 1000000);
-  const studentID = 'student_' + randomNumber.toString().padStart(6, '0');
+  const studentID = "student_" + randomNumber.toString().padStart(6, "0");
   useStudentID.getState().setStudentID(studentID);
 }

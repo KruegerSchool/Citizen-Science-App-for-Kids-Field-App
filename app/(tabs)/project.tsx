@@ -21,7 +21,8 @@ export default function ProjectScreen() {
         <Text style={projectStyles.headers}>DESCRIPTION</Text>
         <View style={projectStyles.descriptionBox}>
           <Text style={projectStyles.descriptionText}>
-            {useProjectInfo((state) => state.projectDescription) || "Project Description"}
+            {useProjectInfo((state) => state.projectDescription) ||
+              "Project Description"}
           </Text>
         </View>
         <Text style={projectStyles.headers}>OBSERVATION DETAILS</Text>

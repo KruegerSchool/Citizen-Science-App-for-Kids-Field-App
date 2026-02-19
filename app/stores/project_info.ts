@@ -28,7 +28,7 @@ type ProjectResponseFields = {
   project_instructions: string;
   fields: string[];
   last_updated: string;
-}
+};
 
 type StudentID = {
   studentID: string;
@@ -62,7 +62,7 @@ const useProjectInfo = create<ProjectInfo & ProjectActions>()(
         }),
       reset: () => {
         set(useProjectInfo.getInitialState());
-      }
+      },
     }),
     {
       name: "project_info_storage",

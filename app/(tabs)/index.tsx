@@ -1,4 +1,4 @@
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Keyboard,
   Text,
@@ -13,8 +13,7 @@ import { alert } from "react-native-alert-queue";
 import { appStyles, landingStyles } from "../styles/styles";
 import { Button, Input } from "rn-inkpad";
 import fetchProject from "../../utility_functions/fetch_project";
-import { useStudentID } from "../stores/project_info";
-import { useProjectInfo } from "../stores/project_info";
+import { useStudentID, useProjectInfo } from "../stores/project_info";
 import generateStudentID from "@/utility_functions/student_id_gen";
 
 // implements a function to allow the keyboard to be dismissed on mobile
@@ -55,7 +54,7 @@ const LandingPage = () => {
       }
     };
     loadStoredProjectCode();
-  }, []);
+  }, [studentID]);
 
   // function to join a project using the provided code
   const joinProject = async (code: string) => {
@@ -92,7 +91,8 @@ const LandingPage = () => {
       console.error("Failed to join project: ", e);
       alert.show({
         title: "Error",
-        message: "Failed to join the project. Please confirm the project code and try again.",
+        message:
+          "Failed to join the project. Please confirm the project code and try again.",
         buttons: [{ text: "OK" }],
       });
     }

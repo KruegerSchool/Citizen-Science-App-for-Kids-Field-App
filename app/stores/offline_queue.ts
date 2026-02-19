@@ -50,14 +50,13 @@ const useOfflineQueue = create<OfflineQueue & OfflineQueueActions>()(
       queue: [],
       appendQueueItem: (request: OfflineRequest) =>
         set((state) => ({ queue: [...state.queue, request] })),
-      popQueueItem: () =>
-        set((state) => ({ queue: state.queue.slice(1) })),
+      popQueueItem: () => set((state) => ({ queue: state.queue.slice(1) })),
     }),
     {
-      name: "offline-queue-storage", 
-      storage: createJSONStorage(() => AsyncStorage), 
-    }
-  )
+      name: "offline-queue-storage",
+      storage: createJSONStorage(() => AsyncStorage),
+    },
+  ),
 );
 
 export { useConnectionStatus, useOfflineQueue };
