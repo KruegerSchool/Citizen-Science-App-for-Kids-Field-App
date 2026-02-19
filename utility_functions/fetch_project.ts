@@ -2,8 +2,8 @@
 // will also compare response against existing data and refresh if there are
 // any changes
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { alert } from "react-native-alert-queue";
+import { useProjectInfo } from "../app/stores/project_info";
 
 export default async function fetchProject(projectId: string) {
   const url = `https://csafk-277534145495.us-east4.run.app/api/student/project/${projectId}`;
@@ -19,12 +19,11 @@ export default async function fetchProject(projectId: string) {
   }
 
   const projectData = await response.json();
+  console.log("Fetched project data: ", projectData);
 
-  // process response to async storage
-  await AsyncStorage.multiSet([
-    ["project_title", projectData.data.project_title],
-    ["project_description", projectData.data.project_description],
-    ["project_instructions", projectData.data.project_instructions],
-    ["project_fields", JSON.stringify(projectData.data.fields)],
-  ]);
+  // TODO: add in check for 'updated on' for refreshing data
+
+  // save project data to persistent storage
+  console.log("saving data...");
+  useProjectInfo.getState().setProjectData(projectData.data);
 }
