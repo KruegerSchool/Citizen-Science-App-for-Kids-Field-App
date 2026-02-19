@@ -2,12 +2,11 @@
  * Project details screen. Allows user to join a project by
  * using a project code.
  */
-
 import React from "react";
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { projectStyles } from "../styles/styles";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useProjectInfo } from "../stores/project_info";
 
 // project details screen for the app
 // displays information about the project goals, and data collection
@@ -18,19 +17,18 @@ export default function ProjectScreen() {
     <SafeAreaView style={projectStyles.page}>
       <View style={projectStyles.mainContent}>
         <Text style={projectStyles.headers}>
-          {AsyncStorage.getItem("project_title") || "Project Title"}
+          {useProjectInfo((state) => state.projectTitle) || "Project Title"}
         </Text>
         <Text style={projectStyles.headers}>DESCRIPTION</Text>
         <View style={projectStyles.descriptionBox}>
           <Text style={projectStyles.descriptionText}>
-            {AsyncStorage.getItem("project_description") ||
-              "Project Description"}
+            {useProjectInfo((state) => state.projectDescription) || "Project Description"}
           </Text>
         </View>
         <Text style={projectStyles.headers}>OBSERVATION DETAILS</Text>
         <View style={projectStyles.descriptionBox}>
           <Text style={projectStyles.observationDetails}>
-            {AsyncStorage.getItem("project_instructions") ||
+            {useProjectInfo((state) => state.projectInstructions) ||
               "Observation Details"}
           </Text>
         </View>

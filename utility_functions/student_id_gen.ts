@@ -1,11 +1,9 @@
 // generate a random student ID and store locally for use with observations
-// storing in local storage via watermelondb as this is not a user generated
-// value. reference: https://watermelondb.dev/docs/Advanced/LocalStorage
-import uuid from "react-native-uuid";
+// id form is student_XXXXXX where X is a number between 0 and 9
+import { useStudentID } from "../app/stores/project_info";
 
-export default async function generateStudentID() {
-  const studentID = uuid.v4();
-  // store student ID locally for use with observations
-  // TBD
-  return studentID;
+export default function generateStudentID() {
+  const randomNumber = Math.floor(Math.random() * 1000000);
+  const studentID = 'student_' + randomNumber.toString().padStart(6, '0');
+  useStudentID.getState().setStudentID(studentID);
 }

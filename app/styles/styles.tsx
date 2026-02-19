@@ -64,20 +64,28 @@ const landingStyles = StyleSheet.create({
     alignSelf: "center",
     fontWeight: "bold",
   },
+  joinView: {
+    width: "100%", 
+    display: "flex", 
+    flexDirection: "row", 
+    justifyContent: "center", 
+    alignItems: "center",
+  },
   input: {
-    margin: 12,
-    padding: 10,
-    alignSelf: "center",
+    padding: 5,
+    alignSelf: "flex-start",
     outline: "none",
     minWidth: 0,
     boxSizing: "border-box",
+    alignContent: "space-around",
+    // dynamically set max width based on platform
     ...(Platform.OS === "web" ? { maxWidth: 400 } : { maxWidth: 300 }),
   },
   image: {
-    width: 400,
-    height: 400,
-    maxWidth: "75%",
-    resizeMode: "contain",
+    width: "75%",
+    height: "75%",
+    maxWidth: 400,
+    maxHeight: 400,
   },
 });
 

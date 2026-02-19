@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import {
   Keyboard,
   Text,
   Pressable,
   Platform,
-  Image,
   View,
   KeyboardAvoidingView,
 } from "react-native";
+import { Image } from "expo-image";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { alert } from "react-native-alert-queue";
 import { appStyles, landingStyles } from "../styles/styles";
 import { Button, Input } from "rn-inkpad";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import fetchProject from "../../utility_functions/fetch_project";
+import generateStudentID from "../../utility_functions/student_id_gen";
+import { useStudentID } from "../stores/project_info";
+import { useProjectInfo } from "../stores/project_info";
 
 // implements a function to allow the keyboard to be dismissed on mobile
 // devices by registering a touch outside of the keyboard. disabled for
@@ -35,7 +37,7 @@ const LandingPage = () => {
   useEffect(() => {
     const loadStoredProjectCode = async () => {
       try {
-        const value = await AsyncStorage.getItem("project_code");
+        const value = useProjectInfo.getState().projectCode;
         if (value !== null) {
           setStoredProjectCode(value);
         }
@@ -77,16 +79,6 @@ const LandingPage = () => {
       // fetch project data first — only save if successful
       await fetchProject(code);
 
-      // save project code to persistent storage
-      await AsyncStorage.setItem("project_code", code);
-      console.log("Project code saved to storage: ", code);
-
-      // update array list to append new project code (testing this function)
-      const value = await AsyncStorage.getItem("array_list");
-      const arrayList: string[] = JSON.parse(value || "[]");
-      arrayList.push(code);
-      await AsyncStorage.setItem("array_list", JSON.stringify(arrayList));
-
       // refresh displayed value
       setStoredProjectCode(code);
     } catch (e) {
@@ -99,11 +91,15 @@ const LandingPage = () => {
     }
   };
 
+  // hooks for central state management
+  const currentProjectCode = useProjectInfo((state) => state.projectCode);
+  const studentID = useStudentID((state) => state.studentID);
+
   // determine which version of page is loaded
   const dynamicRenderingLandingPage = () => {
     if (storedProjectCode === "") {
       return (
-        <View style={{ width: "100%" }}>
+        <View style={landingStyles.joinView}>
           <Input
             style={landingStyles.input}
             borderRadius={5}
@@ -114,9 +110,12 @@ const LandingPage = () => {
             type="outlined"
             onChangeText={onChangeValue}
             textStyle={{ fontSize: 24 }}
+            onPress={() => joinProject(projectCode)}
           />
           <Button
-            text="Join Project"
+            icon="arrow-forward-circle"
+            iconSize={24}
+            text=""
             buttonColor="#007AFF"
             color="#FFFFFF"
             rounded={true}
@@ -129,7 +128,7 @@ const LandingPage = () => {
       return (
         <View>
           <Text style={landingStyles.project}>
-            Current Project: {storedProjectCode}
+            Current Project: {currentProjectCode}
           </Text>
           <Button
             text="Change Project"
@@ -141,7 +140,7 @@ const LandingPage = () => {
               try {
                 // remove project code from persistent storage and set to empty string
                 console.log("Removing project code from storage");
-                AsyncStorage.removeItem("project_code");
+                useProjectInfo.getState().reset();
                 setStoredProjectCode("");
                 onChangeValue("");
               } catch (e) {
@@ -176,6 +175,8 @@ const LandingPage = () => {
             source={require("../../assets/images/chat_gpt_logo-1_rm_background.png")}
             alt="Logo for Citizen Science App for Kids"
             style={landingStyles.image}
+            contentFit="contain"
+            transition={100}
           />
           {dynamicRenderingLandingPage()}
         </Pressable>

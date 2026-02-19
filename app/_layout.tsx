@@ -3,7 +3,7 @@ import { Stack } from "expo-router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AlertContainer } from "react-native-alert-queue";
 import NetInfo from "@react-native-community/netinfo";
-import useConnectionStatus from "./stores/network";
+import { useConnectionStatus } from "./stores/offline_queue";
 
 // stack routing for app
 export default function RootLayout() {

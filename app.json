@@ -28,7 +28,8 @@
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png",
+      "bundler": "metro"
     },
     "plugins": [
       "expo-router",
@@ -46,14 +47,15 @@
       ]
     ],
     "experiments": {
-      "typedRoutes": true,
-      "reactCompiler": true
+      "typedRoutes": true
     },
     "extra": {
       "router": {},
       "eas": {
         "projectId": "f2e02f73-8c8f-4b32-9877-37dbdfb09295"
       }
-    }
+    },
+    "sdkVersion": "54.0.0",
+    "entryPoint": ".vscode/exponentIndex.js"
   }
 }
