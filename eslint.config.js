@@ -7,6 +7,6 @@ module.exports = defineConfig([
   expoConfig,
   prettier,
   {
-    ignores: ["dist", "node_modules", "build"],
+    ignores: ["dist", "node_modules", "build", ".github", ".vscode"],
   },
 ]);
