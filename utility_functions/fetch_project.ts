@@ -21,7 +21,7 @@ export default async function fetchProject(projectId: string) {
   const projectData = await response.json();
   console.log("Fetched project data: ", projectData);
 
-  // TODO add in check for 'updated on' for refreshing data
+  // TODO: add in check for 'updated on' for refreshing data
 
   // save project data to persistent storage
   console.log("saving data...");

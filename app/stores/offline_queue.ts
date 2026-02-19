@@ -6,7 +6,8 @@
  */
 
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // creates type for connection status
 type ConnectionState = {
@@ -18,19 +19,20 @@ type ConnectionActions = {
 };
 
 // creates types for offline queue
-type offlineRequest = {
+type OfflineRequest = {
   method: string;
   endpoint: string;
   data: object[];
-}
+};
 
 type OfflineQueue = {
-  queue: offlineRequest[];
+  queue: OfflineRequest[];
 };
 
 // creates type for action to update connection status
 type OfflineQueueActions = {
-  setQueueItem: (queue: offlineRequest) => void;
+  appendQueueItem: (request: OfflineRequest) => void;
+  popQueueItem: () => void;
 };
 
 // create store for connection status, null by default
@@ -41,12 +43,21 @@ const useConnectionStatus = create<ConnectionState & ConnectionActions>(
   }),
 );
 
-// create store for offline queue, empty by default
-const useOfflineQueue = create<OfflineQueue & OfflineQueueActions>(
-  (set) => ({
-    queue: [],
-    setQueueItem: (request: offlineRequest) =>  set((state) => ({ queue: [...state.queue, request] })),
-  }),
+// create store for offline queue, empty by default, with persistence
+const useOfflineQueue = create<OfflineQueue & OfflineQueueActions>()(
+  persist(
+    (set) => ({
+      queue: [],
+      appendQueueItem: (request: OfflineRequest) =>
+        set((state) => ({ queue: [...state.queue, request] })),
+      popQueueItem: () =>
+        set((state) => ({ queue: state.queue.slice(1) })),
+    }),
+    {
+      name: "offline-queue-storage", 
+      storage: createJSONStorage(() => AsyncStorage), 
+    }
+  )
 );
 
 export { useConnectionStatus, useOfflineQueue };

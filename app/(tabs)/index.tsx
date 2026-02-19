@@ -13,9 +13,9 @@ import { alert } from "react-native-alert-queue";
 import { appStyles, landingStyles } from "../styles/styles";
 import { Button, Input } from "rn-inkpad";
 import fetchProject from "../../utility_functions/fetch_project";
-import generateStudentID from "../../utility_functions/student_id_gen";
 import { useStudentID } from "../stores/project_info";
 import { useProjectInfo } from "../stores/project_info";
+import generateStudentID from "@/utility_functions/student_id_gen";
 
 // implements a function to allow the keyboard to be dismissed on mobile
 // devices by registering a touch outside of the keyboard. disabled for
@@ -33,9 +33,18 @@ const LandingPage = () => {
   const [projectCode, onChangeValue] = useState<string>("");
   const [storedProjectCode, setStoredProjectCode] = useState<string>("");
 
+  // hooks for central state management
+  const currentProjectCode = useProjectInfo((state) => state.projectCode);
+  const studentID = useStudentID((state) => state.studentID);
+
   // load stored project code on component mount
   useEffect(() => {
     const loadStoredProjectCode = async () => {
+      // check for existing student ID, generate if empty
+      // TODO: confirm not duplicate with backend when connected
+      if (!studentID) {
+        generateStudentID();
+      }
       try {
         const value = useProjectInfo.getState().projectCode;
         if (value !== null) {
@@ -70,12 +79,10 @@ const LandingPage = () => {
     });
 
     if (!result) {
-      console.log(result + " - cancelled joining for code: " + code);
       return;
     }
 
     try {
-      console.log("Fetching project data for code: ", code);
       // fetch project data first — only save if successful
       await fetchProject(code);
 
@@ -85,15 +92,11 @@ const LandingPage = () => {
       console.error("Failed to join project: ", e);
       alert.show({
         title: "Error",
-        message: "Failed to join the project. Please try again.",
+        message: "Failed to join the project. Please confirm the project code and try again.",
         buttons: [{ text: "OK" }],
       });
     }
   };
-
-  // hooks for central state management
-  const currentProjectCode = useProjectInfo((state) => state.projectCode);
-  const studentID = useStudentID((state) => state.studentID);
 
   // determine which version of page is loaded
   const dynamicRenderingLandingPage = () => {
@@ -170,7 +173,6 @@ const LandingPage = () => {
           style={landingStyles.page}
           disabled={Platform.OS === "web"}
         >
-          <Text style={landingStyles.title}>CITIZEN SCIENCE APP FOR KIDS</Text>
           <Image
             source={require("../../assets/images/chat_gpt_logo-1_rm_background.png")}
             alt="Logo for Citizen Science App for Kids"

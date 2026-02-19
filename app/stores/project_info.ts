@@ -41,7 +41,7 @@ type ProjectActions = {
   reset: () => void;
 };
 
-// create store for project information, empty by default
+// create store for project information, empty by default, with persistence
 const useProjectInfo = create<ProjectInfo & ProjectActions>()(
   persist(
     (set) => ({
@@ -71,6 +71,7 @@ const useProjectInfo = create<ProjectInfo & ProjectActions>()(
   ),
 );
 
+// create store for student ID, empty by default, with persistence
 const useStudentID = create<StudentID>()(
   persist(
     (set) => ({

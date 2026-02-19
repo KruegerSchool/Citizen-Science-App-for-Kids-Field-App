@@ -13,7 +13,6 @@ import { useProjectInfo } from "../stores/project_info";
 // requirements
 export default function ProjectScreen() {
   return (
-    // TODO: Investigate why or isn't working
     <SafeAreaView style={projectStyles.page}>
       <View style={projectStyles.mainContent}>
         <Text style={projectStyles.headers}>
