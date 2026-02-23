@@ -17,8 +17,8 @@ type ProjectInfo = {
   projectTitle: string;
   projectDescription: string;
   projectInstructions: string;
-  projectFields: string[];
-  updatedOn: Date;
+  fields: string[];
+  lastUpdated: Date;
 };
 
 type ProjectResponseFields = {
@@ -49,16 +49,16 @@ const useProjectInfo = create<ProjectInfo & ProjectActions>()(
       projectTitle: "",
       projectDescription: "",
       projectInstructions: "",
-      projectFields: [],
-      updatedOn: new Date(),
+      fields: [],
+      lastUpdated: new Date(),
       setProjectData: (project) =>
         set({
           projectCode: project.project_code,
           projectTitle: project.project_title,
           projectDescription: project.project_description,
           projectInstructions: project.project_instructions,
-          projectFields: project.fields,
-          updatedOn: new Date(project.last_updated),
+          fields: project.fields,
+          lastUpdated: new Date(project.last_updated),
         }),
       reset: () => {
         set(useProjectInfo.getInitialState());

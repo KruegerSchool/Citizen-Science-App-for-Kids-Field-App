@@ -1,7 +1,10 @@
 /**
  * Central file for all the styles used in the app.
  */
-import { Platform, StyleSheet } from "react-native";
+import { Dimensions, Platform, StyleSheet } from "react-native";
+
+const imageWidth = Math.min(Dimensions.get("window").width * 0.75, 400);
+
 
 // general app styles
 const appStyles = StyleSheet.create({
@@ -82,10 +85,9 @@ const landingStyles = StyleSheet.create({
     ...(Platform.OS === "web" ? { maxWidth: 400 } : { maxWidth: 300 }),
   },
   image: {
-    width: "75%",
-    height: "75%",
-    maxWidth: 400,
-    maxHeight: 400,
+    width: imageWidth,
+    aspectRatio: 1,
+    resizeMode: "contain",
   },
 });
 
