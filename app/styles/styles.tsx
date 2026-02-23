@@ -5,7 +5,6 @@ import { Dimensions, Platform, StyleSheet } from "react-native";
 
 const imageWidth = Math.min(Dimensions.get("window").width * 0.75, 400);
 
-
 // general app styles
 const appStyles = StyleSheet.create({
   button: {
