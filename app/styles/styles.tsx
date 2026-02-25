@@ -8,8 +8,8 @@ const imageWidth = Math.min(Dimensions.get("window").width * 0.75, 400);
 // general app styles
 const appStyles = StyleSheet.create({
   button: {
-    maxWidth: 200,
     alignSelf: "center",
+    backgroundColor: "#007AFF",
   },
   backButton: {
     alignItems: "flex-start",

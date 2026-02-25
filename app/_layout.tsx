@@ -1,9 +1,21 @@
+// uses Tamagui UI components and provider
+// reference: tamagui.dev docs
 import React, { useEffect } from "react";
 import { Stack } from "expo-router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AlertContainer } from "react-native-alert-queue";
+import { createTamagui, TamaguiProvider } from "tamagui";
+import { defaultConfig } from "@tamagui/config/v5";
 import NetInfo from "@react-native-community/netinfo";
 import { useConnectionStatus } from "./stores/offline_queue";
+
+const config = createTamagui(defaultConfig);
+type Conf = typeof config;
+
+declare module "@tamagui/core" {
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  interface TamaguiCustomConfig extends Conf {}
+}
 
 // stack routing for app
 export default function RootLayout() {
@@ -26,22 +38,24 @@ export default function RootLayout() {
   }, [setConnectionStatus]);
 
   return (
-    // main app layout container
-    <SafeAreaProvider>
-      {/* navigation stack */}
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(tabs)" options={{}} />
-        <Stack.Screen
-          name="add_observation"
-          options={{ title: "Add Observation", presentation: "modal" }}
-        />
-        <Stack.Screen
-          name="edit_observation"
-          options={{ title: "Edit Observation", presentation: "modal" }}
-        />
-      </Stack>
-      {/* allows alert messages from react-native-alert-queue to be used throughout */}
-      <AlertContainer />
-    </SafeAreaProvider>
+    <TamaguiProvider config={config} defaultTheme="light">
+      {/* main app layout container */}
+      <SafeAreaProvider>
+        {/* navigation stack */}
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(tabs)" options={{}} />
+          <Stack.Screen
+            name="add_observation"
+            options={{ title: "Add Observation", presentation: "modal" }}
+          />
+          <Stack.Screen
+            name="edit_observation"
+            options={{ title: "Edit Observation", presentation: "modal" }}
+          />
+        </Stack>
+        {/* allows alert messages from react-native-alert-queue to be used throughout */}
+        <AlertContainer />
+      </SafeAreaProvider>
+    </TamaguiProvider>
   );
 }

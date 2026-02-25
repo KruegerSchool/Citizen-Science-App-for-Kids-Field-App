@@ -13,20 +13,31 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // creates type for project information
 type ProjectInfo = {
+  projectID: number | null;
   projectCode: string;
   projectTitle: string;
   projectDescription: string;
   projectInstructions: string;
-  fields: string[];
+  fields: Field[];
   lastUpdated: Date;
 };
 
-type ProjectResponseFields = {
+interface Field {
+  field_id: string;
+  field_label: string;
+  field_name: string;
+  field_options: string;
+  field_required: boolean;
+  field_type: string;
+}
+
+type ProjectResponse = {
+  project_id: number;
   project_code: string;
   project_title: string;
   project_description: string;
   project_instructions: string;
-  fields: string[];
+  fields: Field[];
   last_updated: string;
 };
 
@@ -37,7 +48,7 @@ type StudentID = {
 
 // creates type for action to update project information
 type ProjectActions = {
-  setProjectData: (info: ProjectResponseFields) => void;
+  setProjectData: (info: ProjectResponse) => void;
   reset: () => void;
 };
 
@@ -45,6 +56,7 @@ type ProjectActions = {
 const useProjectInfo = create<ProjectInfo & ProjectActions>()(
   persist(
     (set) => ({
+      projectID: null,
       projectCode: "",
       projectTitle: "",
       projectDescription: "",
@@ -53,6 +65,7 @@ const useProjectInfo = create<ProjectInfo & ProjectActions>()(
       lastUpdated: new Date(),
       setProjectData: (project) =>
         set({
+          projectID: project.project_id,
           projectCode: project.project_code,
           projectTitle: project.project_title,
           projectDescription: project.project_description,
@@ -85,4 +98,4 @@ const useStudentID = create<StudentID>()(
   ),
 );
 
-export { useProjectInfo, useStudentID };
+export { useProjectInfo, useStudentID, Field };
