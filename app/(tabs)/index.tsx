@@ -134,10 +134,6 @@ const LandingPage = () => {
             Current Project: {currentProjectCode}
           </Text>
           <Button
-            text="Change Project"
-            buttonColor="#007AFF"
-            color="#FFFFFF"
-            rounded={true}
             style={appStyles.button}
             onPress={() => {
               try {
@@ -153,7 +149,7 @@ const LandingPage = () => {
                 );
               }
             }}
-          />
+          >Change Project</Button>
         </View>
       );
     }

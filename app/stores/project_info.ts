@@ -9,11 +9,11 @@
 
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { Option } from "../components/GroupCheckbox";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // creates type for project information
 type ProjectInfo = {
+  projectID: number | null;
   projectCode: string;
   projectTitle: string;
   projectDescription: string;
@@ -32,6 +32,7 @@ interface Field {
 }
 
 type ProjectResponse = {
+  project_id: number;
   project_code: string;
   project_title: string;
   project_description: string;
@@ -55,6 +56,7 @@ type ProjectActions = {
 const useProjectInfo = create<ProjectInfo & ProjectActions>()(
   persist(
     (set) => ({
+      projectID: null,
       projectCode: "",
       projectTitle: "",
       projectDescription: "",
@@ -63,6 +65,7 @@ const useProjectInfo = create<ProjectInfo & ProjectActions>()(
       lastUpdated: new Date(),
       setProjectData: (project) =>
         set({
+          projectID: project.project_id,
           projectCode: project.project_code,
           projectTitle: project.project_title,
           projectDescription: project.project_description,
