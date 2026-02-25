@@ -12,9 +12,8 @@ import { useConnectionStatus } from "./stores/offline_queue";
 const config = createTamagui(defaultConfig);
 type Conf = typeof config;
 
-// implementing eslint rule as this next section is intentional
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 declare module "@tamagui/core" {
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   interface TamaguiCustomConfig extends Conf {}
 }
 
