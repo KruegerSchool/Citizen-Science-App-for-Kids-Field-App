@@ -149,7 +149,9 @@ const LandingPage = () => {
                 );
               }
             }}
-          >Change Project</Button>
+          >
+            Change Project
+          </Button>
         </View>
       );
     }

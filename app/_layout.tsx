@@ -12,7 +12,7 @@ import { useConnectionStatus } from "./stores/offline_queue";
 const config = createTamagui(defaultConfig);
 type Conf = typeof config;
 
-declare module '@tamagui/core' {
+declare module "@tamagui/core" {
   interface TamaguiCustomConfig extends Conf {}
 }
 

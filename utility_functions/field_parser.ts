@@ -4,7 +4,5 @@
 import { useProjectInfo } from "../app/stores/project_info";
 
 export function parseFields() {
-
   // get fields for project
-
 }
