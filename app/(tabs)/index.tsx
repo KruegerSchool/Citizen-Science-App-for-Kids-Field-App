@@ -11,7 +11,9 @@ import { Image } from "expo-image";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { alert } from "react-native-alert-queue";
 import { appStyles, landingStyles } from "../styles/styles";
-import { Button, Input } from "rn-inkpad";
+import { Input } from "rn-inkpad";
+import { Button } from "tamagui";
+import { ArrowRight } from "@tamagui/lucide-icons";
 import fetchProject from "../../utility_functions/fetch_project";
 import { useStudentID, useProjectInfo } from "../stores/project_info";
 import generateStudentID from "@/utility_functions/student_id_gen";
@@ -116,13 +118,11 @@ const LandingPage = () => {
             onPress={() => joinProject(projectCode)}
           />
           <Button
-            icon="arrow-forward-circle"
-            iconSize={24}
-            text=""
-            buttonColor="#007AFF"
-            color="#FFFFFF"
-            rounded={true}
             style={appStyles.button}
+            size="$4"
+            icon={<ArrowRight color="white" />}
+            iconSize="$8"
+            circular={true}
             onPress={() => joinProject(projectCode)}
           />
         </View>

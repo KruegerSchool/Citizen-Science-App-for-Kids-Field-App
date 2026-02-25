@@ -29,12 +29,12 @@ function MultiCheckboxField({
   }
 
   return (
-    <YStack space="$3">
+    <YStack gap="$1">
       {options.map(option => {
         const checked = value.includes(option.value)
 
         return (
-          <XStack key={option.value} alignItems="center" space="$2">
+          <XStack key={option.value} gap="$2" style={{ alignItems: 'center' }}>
             <Checkbox
               id={option.value}
               checked={checked}

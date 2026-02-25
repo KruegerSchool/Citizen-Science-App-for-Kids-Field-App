@@ -3,7 +3,7 @@
 //             https://stackoverflow.com/questions/42053237/is-it-possible-to-dynamically-create-components-in-react-native 
 import React from "react";
 import { View } from "react-native";
-import { Label, Input, TextArea } from "tamagui";
+import { Label, Input, TextArea, Separator } from "tamagui";
 import { MultiCheckboxField } from "./GroupCheckbox";
 import { Option } from "./GroupCheckbox";
 import { Field } from "../stores/project_info";
@@ -17,7 +17,9 @@ interface InputProps {
 // state tracking
 const DynamicInput = ({ field, value, onChange }: InputProps) => {
   const renderLabel = () => {
-    return <Label>{field.field_label}</Label>;
+    return (
+        <Label style={{marginTop: 15}}>{field.field_label}</Label>
+    );
   };
 
   // helps to map array of strings to label/value options in checkbox group
