@@ -17,7 +17,7 @@ interface CompletedField {
   field_id: string;
   field_label: string;
   field_name: string;
-  field_value: string | number | boolean | null;
+  field_value: string;
 }
 
 interface Observation {
@@ -59,4 +59,4 @@ const useObservationInfo = create<ObservationStore>()(
   ),
 );
 
-export { useObservationInfo, CompletedField };
+export { useObservationInfo, CompletedField, Observation };
