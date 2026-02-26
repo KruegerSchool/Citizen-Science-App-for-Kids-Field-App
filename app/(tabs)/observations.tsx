@@ -4,7 +4,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Accordion } from "tamagui";
 import { FloatingActionButton } from "rn-inkpad";
 import { useObservationInfo } from "../stores/observation_info";
-import { useStudentID } from "../stores/project_info";
 import { appStyles, observationStyles } from "../styles/styles";
 import ObservationList from "../components/ObservationList";
 
@@ -29,7 +28,7 @@ export default function ObservationsScreen() {
         <Accordion type="multiple">
           <FlatList
             style={{ borderWidth: 2, borderColor: "#007AFF"}}
-            contentContainerStyle={{ paddingBottom: 50 }}
+            contentContainerStyle={{ paddingBottom: 50 }} // workaround for tab bar padding issue
             data={observationList}
             renderItem={({ item }) => (
               <ObservationList 

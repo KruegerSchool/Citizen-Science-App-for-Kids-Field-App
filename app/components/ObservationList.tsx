@@ -49,10 +49,6 @@ export default function ObservationList({ item, appUser }: InputProps) {
           {observationData.length === 0 ? (
             <Paragraph>No observation data available</Paragraph>
           ) : (
-          //  observationData.map((field: CompletedField, index: number) => (
-          //    <View key={index}>
-          //      <Paragraph>{field.field_label}: {field.field_value}</Paragraph>
-          //    </View>
           <View>
             <FlatList
               data={observationData}
