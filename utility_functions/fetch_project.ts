@@ -5,8 +5,8 @@
 import { alert } from "react-native-alert-queue";
 import { useProjectInfo } from "../app/stores/project_info";
 
-export default async function fetchProject(projectId: string) {
-  const url = `https://csafk-277534145495.us-east4.run.app/api/student/project/${projectId}`;
+export default async function fetchProject(projectCode: string) {
+  const url = `https://csafk-277534145495.us-east4.run.app/api/student/project/${projectCode}`;
 
   console.log(url);
   const response = await fetch(url);
@@ -19,11 +19,11 @@ export default async function fetchProject(projectId: string) {
   }
 
   const projectData = await response.json();
-  console.log("Fetched project data: ", projectData);
 
   // TODO: add in check for 'updated on' for refreshing data
 
   // save project data to persistent storage
   console.log("saving data...");
   useProjectInfo.getState().setProjectData(projectData.data);
+  console.log("project data saved");
 }

@@ -3,37 +3,16 @@ import { FlatList, Text, Platform, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { appStyles, observationStyles } from "../styles/styles";
 import { Button, FloatingActionButton } from "rn-inkpad";
-
-// placeholder data adapted from https://reactnative.dev/docs/flatlist#listheadercomponent
-type ItemData = {
-  id: number;
-  student: string;
-  title: string;
-};
-
-const DATA: ItemData[] = [
-  {
-    id: 1,
-    student: "Student 1",
-    title: "Placeholder Obs 1",
-  },
-  {
-    id: 2,
-    student: "Student 2",
-    title: "Placeholder Obs 2",
-  },
-  {
-    id: 3,
-    student: "Student 3",
-    title: "Placeholder Obs 3",
-  },
-];
+import { useObservationInfo } from "../stores/observation_info";
 
 // observations list for the project
 // displays the list of observations made in the project. observations made by
 // the user have an edit button
 export default function ObservationsScreen() {
   const router = useRouter();
+
+  // pull observation list from zustand store
+  const observationList = useObservationInfo((state) => state.observations);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -42,7 +21,7 @@ export default function ObservationsScreen() {
 
         {/* testing flatlist, may need alternate row styling for readability. added borders for now */}
         <FlatList
-          data={DATA}
+          data={observationList}
           ListHeaderComponent={
             <View style={observationStyles.listHeader}>
               <Text style={observationStyles.listHeaderText}>Student</Text>
@@ -52,8 +31,8 @@ export default function ObservationsScreen() {
           }
           renderItem={({ item }) => (
             <View style={observationStyles.listItem}>
-              <Text>{item.student}</Text>
-              <Text>{item.title}</Text>
+              <Text>{item.student_name}</Text>
+              <Text>{item.field_data[0]?.field_value}</Text>
               {/* this will need to be a dynamic route for editing */}
               {/* currently sets button to disabled if it doesn't belong to Student 2 (hard coded) */}
               {/* https://react.dev/learn/conditional-rendering putting  this here for if conditional rendering gets complicated in JSX/TS */}
@@ -63,8 +42,8 @@ export default function ObservationsScreen() {
                 color="#FFFFFF"
                 rounded={true}
                 style={appStyles.button}
-                disabled={item.student !== "Student 2"}
-                onPress={() => router.push(`/edit_observation`)}
+                disabled={item.student_name !== "Alice Johnson"}
+                onPress={() => router.push("./edit_observation/")}
               />
             </View>
           )}

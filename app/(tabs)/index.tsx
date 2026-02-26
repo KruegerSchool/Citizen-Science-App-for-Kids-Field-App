@@ -15,6 +15,7 @@ import { Input } from "rn-inkpad";
 import { Button } from "tamagui";
 import { ArrowRight } from "@tamagui/lucide-icons";
 import fetchProject from "../../utility_functions/fetch_project";
+import fetchObservationList from "../../utility_functions/fetch_observation_list";
 import { useStudentID, useProjectInfo } from "../stores/project_info";
 import generateStudentID from "@/utility_functions/student_id_gen";
 
@@ -89,6 +90,11 @@ const LandingPage = () => {
 
       // refresh displayed value
       setStoredProjectCode(code);
+
+      console.log("fetching observation list...");
+      // fetch current observation list
+      fetchObservationList();
+      
     } catch (e) {
       console.error("Failed to join project: ", e);
       alert.show({

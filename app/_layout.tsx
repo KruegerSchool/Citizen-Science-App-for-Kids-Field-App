@@ -2,6 +2,8 @@
 // reference: tamagui.dev docs
 import React, { useEffect } from "react";
 import { Stack } from "expo-router";
+import "@tamagui/native/setup-gesture-handler";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AlertContainer } from "react-native-alert-queue";
 import { createTamagui, TamaguiProvider } from "tamagui";
@@ -38,12 +40,13 @@ export default function RootLayout() {
   }, [setConnectionStatus]);
 
   return (
-    <TamaguiProvider config={config} defaultTheme="light">
-      {/* main app layout container */}
-      <SafeAreaProvider>
-        {/* navigation stack */}
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(tabs)" options={{}} />
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <TamaguiProvider config={config} defaultTheme="light">
+        {/* main app layout container */}
+        <SafeAreaProvider>
+          {/* navigation stack */}
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(tabs)" options={{}} />
           <Stack.Screen
             name="add_observation"
             options={{ title: "Add Observation", presentation: "modal" }}
@@ -52,10 +55,11 @@ export default function RootLayout() {
             name="edit_observation"
             options={{ title: "Edit Observation", presentation: "modal" }}
           />
-        </Stack>
-        {/* allows alert messages from react-native-alert-queue to be used throughout */}
-        <AlertContainer />
-      </SafeAreaProvider>
-    </TamaguiProvider>
+          </Stack>
+          {/* allows alert messages from react-native-alert-queue to be used throughout */}
+          <AlertContainer />
+        </SafeAreaProvider>
+      </TamaguiProvider>
+    </GestureHandlerRootView>
   );
 }
