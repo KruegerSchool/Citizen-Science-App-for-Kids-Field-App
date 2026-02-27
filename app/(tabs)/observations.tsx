@@ -12,7 +12,6 @@ import {
   View,
 } from "tamagui";
 import { useObservationInfo } from "../stores/observation_info";
-import { observationStyles } from "../styles/styles";
 import ObservationList from "../components/ObservationList";
 import { Plus, ListFilter } from "@tamagui/lucide-icons";
 
@@ -35,8 +34,10 @@ export default function ObservationsScreen() {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1}}>
-        <H2 self="center" mb={5}>Project Observations</H2>
+      <View style={{ flex: 1 }}>
+        <H2 self="center" mb={5}>
+          Project Observations
+        </H2>
 
         <XStack justify="space-between" items="center" mb={2} mt={5} px={10}>
           {/* Filter group */}
