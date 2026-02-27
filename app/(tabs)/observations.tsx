@@ -1,33 +1,19 @@
+import { useState } from "react";
 import { useRouter } from "expo-router";
-import { FlatList, Text, Platform, View } from "react-native";
+import { FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { appStyles, observationStyles } from "../styles/styles";
-import { Button, FloatingActionButton } from "rn-inkpad";
-
-// placeholder data adapted from https://reactnative.dev/docs/flatlist#listheadercomponent
-type ItemData = {
-  id: number;
-  student: string;
-  title: string;
-};
-
-const DATA: ItemData[] = [
-  {
-    id: 1,
-    student: "Student 1",
-    title: "Placeholder Obs 1",
-  },
-  {
-    id: 2,
-    student: "Student 2",
-    title: "Placeholder Obs 2",
-  },
-  {
-    id: 3,
-    student: "Student 3",
-    title: "Placeholder Obs 3",
-  },
-];
+import {
+  Accordion,
+  XStack,
+  XGroup,
+  Button,
+  Separator,
+  H2,
+  View,
+} from "tamagui";
+import { useObservationInfo } from "../stores/observation_info";
+import ObservationList from "../components/ObservationList";
+import { Plus, ListFilter } from "@tamagui/lucide-icons";
 
 // observations list for the project
 // displays the list of observations made in the project. observations made by
@@ -35,49 +21,74 @@ const DATA: ItemData[] = [
 export default function ObservationsScreen() {
   const router = useRouter();
 
+  // retrieve student ID from persistent storage
+  // const studentID = useStudentID((state) => state.studentID);
+  // for testing:
+  const studentID = "Alice Johnson";
+
+  // pull observation list from zustand store
+  const observationList = useObservationInfo((state) => state.observations);
+
+  // filter logic
+  const [filterMine, setFilterMine] = useState(false);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={observationStyles.page}>
-        <Text style={observationStyles.header}>OBSERVATIONS LIST</Text>
+      <View style={{ flex: 1 }}>
+        <H2 self="center" mb={5}>
+          Project Observations
+        </H2>
 
-        {/* testing flatlist, may need alternate row styling for readability. added borders for now */}
-        <FlatList
-          data={DATA}
-          ListHeaderComponent={
-            <View style={observationStyles.listHeader}>
-              <Text style={observationStyles.listHeaderText}>Student</Text>
-              <Text style={observationStyles.listHeaderText}>Observation</Text>
-              <Text style={observationStyles.listHeaderText}>Action</Text>
-            </View>
-          }
-          renderItem={({ item }) => (
-            <View style={observationStyles.listItem}>
-              <Text>{item.student}</Text>
-              <Text>{item.title}</Text>
-              {/* this will need to be a dynamic route for editing */}
-              {/* currently sets button to disabled if it doesn't belong to Student 2 (hard coded) */}
-              {/* https://react.dev/learn/conditional-rendering putting  this here for if conditional rendering gets complicated in JSX/TS */}
-              <Button
-                text="Edit"
-                buttonColor="#007AFF"
-                color="#FFFFFF"
-                rounded={true}
-                style={appStyles.button}
-                disabled={item.student !== "Student 2"}
-                onPress={() => router.push(`/edit_observation`)}
-              />
-            </View>
-          )}
-        />
-        <FloatingActionButton
-          align="bottom-right"
-          onPress={() => router.push("/add_observation")}
-          backgroundColor="#007AFF"
-          // temp fix for tab bar formatting
-          {...(Platform.OS !== "web"
-            ? { marginVertical: -10 }
-            : { marginVertical: 25 })}
-        />
+        <XStack justify="space-between" items="center" mb={2} mt={5} px={10}>
+          {/* Filter group */}
+          <XStack items="center" gap={8}>
+            <ListFilter size={20} color="$color" />
+            <XGroup size="$2">
+              <XGroup.Item>
+                <Button
+                  size="$2.5"
+                  theme={filterMine ? "blue_accent" : "blue"}
+                  onPress={() => setFilterMine(true)}
+                >
+                  Only Mine
+                </Button>
+              </XGroup.Item>
+              <XGroup.Item>
+                <Button
+                  size="$2.5"
+                  theme={filterMine ? "blue" : "blue_accent"}
+                  onPress={() => setFilterMine(false)}
+                >
+                  All
+                </Button>
+              </XGroup.Item>
+            </XGroup>
+          </XStack>
+
+          {/* add obs */}
+          <Button
+            size="$2.5"
+            theme="blue_accent"
+            icon={Plus}
+            onPress={() => router.push("/add_observation")}
+          >
+            New
+          </Button>
+        </XStack>
+
+        <Separator mb={4} />
+        <Accordion type="multiple" mb={40}>
+          <FlatList
+            data={observationList}
+            renderItem={({ item }) =>
+              filterMine && item.student_name !== studentID ? (
+                <></>
+              ) : (
+                <ObservationList item={item} appUser={studentID} />
+              )
+            }
+          />
+        </Accordion>
       </View>
     </SafeAreaView>
   );

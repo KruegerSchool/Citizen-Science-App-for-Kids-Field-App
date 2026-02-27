@@ -46,6 +46,11 @@ type StudentID = {
   setStudentID: (id: string) => void;
 };
 
+type ProjectJoinStatus = {
+  joinStatus: string;
+  setJoinStatus: (status: string) => void;
+};
+
 // creates type for action to update project information
 type ProjectActions = {
   setProjectData: (info: ProjectResponse) => void;
@@ -98,4 +103,17 @@ const useStudentID = create<StudentID>()(
   ),
 );
 
-export { useProjectInfo, useStudentID, Field };
+const useProjectJoinStatus = create<ProjectJoinStatus>()(
+  persist(
+    (set) => ({
+      joinStatus: "",
+      setJoinStatus: (joinStatus: string) => set({ joinStatus: joinStatus }),
+    }),
+    {
+      name: "project_join_status_storage",
+      storage: createJSONStorage(() => AsyncStorage),
+    },
+  ),
+);
+
+export { useProjectInfo, useStudentID, useProjectJoinStatus, Field };

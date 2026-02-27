@@ -3,10 +3,10 @@
 // updates in
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { FlatList } from "react-native";
+import { FlatList, KeyboardAvoidingView, Platform } from "react-native";
 import DynamicInput from "./components/DynamicInput";
 import { useProjectInfo, Field } from "./stores/project_info";
-import { Button, H2 } from "tamagui";
+import { Button, H2, Form } from "tamagui";
 
 // page to add an observation to the project. options are based on the project
 // details provided by the admin user when setting up the project
@@ -35,14 +35,26 @@ export default function AddObservation() {
   const fields = useProjectInfo((state) => state.fields);
 
   return (
-    <SafeAreaView style={{ margin: 20 }}>
-      <H2 style={{ alignSelf: "center" }}>Add Observation</H2>
-      <FlatList
-        data={fields}
-        keyExtractor={(item: Field) => item.field_id}
-        renderItem={renderItem}
-      />
-      <Button style={{ marginTop: 20 }}>Record Observation</Button>
+    <SafeAreaView style={{ margin: 20, flex: 1 }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
+        <H2 style={{ alignSelf: "center" }}>Add Observation</H2>
+        <Form
+          // replace with actual submission logic
+          onSubmit={() => console.log("Submitted data: ", values)}
+        >
+          <FlatList
+            data={fields}
+            keyExtractor={(item: Field) => item.field_id}
+            renderItem={renderItem}
+          />
+          <Form.Trigger asChild>
+            <Button style={{ marginTop: 20 }}>Record Observation</Button>
+          </Form.Trigger>
+        </Form>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
