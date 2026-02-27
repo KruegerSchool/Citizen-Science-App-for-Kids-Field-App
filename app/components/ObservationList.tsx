@@ -3,7 +3,7 @@
 import React from "react";
 import { useRouter } from "expo-router";
 import { FlatList, View } from "react-native";
-import { ChevronDown } from "@tamagui/lucide-icons";
+import { ChevronDown, PenLine } from "@tamagui/lucide-icons";
 import { Accordion, Button, Paragraph, Square } from "tamagui";
 import { CompletedField, Observation } from "../stores/observation_info";
 import DynamicDataRender from "./DynamicDataRender";
@@ -25,31 +25,32 @@ export default function ObservationList({ item, appUser }: InputProps) {
     </>
   );
 
+  const dateObject: Date = new Date(item.submitted_at);
+
   return (
     <>
      <Accordion.Item value={`${item.observation_id}`} mb={2}>
        <Accordion.Trigger flexDirection="row" justify="space-between">
         {({ open }: { open: boolean }) => (
-          <>
-          <Paragraph>Observation: {item.observation_id}</Paragraph>
-          <Square transparent transition="quick" rotate={open ? '180deg' : '0deg'}>
-            <ChevronDown size="$1" color="$color" />
-          </Square>
-          </>
+          <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+            <View style={{ flexDirection: "column", alignItems: "flex-start" }}>
+              <Paragraph>Student: {item.student_name}</Paragraph>
+              <Paragraph>Date Submitted: {dateObject.toLocaleDateString()}</Paragraph>
+            </View>
+            <View>
+              <Square transparent transition="quick" rotate={open ? '180deg' : '0deg'}>
+                <ChevronDown size="$1" color="$color" />
+              </Square>
+            </View>
+          </View>
         )}
        </Accordion.Trigger>
        <Accordion.HeightAnimator transition="300ms" style={{ flexGrow: 0 }}>
          <Accordion.Content>
-          {studentName === appUser && (
-            <Button
-              size="$2"
-              onPress={() => router.push("/edit_observation")}
-              >Edit</Button>
-          )}
           {observationData.length === 0 ? (
             <Paragraph>No observation data available</Paragraph>
           ) : (
-          <View>
+          <View style={{ marginTop: -30 }}>
             <FlatList
               data={observationData}
               keyExtractor={(field: CompletedField) => field.field_id}
@@ -57,6 +58,18 @@ export default function ObservationList({ item, appUser }: InputProps) {
               />
           </View>
            )}
+          <View style= {{ alignItems: "flex-end" }}>
+          {studentName === appUser && (
+            <Button
+              theme={"blue_accent"}
+              size="$2.5"
+              mt={5}
+              icon={PenLine}
+              self="stretch"
+              onPress={() => router.push("/edit_observation")}
+              >Edit</Button>
+          )}
+          </View>
          </Accordion.Content>
        </Accordion.HeightAnimator>
      </Accordion.Item>

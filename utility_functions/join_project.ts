@@ -1,10 +1,14 @@
 // function to join a project using the provided code
 import { useProjectJoinStatus } from "../app/stores/project_info";
 import { alert } from "react-native-alert-queue";
+import { Keyboard } from "react-native";
 import fetchProject from "./fetch_project";
 import fetchObservationList from "./fetch_observation_list";
 
 const joinProject = async (code: string) => {
+  // dismiss keyboard
+  Keyboard.dismiss();
+
   // remove spaces from input
   // reference: https://stackoverflow.com/questions/10800355/remove-whitespaces-inside-a-string-in-javascript
   code = code.replace(/\s/g, "").toUpperCase();

@@ -1,11 +1,12 @@
+import { useState } from "react";
 import { useRouter } from "expo-router";
-import { FlatList, Text, Platform, View } from "react-native";
+import { FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Accordion } from "tamagui";
-import { FloatingActionButton } from "rn-inkpad";
+import { Accordion, XStack, XGroup, Button, Separator, H2, View } from "tamagui";
 import { useObservationInfo } from "../stores/observation_info";
-import { appStyles, observationStyles } from "../styles/styles";
+import { observationStyles } from "../styles/styles";
 import ObservationList from "../components/ObservationList";
+import { Plus, ListFilter } from "@tamagui/lucide-icons";
 
 // observations list for the project
 // displays the list of observations made in the project. observations made by
@@ -21,28 +22,64 @@ export default function ObservationsScreen() {
   // pull observation list from zustand store
   const observationList = useObservationInfo((state) => state.observations);
 
+  // filter logic
+  const [filterMine, setFilterMine] = useState(false);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={{}}>
-        <Text style={observationStyles.header}>Project Observations</Text>
-        <Accordion type="multiple">
+      <View>
+        <H2 style={observationStyles.header}>Project Observations</H2>
+        
+        <XStack justify="space-between" items="center" mb={2} mt={5} px={10}>
+          {/* Filter group */}
+          <XStack items="center" gap={8}>
+            <ListFilter size={20} color="$color" />
+            <XGroup size="$2">
+              <XGroup.Item>
+                <Button
+                  size="$2.5"
+                  theme={(filterMine) ? "blue_accent" : "blue"}
+                  onPress={() => setFilterMine(true)}>
+                  Only Mine
+                </Button>
+              </XGroup.Item>
+              <XGroup.Item>
+                <Button
+                  size="$2.5"
+                  theme={(filterMine) ? "blue" : "blue_accent"}
+                  onPress={() => setFilterMine(false)}>
+                  All
+                </Button>
+              </XGroup.Item>
+            </XGroup>
+          </XStack>
+
+          {/* add obs */}
+          <Button
+            size="$2.5"
+            theme="blue_accent"
+            icon={Plus}
+            onPress={() => router.push("/add_observation")}>
+            New
+          </Button>
+        </XStack>
+
+        <Separator mb={4} />
+        <Accordion type="multiple" >
           <FlatList
-            style={{ borderWidth: 2, borderColor: "#007AFF"}}
-            contentContainerStyle={{ paddingBottom: 50 }} // workaround for tab bar padding issue
             data={observationList}
             renderItem={({ item }) => (
-              <ObservationList 
-                item={item} 
-                appUser={studentID}/>
+              (filterMine && item.student_name !== studentID) ? (
+                <></>
+              ) : (
+                <ObservationList 
+                  item={item} 
+                  appUser={studentID}/>
+              )
             )}
           />
         </Accordion>
-        </View>
-        <FloatingActionButton
-          align="bottom-right"
-          onPress={() => router.push("/add_observation")}
-          backgroundColor="#007AFF"
-        />
+      </View>
     </SafeAreaView>
   );
 }

@@ -17,14 +17,17 @@ interface CompletedField {
   field_id: string;
   field_label: string;
   field_name: string;
+  field_type: string;
   field_value: string;
 }
 
 interface Observation {
   observation_id: number;
   project_id: number;
+  student_id: number;
   student_name: string;
   field_data: CompletedField[];
+  submitted_at: string;
 };
 
 // creates type for action to update observation information

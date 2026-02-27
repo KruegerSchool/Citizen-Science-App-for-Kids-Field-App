@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import {
   Keyboard,
-  Text,
   Pressable,
   Platform,
-  View,
   KeyboardAvoidingView,
 } from "react-native";
 import { Image } from "expo-image";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { appStyles, landingStyles } from "../styles/styles";
-import { useStudentID, useProjectInfo } from "../stores/project_info";
+import { landingStyles } from "../styles/styles";
+import { useStudentID } from "../stores/project_info";
 import generateStudentID from "@/utility_functions/student_id_gen";
 import ProjectJoin from "../components/ProjectJoin";
 
@@ -26,14 +24,10 @@ const dismissMobileKeyboard = () => {
 // landing page for the app which contains the project login or project change
 // functionality adapted from starter app template from expo
 const LandingPage = () => {
-  // project code input state management
-  const [projectCode, setProjectCode] = useState("");
-
-  // hooks for central state management
-  const currentProjectCode = useProjectInfo((state) => state.projectCode);
+  // hook for central state management
   const studentID = useStudentID((state) => state.studentID);
 
-  // load stored project code on component mount
+  // check for student ID and generate if not present on component mount
   useEffect(() => {
     const loadStoredProjectCode = async () => {
       // check for existing student ID, generate if empty
@@ -42,7 +36,6 @@ const LandingPage = () => {
         generateStudentID();
       }
       try {
-        const value = useProjectInfo.getState().projectCode;
       } catch (e) {
         console.error("Failed to read value from storage: ", e);
       }

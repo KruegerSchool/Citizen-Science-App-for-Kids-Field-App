@@ -3,7 +3,7 @@
 import React, { useState, useEffect, use } from "react";
 import { Text, View, Button, Spinner } from "tamagui";
 import { useProjectInfo, useProjectJoinStatus } from "../stores/project_info";
-import { landingStyles, appStyles } from "../styles/styles";
+import { landingStyles } from "../styles/styles";
 import { Input } from "rn-inkpad";
 import { ArrowRight } from "@tamagui/lucide-icons";
 import joinProject from "../../utility_functions/join_project";
@@ -31,8 +31,8 @@ export default function ProjectJoin() {
             onPress={() => joinProject(projectCode)}
           />
           <Button
-            style={appStyles.button}
             size="$4"
+            theme={"blue_accent"}
             icon={<ArrowRight color="white" />}
             iconSize="$8"
             circular={true}
@@ -43,7 +43,7 @@ export default function ProjectJoin() {
           {(joinStatus === "joining") ? (
             <>
               <Text>Loading Project</Text>
-              <Spinner size="small" color="navy" />
+              <Spinner size="small" color="mediumblue"/>
             </>
             ) : <Text></Text>}
         </View>
@@ -56,7 +56,7 @@ export default function ProjectJoin() {
           Current Project: {currentProjectCode}
         </Text>
         <Button
-          style={appStyles.button}
+          theme="blue_accent"
           onPress={() => {
             try {
               // remove project code from persistent storage and set to empty string

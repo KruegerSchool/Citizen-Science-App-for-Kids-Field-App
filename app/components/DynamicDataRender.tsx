@@ -4,6 +4,7 @@
 import React from "react";
 import { View } from "react-native";
 import { Label, Paragraph, Checkbox } from "tamagui";
+import { Check as CheckIcon } from "@tamagui/lucide-icons";
 import { CompletedField } from "../stores/observation_info";
 
 interface InputProps {
@@ -12,63 +13,87 @@ interface InputProps {
 
 const DynamicDataRender = ({ field }: InputProps) => {
   const renderLabel = () => {
-    return <Label style={{ marginTop: 15 }}>{field.field_label}</Label>;
+    return <Label style={{ fontWeight: "bold" }}>{field.field_label}:</Label>;
   };
 
-  console.log(field);
+  const renderFieldValue = () => {
+    switch (field.field_type) {
+      case "text":
+        return (
+          <View>
+            {renderLabel()}
+            <Paragraph size="$4" mb={10}>{field.field_value}</Paragraph>
+          </View>
+        );
+      case "textarea":
+        return (
+          <View>
+            {renderLabel()}
+            <Paragraph size="$4" mb={10}>{field.field_value}</Paragraph>
+          </View>
+        );
+      case "number":
+        return (
+          <View>
+            {renderLabel()}
+            <Paragraph size="$4" mb={10}>{field.field_value}</Paragraph>
+          </View>
+        );
+      case "multiselect":
+        // const selectionsArray = JSON.parse(field.field_value);
+        return (
+          <View>
+            {renderLabel()}
+            {/* {selectionsArray.map((selection: string) => ( */}
+              {/* <Paragraph size="$4">{selection}</Paragraph> */}
+            {/* ) */}
+            {/* )} */}
+          </View>
+        );
+      case "radio":
+        return (
+        <View>
+          {renderLabel()}
+          <Paragraph size="$4" mb={10}>{field.field_value}</Paragraph>
+        </View>
+      );
+      case "date":
+        const dateObject: Date = new Date(field.field_value);
+        return (
+          <View>
+            {renderLabel()}
+            <Paragraph size="$4" mb={10}>{dateObject.toLocaleDateString()}</Paragraph>
+          </View>
+        );
+      case "time":
+        return (
+          <View>
+            {renderLabel()}
+            <Paragraph size="$4" mb={10}>{field.field_value}</Paragraph>
+          </View>
+        );
+      case "checkbox":
+        return (
+          <View>
+            {renderLabel()}
+            <Checkbox checked={field.field_value === "true"} disabled>
+              <Checkbox.Indicator>
+                <CheckIcon />
+              </Checkbox.Indicator>
+            </Checkbox>
+          </View>
+        );  
+      default:
+        return (
+          <View>
+            {renderLabel()}
+            <Paragraph size="$4" mb={10}>Unsupported Field Type: {field.field_type}</Paragraph>
+          </View>
+        );
+    }
+  };
 
-  return (
-    <View>
-      {renderLabel()}
-      <Paragraph size="$4">{field.field_value}</Paragraph>
-    </View>
-  )
-
-  // switch case to handle different field types (pending implementation of field_type in CompletedField)
-  // switch (field.field_name) {
-  //   case "text":
-  //     return (
-  //       <View>
-  //         {renderLabel()}
-  //         <Paragraph size="$4">{field.field_value}</Paragraph>
-  //       </View>
-  //     );
-  //   case "textarea":
-  //     return (
-  //       <View>
-  //         {renderLabel()}
-  //         <Paragraph size="$4">{field.field_value}</Paragraph>
-  //       </View>
-  //     );
-  //   case "number":
-  //     return (
-  //       <View>
-  //         {renderLabel()}
-  //         <Paragraph size="$4">{field.field_value}</Paragraph>
-  //       </View>
-  //     );
-  //   case "multiselect":
-  //     const selectionsArray = JSON.parse(field.field_value);
-  //     return (
-  //       <View>
-  //         {renderLabel()}
-  //         {selectionsArray.map((selection: string, index: number) => (
-  //           <Checkbox key={index} checked disabled>
-  //             {selection}
-  //           </Checkbox>
-  //         ))}
-  //       </View>
-  //     );
-  //   case "radio":
-  //     return <View>{renderLabel()}</View>;
-  //   default:
-  //     return (
-  //       <View>
-  //         {renderLabel()}
-  //         <Paragraph size="$4">NONE</Paragraph>
-  //       </View>
-  //     );
-  // }
+  return renderFieldValue()
 };
 
 export default DynamicDataRender;
