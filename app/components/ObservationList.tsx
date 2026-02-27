@@ -14,7 +14,6 @@ interface InputProps {
 }
 
 export default function ObservationList({ item, appUser }: InputProps) {
-
   const studentName = item.student_name;
   const observationData = item.field_data;
   const router = useRouter();
@@ -29,50 +28,67 @@ export default function ObservationList({ item, appUser }: InputProps) {
 
   return (
     <>
-     <Accordion.Item value={`${item.observation_id}`} mb={2}>
-       <Accordion.Trigger flexDirection="row" justify="space-between">
-        {({ open }: { open: boolean }) => (
-          <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
-            <View style={{ flexDirection: "column", alignItems: "flex-start" }}>
-              <Paragraph>Student: {item.student_name}</Paragraph>
-              <Paragraph>Date Submitted: {dateObject.toLocaleDateString()}</Paragraph>
+      <Accordion.Item value={`${item.observation_id}`} mb={2}>
+        <Accordion.Trigger flexDirection="row" justify="space-between">
+          {({ open }: { open: boolean }) => (
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <View
+                style={{ flexDirection: "column", alignItems: "flex-start" }}
+              >
+                <Paragraph>Student: {item.student_name}</Paragraph>
+                <Paragraph>
+                  Date Submitted: {dateObject.toLocaleDateString()}
+                </Paragraph>
+              </View>
+              <View>
+                <Square
+                  transparent
+                  transition="quick"
+                  rotate={open ? "180deg" : "0deg"}
+                >
+                  <ChevronDown size="$1" color="$color" />
+                </Square>
+              </View>
             </View>
-            <View>
-              <Square transparent transition="quick" rotate={open ? '180deg' : '0deg'}>
-                <ChevronDown size="$1" color="$color" />
-              </Square>
-            </View>
-          </View>
-        )}
-       </Accordion.Trigger>
-       <Accordion.HeightAnimator transition="300ms" style={{ flexGrow: 0 }}>
-         <Accordion.Content>
-          {observationData.length === 0 ? (
-            <Paragraph>No observation data available</Paragraph>
-          ) : (
-          <View style={{ marginTop: -30 }}>
-            <FlatList
-              data={observationData}
-              keyExtractor={(field: CompletedField) => field.field_id}
-              renderItem={renderData}
-              />
-          </View>
-           )}
-          <View style= {{ alignItems: "flex-end" }}>
-          {studentName === appUser && (
-            <Button
-              theme={"blue_accent"}
-              size="$2.5"
-              mt={5}
-              icon={PenLine}
-              self="stretch"
-              onPress={() => router.push("/edit_observation")}
-              >Edit</Button>
           )}
-          </View>
-         </Accordion.Content>
-       </Accordion.HeightAnimator>
-     </Accordion.Item>
+        </Accordion.Trigger>
+        <Accordion.HeightAnimator transition="300ms" style={{ flexGrow: 0 }}>
+          <Accordion.Content>
+            {observationData.length === 0 ? (
+              <Paragraph>No observation data available</Paragraph>
+            ) : (
+              <View style={{ marginTop: -30 }}>
+                <FlatList
+                  data={observationData}
+                  keyExtractor={(field: CompletedField) => field.field_id}
+                  renderItem={renderData}
+                />
+              </View>
+            )}
+            <View style={{ alignItems: "flex-end" }}>
+              {studentName === appUser && (
+                <Button
+                  theme={"blue_accent"}
+                  size="$2.5"
+                  mt={5}
+                  icon={PenLine}
+                  self="stretch"
+                  onPress={() => router.push("/edit_observation")}
+                >
+                  Edit
+                </Button>
+              )}
+            </View>
+          </Accordion.Content>
+        </Accordion.HeightAnimator>
+      </Accordion.Item>
     </>
-  )
+  );
 }

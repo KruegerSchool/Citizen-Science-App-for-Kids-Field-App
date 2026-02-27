@@ -39,14 +39,14 @@ export default function RootLayout() {
           {/* navigation stack */}
           <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="(tabs)" options={{}} />
-          <Stack.Screen
-            name="add_observation"
-            options={{ title: "Add Observation", presentation: "modal" }}
-          />
-          <Stack.Screen
-            name="edit_observation"
-            options={{ title: "Edit Observation", presentation: "modal" }}
-          />
+            <Stack.Screen
+              name="add_observation"
+              options={{ title: "Add Observation", presentation: "modal" }}
+            />
+            <Stack.Screen
+              name="edit_observation"
+              options={{ title: "Edit Observation", presentation: "modal" }}
+            />
           </Stack>
           {/* allows alert messages from react-native-alert-queue to be used throughout */}
           <AlertContainer />

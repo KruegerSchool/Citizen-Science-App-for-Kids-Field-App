@@ -36,21 +36,25 @@ export default function AddObservation() {
 
   return (
     <SafeAreaView style={{ margin: 20, flex: 1 }}>
-      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
-          <H2 style={{ alignSelf: "center" }}>Add Observation</H2>
-          <Form
-            // replace with actual submission logic
-            onSubmit={() => console.log("Submitted data: ", values)}>
-              <FlatList
-                data={fields}
-                keyExtractor={(item: Field) => item.field_id}
-                renderItem={renderItem}
-              />
-            <Form.Trigger asChild>
-              <Button style={{ marginTop: 20 }}>Record Observation</Button>
-            </Form.Trigger>
-          </Form>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
+        <H2 style={{ alignSelf: "center" }}>Add Observation</H2>
+        <Form
+          // replace with actual submission logic
+          onSubmit={() => console.log("Submitted data: ", values)}
+        >
+          <FlatList
+            data={fields}
+            keyExtractor={(item: Field) => item.field_id}
+            renderItem={renderItem}
+          />
+          <Form.Trigger asChild>
+            <Button style={{ marginTop: 20 }}>Record Observation</Button>
+          </Form.Trigger>
+        </Form>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }

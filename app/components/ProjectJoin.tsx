@@ -1,6 +1,6 @@
 // component to handle dynamically rendering the components used to join
 // and change projects
-import React, { useState, useEffect, use } from "react";
+import React, { useState } from "react";
 import { Text, View, Button, Spinner } from "tamagui";
 import { useProjectInfo, useProjectJoinStatus } from "../stores/project_info";
 import { landingStyles } from "../styles/styles";
@@ -11,7 +11,7 @@ import joinProject from "../../utility_functions/join_project";
 export default function ProjectJoin() {
   const currentProjectCode = useProjectInfo((state) => state.projectCode);
   const [projectCode, setProjectCode] = useState("");
-  
+
   const joinStatus = useProjectJoinStatus((state) => state.joinStatus);
 
   if (currentProjectCode === "") {
@@ -40,12 +40,14 @@ export default function ProjectJoin() {
           />
         </View>
         <View style={{ alignItems: "center", marginTop: 10 }}>
-          {(joinStatus === "joining") ? (
+          {joinStatus === "joining" ? (
             <>
               <Text>Loading Project</Text>
-              <Spinner size="small" color="mediumblue"/>
+              <Spinner size="small" color="mediumblue" />
             </>
-            ) : <Text></Text>}
+          ) : (
+            <Text></Text>
+          )}
         </View>
       </View>
     );
@@ -64,10 +66,7 @@ export default function ProjectJoin() {
               useProjectInfo.getState().reset();
               setProjectCode("");
             } catch (e) {
-              console.error(
-                "Failed to remove project code from storage: ",
-                e,
-              );
+              console.error("Failed to remove project code from storage: ", e);
             }
           }}
         >
@@ -76,4 +75,4 @@ export default function ProjectJoin() {
       </View>
     );
   }
-};
+}

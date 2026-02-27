@@ -28,7 +28,7 @@ interface Observation {
   student_name: string;
   field_data: CompletedField[];
   submitted_at: string;
-};
+}
 
 // creates type for action to update observation information
 interface ObservationStore {
@@ -36,7 +36,7 @@ interface ObservationStore {
   setObservationData: (info: Observation[]) => void;
   appendObservationData: (info: Observation) => void;
   reset: () => void;
-};
+}
 
 // create store for observation information, empty by default, with persistence
 const useObservationInfo = create<ObservationStore>()(
@@ -45,11 +45,11 @@ const useObservationInfo = create<ObservationStore>()(
       observations: [],
       setObservationData: (info: Observation[]) =>
         set({
-          observations: info
+          observations: info,
         }),
       appendObservationData: (info: Observation) =>
         set((state) => ({
-          observations: [...state.observations, info]
+          observations: [...state.observations, info],
         })),
       reset: () => {
         set(useObservationInfo.getInitialState());

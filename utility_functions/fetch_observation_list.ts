@@ -7,7 +7,7 @@ import { useObservationInfo } from "../app/stores/observation_info";
 
 export default async function fetchObservationList() {
   const projectId = useProjectInfo.getState().projectID;
- 
+
   const url = `https://csafk-277534145495.us-east4.run.app/api/projects/${projectId}/observations`;
 
   const response = await fetch(url);

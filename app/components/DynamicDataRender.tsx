@@ -22,21 +22,27 @@ const DynamicDataRender = ({ field }: InputProps) => {
         return (
           <View>
             {renderLabel()}
-            <Paragraph size="$4" mb={10}>{field.field_value}</Paragraph>
+            <Paragraph size="$4" mb={10}>
+              {field.field_value}
+            </Paragraph>
           </View>
         );
       case "textarea":
         return (
           <View>
             {renderLabel()}
-            <Paragraph size="$4" mb={10}>{field.field_value}</Paragraph>
+            <Paragraph size="$4" mb={10}>
+              {field.field_value}
+            </Paragraph>
           </View>
         );
       case "number":
         return (
           <View>
             {renderLabel()}
-            <Paragraph size="$4" mb={10}>{field.field_value}</Paragraph>
+            <Paragraph size="$4" mb={10}>
+              {field.field_value}
+            </Paragraph>
           </View>
         );
       case "multiselect":
@@ -45,31 +51,37 @@ const DynamicDataRender = ({ field }: InputProps) => {
           <View>
             {renderLabel()}
             {/* {selectionsArray.map((selection: string) => ( */}
-              {/* <Paragraph size="$4">{selection}</Paragraph> */}
+            {/* <Paragraph size="$4">{selection}</Paragraph> */}
             {/* ) */}
             {/* )} */}
           </View>
         );
       case "radio":
         return (
-        <View>
-          {renderLabel()}
-          <Paragraph size="$4" mb={10}>{field.field_value}</Paragraph>
-        </View>
-      );
+          <View>
+            {renderLabel()}
+            <Paragraph size="$4" mb={10}>
+              {field.field_value}
+            </Paragraph>
+          </View>
+        );
       case "date":
         const dateObject: Date = new Date(field.field_value);
         return (
           <View>
             {renderLabel()}
-            <Paragraph size="$4" mb={10}>{dateObject.toLocaleDateString()}</Paragraph>
+            <Paragraph size="$4" mb={10}>
+              {dateObject.toLocaleDateString()}
+            </Paragraph>
           </View>
         );
       case "time":
         return (
           <View>
             {renderLabel()}
-            <Paragraph size="$4" mb={10}>{field.field_value}</Paragraph>
+            <Paragraph size="$4" mb={10}>
+              {field.field_value}
+            </Paragraph>
           </View>
         );
       case "checkbox":
@@ -82,18 +94,20 @@ const DynamicDataRender = ({ field }: InputProps) => {
               </Checkbox.Indicator>
             </Checkbox>
           </View>
-        );  
+        );
       default:
         return (
           <View>
             {renderLabel()}
-            <Paragraph size="$4" mb={10}>Unsupported Field Type: {field.field_type}</Paragraph>
+            <Paragraph size="$4" mb={10}>
+              Unsupported Field Type: {field.field_type}
+            </Paragraph>
           </View>
         );
     }
   };
 
-  return renderFieldValue()
+  return renderFieldValue();
 };
 
 export default DynamicDataRender;

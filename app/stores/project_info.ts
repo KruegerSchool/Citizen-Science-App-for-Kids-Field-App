@@ -49,7 +49,7 @@ type StudentID = {
 type ProjectJoinStatus = {
   joinStatus: string;
   setJoinStatus: (status: string) => void;
-}
+};
 
 // creates type for action to update project information
 type ProjectActions = {

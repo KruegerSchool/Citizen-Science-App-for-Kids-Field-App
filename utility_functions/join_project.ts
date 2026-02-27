@@ -17,8 +17,7 @@ const joinProject = async (code: string) => {
   if (code.length !== 8) {
     alert.show({
       title: "Invalid Project Code",
-      message:
-        "Project codes are exactly 8 characters long, please try again.",
+      message: "Project codes are exactly 8 characters long, please try again.",
       buttons: [{ text: "OK" }],
     });
     return;
@@ -43,7 +42,6 @@ const joinProject = async (code: string) => {
     console.log("fetching observation list...");
     // fetch current observation list
     fetchObservationList();
-    
   } catch (e) {
     console.error("Failed to join project: ", e);
     useProjectJoinStatus.getState().setJoinStatus("");

@@ -2,7 +2,15 @@ import { useState } from "react";
 import { useRouter } from "expo-router";
 import { FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Accordion, XStack, XGroup, Button, Separator, H2, View } from "tamagui";
+import {
+  Accordion,
+  XStack,
+  XGroup,
+  Button,
+  Separator,
+  H2,
+  View,
+} from "tamagui";
 import { useObservationInfo } from "../stores/observation_info";
 import { observationStyles } from "../styles/styles";
 import ObservationList from "../components/ObservationList";
@@ -29,7 +37,7 @@ export default function ObservationsScreen() {
     <SafeAreaView style={{ flex: 1 }}>
       <View>
         <H2 style={observationStyles.header}>Project Observations</H2>
-        
+
         <XStack justify="space-between" items="center" mb={2} mt={5} px={10}>
           {/* Filter group */}
           <XStack items="center" gap={8}>
@@ -38,16 +46,18 @@ export default function ObservationsScreen() {
               <XGroup.Item>
                 <Button
                   size="$2.5"
-                  theme={(filterMine) ? "blue_accent" : "blue"}
-                  onPress={() => setFilterMine(true)}>
+                  theme={filterMine ? "blue_accent" : "blue"}
+                  onPress={() => setFilterMine(true)}
+                >
                   Only Mine
                 </Button>
               </XGroup.Item>
               <XGroup.Item>
                 <Button
                   size="$2.5"
-                  theme={(filterMine) ? "blue" : "blue_accent"}
-                  onPress={() => setFilterMine(false)}>
+                  theme={filterMine ? "blue" : "blue_accent"}
+                  onPress={() => setFilterMine(false)}
+                >
                   All
                 </Button>
               </XGroup.Item>
@@ -59,24 +69,23 @@ export default function ObservationsScreen() {
             size="$2.5"
             theme="blue_accent"
             icon={Plus}
-            onPress={() => router.push("/add_observation")}>
+            onPress={() => router.push("/add_observation")}
+          >
             New
           </Button>
         </XStack>
 
         <Separator mb={4} />
-        <Accordion type="multiple" >
+        <Accordion type="multiple">
           <FlatList
             data={observationList}
-            renderItem={({ item }) => (
-              (filterMine && item.student_name !== studentID) ? (
+            renderItem={({ item }) =>
+              filterMine && item.student_name !== studentID ? (
                 <></>
               ) : (
-                <ObservationList 
-                  item={item} 
-                  appUser={studentID}/>
+                <ObservationList item={item} appUser={studentID} />
               )
-            )}
+            }
           />
         </Accordion>
       </View>
