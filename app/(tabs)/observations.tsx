@@ -35,8 +35,8 @@ export default function ObservationsScreen() {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View>
-        <H2 style={observationStyles.header}>Project Observations</H2>
+      <View style={{ flex: 1}}>
+        <H2 self="center" mb={5}>Project Observations</H2>
 
         <XStack justify="space-between" items="center" mb={2} mt={5} px={10}>
           {/* Filter group */}
@@ -76,7 +76,7 @@ export default function ObservationsScreen() {
         </XStack>
 
         <Separator mb={4} />
-        <Accordion type="multiple">
+        <Accordion type="multiple" mb={40}>
           <FlatList
             data={observationList}
             renderItem={({ item }) =>
