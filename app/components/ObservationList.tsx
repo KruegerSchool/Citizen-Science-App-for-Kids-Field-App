@@ -14,7 +14,6 @@ interface InputProps {
 }
 
 export default function ObservationList({ item, appUser }: InputProps) {
-  const studentName = item.student_name;
   const observationData = item.field_data;
   const router = useRouter();
 
@@ -24,7 +23,8 @@ export default function ObservationList({ item, appUser }: InputProps) {
     </>
   );
 
-  const dateObject: Date = new Date(item.submitted_at);
+  // appending Z to the submitted_at string to ensure it is treated as UTC time
+  const dateObject: Date = new Date(item.submitted_at + "Z");
 
   return (
     <>
@@ -42,9 +42,11 @@ export default function ObservationList({ item, appUser }: InputProps) {
               <View
                 style={{ flexDirection: "column", alignItems: "flex-start" }}
               >
-                <Paragraph>Student: {item.student_name}</Paragraph>
                 <Paragraph>
-                  Date Submitted: {dateObject.toLocaleDateString()}
+                  Student: {item.student_name || item.student_id}
+                </Paragraph>
+                <Paragraph>
+                  Date Submitted: {dateObject.toLocaleDateString("en-US")}
                 </Paragraph>
               </View>
               <View>
@@ -73,14 +75,18 @@ export default function ObservationList({ item, appUser }: InputProps) {
               </View>
             )}
             <View style={{ alignItems: "flex-end" }}>
-              {studentName === appUser && (
+              {item.student_id.toString() === appUser && (
                 <Button
                   theme={"blue_accent"}
                   size="$2.5"
                   mt={5}
                   icon={PenLine}
                   self="stretch"
-                  onPress={() => router.push("/edit_observation")}
+                  onPress={() =>
+                    router.push(
+                      `/edit_observation?observation_id=${item.observation_id}`,
+                    )
+                  }
                 >
                   Edit
                 </Button>
