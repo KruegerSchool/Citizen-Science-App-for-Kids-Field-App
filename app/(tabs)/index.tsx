@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { Image } from "expo-image";
+import { View } from "tamagui";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { landingStyles } from "../styles/styles";
 import { useStudentID } from "../stores/project_info";
@@ -64,7 +65,9 @@ const LandingPage = () => {
             contentFit="contain"
             transition={100}
           />
-          <ProjectJoin />
+          <View>
+            <ProjectJoin />
+          </View>
         </Pressable>
       </KeyboardAvoidingView>
     </SafeAreaView>

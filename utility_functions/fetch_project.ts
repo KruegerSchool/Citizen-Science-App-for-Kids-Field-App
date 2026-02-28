@@ -1,7 +1,6 @@
 // fetch project data from the backend based on the provided project id
 // will also compare response against existing data and refresh if there are
 // any changes
-
 import { alert } from "react-native-alert-queue";
 import { useProjectInfo } from "../app/stores/project_info";
 

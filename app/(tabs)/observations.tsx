@@ -12,6 +12,7 @@ import {
   View,
 } from "tamagui";
 import { useObservationInfo } from "../stores/observation_info";
+import { useStudentID } from "../stores/project_info";
 import ObservationList from "../components/ObservationList";
 import { Plus, ListFilter } from "@tamagui/lucide-icons";
 
@@ -22,9 +23,7 @@ export default function ObservationsScreen() {
   const router = useRouter();
 
   // retrieve student ID from persistent storage
-  // const studentID = useStudentID((state) => state.studentID);
-  // for testing:
-  const studentID = "Alice Johnson";
+  const studentID = useStudentID((state) => state.studentID);
 
   // pull observation list from zustand store
   const observationList = useObservationInfo((state) => state.observations);
@@ -35,7 +34,7 @@ export default function ObservationsScreen() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
-        <H2 self="center" mb={5}>
+        <H2 self="center" mb={10}>
           Project Observations
         </H2>
 
@@ -81,7 +80,7 @@ export default function ObservationsScreen() {
           <FlatList
             data={observationList}
             renderItem={({ item }) =>
-              filterMine && item.student_name !== studentID ? (
+              filterMine && item.student_id.toString() !== studentID ? (
                 <></>
               ) : (
                 <ObservationList item={item} appUser={studentID} />

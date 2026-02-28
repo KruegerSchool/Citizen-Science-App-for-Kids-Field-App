@@ -46,14 +46,15 @@ const DynamicDataRender = ({ field }: InputProps) => {
           </View>
         );
       case "multiselect":
-        // const selectionsArray = JSON.parse(field.field_value);
+        const selectionsArray = JSON.parse(field.field_value);
         return (
           <View>
             {renderLabel()}
-            {/* {selectionsArray.map((selection: string) => ( */}
-            {/* <Paragraph size="$4">{selection}</Paragraph> */}
-            {/* ) */}
-            {/* )} */}
+            {selectionsArray.map((selection: string, index: number) => (
+              <Paragraph key={index} size="$4">
+                {selection}
+              </Paragraph>
+            ))}
           </View>
         );
       case "radio":

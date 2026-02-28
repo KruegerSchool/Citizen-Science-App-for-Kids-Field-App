@@ -1,4 +1,5 @@
-// implements dynamic input fields for use on the add observation page
+// implements dynamically generated input fields for use on the edit observation page
+// pre-loads existing observation data from the zustand store
 // references: https://www.freecodecamp.org/news/build-dynamic-forms-in-react/
 //             https://stackoverflow.com/questions/42053237/is-it-possible-to-dynamically-create-components-in-react-native
 import React from "react";
@@ -24,8 +25,9 @@ interface InputProps {
   onChange: (value: string | string[]) => void;
 }
 
-// state tracking
-const DynamicInput = ({ field, value, onChange }: InputProps) => {
+// mirrors DynamicInput but ensures all field types
+// correctly pre-load existing values for editing
+const DynamicEditInput = ({ field, value, onChange }: InputProps) => {
   const renderLabel = () => {
     return <Label style={{ marginTop: 15 }}>{field.field_label}</Label>;
   };
@@ -48,14 +50,14 @@ const DynamicInput = ({ field, value, onChange }: InputProps) => {
       return (
         <View>
           {renderLabel()}
-          <Input size="$4" value={value} onChangeText={onChange} />
+          <Input size="$4" value={value as string} onChangeText={onChange} />
         </View>
       );
     case "textarea":
       return (
         <View>
           {renderLabel()}
-          <TextArea size="$4" value={value} onChangeText={onChange} />
+          <TextArea size="$4" value={value as string} onChangeText={onChange} />
         </View>
       );
     case "number":
@@ -64,7 +66,7 @@ const DynamicInput = ({ field, value, onChange }: InputProps) => {
           {renderLabel()}
           <Input
             size="$4"
-            value={value}
+            value={value as string}
             onChangeText={onChange}
             keyboardType="numeric"
           />
@@ -89,7 +91,7 @@ const DynamicInput = ({ field, value, onChange }: InputProps) => {
           <RadioGroup
             gap={"$2"}
             value={value as string}
-            onValueChange={(value) => onChange(value)}
+            onValueChange={(val) => onChange(val)}
           >
             {JSON.parse(field.field_options).map((option: string) => (
               <RadioItem key={option} option={option} />
@@ -102,6 +104,7 @@ const DynamicInput = ({ field, value, onChange }: InputProps) => {
         <View>
           {renderLabel()}
           <Checkbox
+            checked={value === "true"}
             onCheckedChange={(checked) => {
               onChange(checked.toString());
             }}
@@ -117,7 +120,12 @@ const DynamicInput = ({ field, value, onChange }: InputProps) => {
         <View>
           {renderLabel()}
           <Calendar
-            style={{ borderColor: "grey", borderRadius: 8, borderWidth: 1 }}
+            style={{
+              borderColor: "grey",
+              borderRadius: 8,
+              borderWidth: 1,
+            }}
+            current={value ? (value as string) : undefined}
             onDayPress={(day) => {
               onChange(day.dateString);
             }}
@@ -164,4 +172,4 @@ const DynamicInput = ({ field, value, onChange }: InputProps) => {
   }
 };
 
-export default DynamicInput;
+export default DynamicEditInput;

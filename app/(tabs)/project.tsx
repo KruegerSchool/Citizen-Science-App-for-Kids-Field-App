@@ -5,6 +5,7 @@
 import React from "react";
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { H2 } from "tamagui";
 import { projectStyles } from "../styles/styles";
 import { useProjectInfo } from "../stores/project_info";
 
@@ -15,9 +16,9 @@ export default function ProjectScreen() {
   return (
     <SafeAreaView style={projectStyles.page}>
       <View style={projectStyles.mainContent}>
-        <Text style={projectStyles.headers}>
+        <H2 self="center" mb={20}>
           {useProjectInfo((state) => state.projectTitle) || "Project Title"}
-        </Text>
+        </H2>
         <Text style={projectStyles.headers}>DESCRIPTION</Text>
         <View style={projectStyles.descriptionBox}>
           <Text style={projectStyles.descriptionText}>
