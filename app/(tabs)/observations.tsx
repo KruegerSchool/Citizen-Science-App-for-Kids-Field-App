@@ -76,7 +76,7 @@ export default function ObservationsScreen() {
         </XStack>
 
         <Separator mb={4} />
-        <Accordion type="multiple" mb={40}>
+        <Accordion type="multiple" mb={60}>
           <FlatList
             data={observationList}
             renderItem={({ item }) =>

@@ -3,37 +3,39 @@
  * using a project code.
  */
 import React from "react";
-import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { H2 } from "tamagui";
-import { projectStyles } from "../styles/styles";
+import { H2, H4, Card, YStack, Paragraph } from "tamagui";
 import { useProjectInfo } from "../stores/project_info";
 
 // project details screen for the app
 // displays information about the project goals, and data collection
 // requirements
 export default function ProjectScreen() {
+  const projectTitle = useProjectInfo((state) => state.projectTitle);
+  const projectDescription = useProjectInfo((state) => state.projectDescription);
+  const projectInstructions = useProjectInfo((state) => state.projectInstructions);
+
   return (
-    <SafeAreaView style={projectStyles.page}>
-      <View style={projectStyles.mainContent}>
-        <H2 self="center" mb={20}>
-          {useProjectInfo((state) => state.projectTitle) || "Project Title"}
-        </H2>
-        <Text style={projectStyles.headers}>DESCRIPTION</Text>
-        <View style={projectStyles.descriptionBox}>
-          <Text style={projectStyles.descriptionText}>
-            {useProjectInfo((state) => state.projectDescription) ||
-              "Project Description"}
-          </Text>
-        </View>
-        <Text style={projectStyles.headers}>OBSERVATION DETAILS</Text>
-        <View style={projectStyles.descriptionBox}>
-          <Text style={projectStyles.observationDetails}>
-            {useProjectInfo((state) => state.projectInstructions) ||
-              "Observation Details"}
-          </Text>
-        </View>
-      </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <YStack gap={"$2"} p={8} width={"100%"} flex={1}>
+        <Card theme={"blue_accent"} p={10} boxShadow="0 3px 5px grey">
+          <H2 self="center">
+            {projectTitle || "Project Title"}
+          </H2>
+        </Card>
+        <Card theme={"blue_accent"} p={10} boxShadow="0 3px 5px grey">
+          <Card.Header p={15}><H4>Description</H4></Card.Header>
+          <Paragraph self="flex-start" size={"$4"} p={15} mt={-5}>
+            {projectDescription || "Project Description"}
+          </Paragraph>
+        </Card>
+        <Card theme={"blue_accent"} p={10} boxShadow="0 3px 5px grey">
+          <Card.Header p={15}><H4 self="flex-start">Observation Details</H4></Card.Header>
+          <Paragraph self="flex-start" size={"$4"} p={15} mt={-5}>
+            {projectInstructions || "Observation Details"}
+          </Paragraph>
+        </Card>
+      </YStack>
     </SafeAreaView>
   );
 }
