@@ -5,6 +5,9 @@ import { Platform } from "react-native";
 
 // defining the tab layout and routing for the app
 export default function TabLayout() {
+
+  const iconSize = Platform.OS === "web" ? 16 : 24;
+
   return (
     <Tabs
       screenOptions={{
@@ -24,21 +27,21 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: () => <FontAwesome name="home" size={24} />,
+          tabBarIcon: () => <FontAwesome name="home" size={iconSize} />,
         }}
       />
       <Tabs.Screen
         name="project"
         options={{
           title: "Project Details",
-          tabBarIcon: () => <FontAwesome name="file-text-o" size={24} />,
+          tabBarIcon: () => <FontAwesome name="file-text-o" size={iconSize} />,
         }}
       />
       <Tabs.Screen
         name="observations"
         options={{
           title: "Observations",
-          tabBarIcon: () => <FontAwesome name="list-ul" size={24} />,
+          tabBarIcon: () => <FontAwesome name="list-ul" size={iconSize} />,
         }}
       />
     </Tabs>
