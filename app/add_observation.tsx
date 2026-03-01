@@ -1,6 +1,7 @@
 // allows for adding new observations to the project that has been joined
 // dynamically renders input fields based on project details and field values
 import React, { useState } from "react";
+import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FlatList } from "react-native";
 import DynamicInput from "./components/DynamicInput";
@@ -12,6 +13,8 @@ import {
 } from "../utility_functions/create_update_observation";
 
 export default function AddObservation() {
+  const router = useRouter();
+
   // Track values for each field per https://react.dev/reference/react/useState
   const [values, setValues] = useState<{ [key: string]: string | string[] }>(
     {},
@@ -52,9 +55,14 @@ export default function AddObservation() {
         </H2>
         <Form
           flex={1}
-          onSubmit={() => {
+          onSubmit={async () => {
             const mappedData = mapValuestoFieldData();
-            createObservation(mappedData);
+            const result = await createObservation(mappedData);
+            if (result === 1) {
+              router.back();
+            } else {
+              console.log("Failed to create observation");
+            }
           }}
         >
           <FlatList
