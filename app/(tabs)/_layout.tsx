@@ -1,6 +1,7 @@
 import React from "react";
 import { Tabs } from "expo-router";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { Platform } from "react-native";
 
 // defining the tab layout and routing for the app
 export default function TabLayout() {
@@ -10,7 +11,7 @@ export default function TabLayout() {
         animation: "shift",
         headerShown: false,
         tabBarLabelStyle: {
-          fontSize: 12,
+          ...(Platform.OS === "web" ? { fontSize: 10 } : {fontSize: 12}),
           fontWeight: "bold",
         },
         tabBarActiveTintColor: "#007AFF",

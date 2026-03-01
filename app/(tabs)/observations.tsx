@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
 import { FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,6 +15,7 @@ import { useObservationInfo } from "../stores/observation_info";
 import { useStudentID } from "../stores/project_info";
 import ObservationList from "../components/ObservationList";
 import { Plus, ListFilter } from "@tamagui/lucide-icons";
+import fetchObservationList from "@/utility_functions/fetch_observation_list";
 
 // observations list for the project
 // displays the list of observations made in the project. observations made by
@@ -24,6 +25,18 @@ export default function ObservationsScreen() {
 
   // retrieve student ID from persistent storage
   const studentID = useStudentID((state) => state.studentID);
+
+  // on component mount reload observation list from backend
+  useEffect(() => {
+    const loadObservations = async () => {
+      try {
+        await fetchObservationList();
+      } catch (e) {
+        console.error("Failed to load observations: ", e);
+      }
+    };
+    loadObservations();
+  }, []);
 
   // pull observation list from zustand store
   const observationList = useObservationInfo((state) => state.observations);
