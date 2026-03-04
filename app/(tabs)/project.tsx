@@ -12,25 +12,31 @@ import { useProjectInfo } from "../stores/project_info";
 // requirements
 export default function ProjectScreen() {
   const projectTitle = useProjectInfo((state) => state.projectTitle);
-  const projectDescription = useProjectInfo((state) => state.projectDescription);
-  const projectInstructions = useProjectInfo((state) => state.projectInstructions);
+  const projectDescription = useProjectInfo(
+    (state) => state.projectDescription,
+  );
+  const projectInstructions = useProjectInfo(
+    (state) => state.projectInstructions,
+  );
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <YStack gap={"$2"} p={8} width={"100%"} flex={1}>
         <Card theme={"blue_accent"} p={10} boxShadow="0 3px 5px grey">
-          <H2 self="center">
-            {projectTitle || "Project Title"}
-          </H2>
+          <H2 self="center">{projectTitle || "Project Title"}</H2>
         </Card>
         <Card theme={"blue_accent"} p={10} boxShadow="0 3px 5px grey">
-          <Card.Header p={15}><H4>Description</H4></Card.Header>
+          <Card.Header p={15}>
+            <H4>Description</H4>
+          </Card.Header>
           <Paragraph self="flex-start" size={"$4"} p={15} mt={-5}>
             {projectDescription || "Project Description"}
           </Paragraph>
         </Card>
         <Card theme={"blue_accent"} p={10} boxShadow="0 3px 5px grey">
-          <Card.Header p={15}><H4 self="flex-start">Observation Details</H4></Card.Header>
+          <Card.Header p={15}>
+            <H4 self="flex-start">Observation Details</H4>
+          </Card.Header>
           <Paragraph self="flex-start" size={"$4"} p={15} mt={-5}>
             {projectInstructions || "Observation Details"}
           </Paragraph>

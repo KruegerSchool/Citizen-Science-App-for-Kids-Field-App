@@ -3,7 +3,7 @@
 // references: https://www.freecodecamp.org/news/build-dynamic-forms-in-react/
 //             https://stackoverflow.com/questions/42053237/is-it-possible-to-dynamically-create-components-in-react-native
 import React from "react";
-import { View } from "react-native";
+import { View, Platform } from "react-native";
 import {
   Label,
   Input,
@@ -14,13 +14,15 @@ import {
 } from "tamagui";
 import { Calendar } from "react-native-calendars";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { Platform } from "react-native";
 import WebTimePicker from "./WebTimePicker";
 import { MultiCheckboxField, Option } from "./GroupCheckbox";
 import { Field } from "../stores/project_info";
 import RadioItem from "./RadioItem";
 import { Check as CheckIcon } from "@tamagui/lucide-icons";
-import { parseTimeString, formatTimeString } from "../../utility_functions/time_functions";
+import {
+  parseTimeString,
+  formatTimeString,
+} from "../../utility_functions/time_functions";
 
 interface InputProps {
   field: Field;
@@ -146,10 +148,11 @@ const DynamicEditInput = ({ field, value, onChange }: InputProps) => {
       if (Platform.OS === "web") {
         return (
           <View>
-            <WebTimePicker 
-              value={value as string} 
-              onChange={onChange} 
-              label={field.field_label} />
+            <WebTimePicker
+              value={value as string}
+              onChange={onChange}
+              label={field.field_label}
+            />
           </View>
         );
       } else {

@@ -48,7 +48,9 @@ export default function AddObservation() {
       if (field.field_type === "checkbox") {
         checkboxDefaults[field.field_id] = "false";
       } else if (field.field_type === "time") {
-        const hours = (((new Date().getHours() + 11) % 12) + 1).toString().padStart(2, "0");
+        const hours = (((new Date().getHours() + 11) % 12) + 1)
+          .toString()
+          .padStart(2, "0");
         const minutes = new Date().getMinutes().toString().padStart(2, "0");
         const am_pm = new Date().getHours() >= 12 ? "PM" : "AM";
         timeDefaults[field.field_id] = `${hours}:${minutes} ${am_pm}`;
@@ -56,7 +58,12 @@ export default function AddObservation() {
         dateDefaults[field.field_id] = new Date().toISOString().split("T")[0];
       }
     });
-    setValues((prev) => ({ ...checkboxDefaults, ...timeDefaults, ...dateDefaults, ...prev }));
+    setValues((prev) => ({
+      ...checkboxDefaults,
+      ...timeDefaults,
+      ...dateDefaults,
+      ...prev,
+    }));
   }, [fields]);
 
   const mapValuestoFieldData = (): FieldData => {

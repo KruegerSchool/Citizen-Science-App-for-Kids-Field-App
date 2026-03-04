@@ -28,7 +28,11 @@ export default function ObservationList({ item, appUser }: InputProps) {
 
   return (
     <>
-      <YStack m={4} overflow="hidden" style={{boxShadow:"0 2px 3px lightgrey", borderRadius:5}}>
+      <YStack
+        m={4}
+        overflow="hidden"
+        style={{ boxShadow: "0 2px 3px lightgrey", borderRadius: 5 }}
+      >
         <Accordion.Item value={`${item.observation_id}`}>
           <Accordion.Trigger flexDirection="row" justify="space-between">
             {({ open }: { open: boolean }) => (

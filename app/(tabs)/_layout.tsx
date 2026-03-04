@@ -5,7 +5,6 @@ import { Platform } from "react-native";
 
 // defining the tab layout and routing for the app
 export default function TabLayout() {
-
   const iconSize = Platform.OS === "web" ? 16 : 24;
 
   return (
@@ -14,7 +13,7 @@ export default function TabLayout() {
         animation: "shift",
         headerShown: false,
         tabBarLabelStyle: {
-          ...(Platform.OS === "web" ? { fontSize: 10 } : {fontSize: 12}),
+          ...(Platform.OS === "web" ? { fontSize: 10 } : { fontSize: 12 }),
           fontWeight: "bold",
         },
         tabBarActiveTintColor: "#007AFF",

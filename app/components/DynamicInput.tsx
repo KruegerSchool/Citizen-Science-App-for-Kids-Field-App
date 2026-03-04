@@ -18,7 +18,10 @@ import { Field } from "../stores/project_info";
 import RadioItem from "./RadioItem";
 import { Check as CheckIcon } from "@tamagui/lucide-icons";
 import WebTimePicker from "./WebTimePicker";
-import { parseTimeString, formatTimeString } from "../../utility_functions/time_functions";
+import {
+  parseTimeString,
+  formatTimeString,
+} from "../../utility_functions/time_functions";
 
 interface InputProps {
   field: Field;
@@ -137,10 +140,11 @@ const DynamicInput = ({ field, value, onChange }: InputProps) => {
       if (Platform.OS === "web") {
         return (
           <View>
-            <WebTimePicker 
-              value={value as string} 
-              onChange={onChange} 
-              label={field.field_label} />
+            <WebTimePicker
+              value={value as string}
+              onChange={onChange}
+              label={field.field_label}
+            />
           </View>
         );
       } else {
@@ -160,7 +164,6 @@ const DynamicInput = ({ field, value, onChange }: InputProps) => {
           </View>
         );
       }
-
 
     default:
       return (
