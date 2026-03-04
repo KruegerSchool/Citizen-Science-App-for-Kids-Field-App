@@ -7,6 +7,7 @@ import { landingStyles } from "../styles/styles";
 import { Input } from "rn-inkpad";
 import { ArrowRight } from "@tamagui/lucide-icons";
 import joinProject from "../../utility_functions/join_project";
+import { useObservationInfo } from "../stores/observation_info";
 
 export default function ProjectJoin() {
   const currentProjectCode = useProjectInfo((state) => state.projectCode);
@@ -64,6 +65,7 @@ export default function ProjectJoin() {
               // remove project code from persistent storage and set to empty string
               console.log("Removing project code from storage");
               useProjectInfo.getState().reset();
+              useObservationInfo.getState().reset();
               setProjectCode("");
             } catch (e) {
               console.error("Failed to remove project code from storage: ", e);

@@ -67,12 +67,11 @@ const DynamicDataRender = ({ field }: InputProps) => {
           </View>
         );
       case "date":
-        const dateObject: Date = new Date(field.field_value);
         return (
           <View>
             {renderLabel()}
             <Paragraph size="$4" mb={10}>
-              {dateObject.toLocaleDateString()}
+              {field.field_value.toString()}
             </Paragraph>
           </View>
         );

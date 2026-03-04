@@ -44,13 +44,13 @@ async function createObservation(fieldData: FieldData) {
     console.log("Observation created successfully");
   } else if (response.status === 400) {
     console.log("Invalid data in submission");
-    return;
+    return 2;
   } else if (response.status === 404) {
     console.log("Project not found");
-    return;
+    return 2;
   } else {
     console.log("Error creating observation:", response.status);
-    return;
+    return 2;
   }
 
   // update observation list in persistent storage
@@ -58,7 +58,7 @@ async function createObservation(fieldData: FieldData) {
 
   // TODO: Implement button disabling and automatic routing
 
-  return;
+  return 1;
 }
 
 async function updateObservation(observationId: number, fieldData: FieldData) {
@@ -92,13 +92,13 @@ async function updateObservation(observationId: number, fieldData: FieldData) {
     console.log("Observation updated successfully");
   } else if (response.status === 400) {
     console.log("Invalid data in submission");
-    return;
+    return 2;
   } else if (response.status === 404) {
     console.log("Observation not found");
-    return;
+    return 2;
   } else {
     console.log("Error updating observation:", response.status);
-    return;
+    return 2;
   }
 
   // update observation list in persistent storage
@@ -106,7 +106,7 @@ async function updateObservation(observationId: number, fieldData: FieldData) {
 
   // TODO: Implement button disabling and automatic routing
 
-  return;
+  return 1;
 }
 
 export { createObservation, updateObservation, FieldData };

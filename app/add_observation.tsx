@@ -1,6 +1,7 @@
 // allows for adding new observations to the project that has been joined
 // dynamically renders input fields based on project details and field values
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FlatList } from "react-native";
 import DynamicInput from "./components/DynamicInput";
@@ -12,6 +13,8 @@ import {
 } from "../utility_functions/create_update_observation";
 
 export default function AddObservation() {
+  const router = useRouter();
+
   // Track values for each field per https://react.dev/reference/react/useState
   const [values, setValues] = useState<{ [key: string]: string | string[] }>(
     {},
@@ -36,6 +39,33 @@ export default function AddObservation() {
 
   const fields = useProjectInfo((state) => state.fields);
 
+  // default certain fields to make sure they are logged if they don't get edited when adding observations
+  useEffect(() => {
+    const checkboxDefaults: { [key: string]: string } = {};
+    const timeDefaults: { [key: string]: string } = {};
+    const dateDefaults: { [key: string]: string } = {};
+    fields.forEach((field) => {
+      if (field.field_type === "checkbox") {
+        checkboxDefaults[field.field_id] = "false";
+      } else if (field.field_type === "time") {
+        const hours = (((new Date().getHours() + 11) % 12) + 1)
+          .toString()
+          .padStart(2, "0");
+        const minutes = new Date().getMinutes().toString().padStart(2, "0");
+        const am_pm = new Date().getHours() >= 12 ? "PM" : "AM";
+        timeDefaults[field.field_id] = `${hours}:${minutes} ${am_pm}`;
+      } else if (field.field_type === "date") {
+        dateDefaults[field.field_id] = new Date().toISOString().split("T")[0];
+      }
+    });
+    setValues((prev) => ({
+      ...checkboxDefaults,
+      ...timeDefaults,
+      ...dateDefaults,
+      ...prev,
+    }));
+  }, [fields]);
+
   const mapValuestoFieldData = (): FieldData => {
     const data = Object.entries(values).map(([field_id, value]) => ({
       field_id: parseInt(field_id, 10),
@@ -52,9 +82,14 @@ export default function AddObservation() {
         </H2>
         <Form
           flex={1}
-          onSubmit={() => {
+          onSubmit={async () => {
             const mappedData = mapValuestoFieldData();
-            createObservation(mappedData);
+            const result = await createObservation(mappedData);
+            if (result === 1) {
+              router.back();
+            } else {
+              console.log("Failed to create observation");
+            }
           }}
         >
           <FlatList

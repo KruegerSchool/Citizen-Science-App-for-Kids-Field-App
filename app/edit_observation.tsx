@@ -111,12 +111,17 @@ export default function EditObservation() {
         </H2>
         <Form
           flex={1}
-          onSubmit={() => {
+          onSubmit={async () => {
             const mappedData = mapValuestoFieldData();
-            updateObservation(
+            const result = await updateObservation(
               parseInt(observation_id as string, 10),
               mappedData,
             );
+            if (result === 1) {
+              router.back();
+            } else {
+              console.log("Failed to update observation");
+            }
           }}
         >
           <FlatList

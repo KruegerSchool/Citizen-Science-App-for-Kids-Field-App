@@ -1,7 +1,6 @@
 // fetch project data from the backend based on the provided project id
 // will also compare response against existing data and refresh if there are
 // any changes
-import { alert } from "react-native-alert-queue";
 import { useProjectInfo } from "../app/stores/project_info";
 
 export default async function fetchProject(projectCode: string) {
@@ -10,11 +9,7 @@ export default async function fetchProject(projectCode: string) {
   console.log(url);
   const response = await fetch(url);
   if (response.status !== 200) {
-    alert.show({
-      title: "Invalid Project Code",
-      message: "The project code you entered is invalid. Please try again.",
-      buttons: [{ text: "OK" }],
-    });
+    console.error("Failed to fetch project data: ", response.status);
   }
 
   const projectData = await response.json();

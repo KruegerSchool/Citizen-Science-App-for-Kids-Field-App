@@ -2,7 +2,7 @@
 // references: https://www.freecodecamp.org/news/build-dynamic-forms-in-react/
 //             https://stackoverflow.com/questions/42053237/is-it-possible-to-dynamically-create-components-in-react-native
 import React from "react";
-import { View } from "react-native";
+import { Platform, View } from "react-native";
 import {
   Label,
   Input,
@@ -17,6 +17,11 @@ import { MultiCheckboxField, Option } from "./GroupCheckbox";
 import { Field } from "../stores/project_info";
 import RadioItem from "./RadioItem";
 import { Check as CheckIcon } from "@tamagui/lucide-icons";
+import WebTimePicker from "./WebTimePicker";
+import {
+  parseTimeString,
+  formatTimeString,
+} from "../../utility_functions/time_functions";
 
 interface InputProps {
   field: Field;
@@ -132,29 +137,34 @@ const DynamicInput = ({ field, value, onChange }: InputProps) => {
         </View>
       );
     case "time":
-      return (
-        <View>
-          {renderLabel()}
-          <DateTimePicker
-            value={value ? new Date(`1970-01-01T${value}`) : new Date()}
-            mode="time"
-            display="default"
-            onChange={(event, selectedDate) => {
-              if (selectedDate) {
-                const hours = selectedDate
-                  .getHours()
-                  .toString()
-                  .padStart(2, "0");
-                const minutes = selectedDate
-                  .getMinutes()
-                  .toString()
-                  .padStart(2, "0");
-                onChange(`${hours}:${minutes}`);
-              }
-            }}
-          ></DateTimePicker>
-        </View>
-      );
+      if (Platform.OS === "web") {
+        return (
+          <View>
+            <WebTimePicker
+              value={value as string}
+              onChange={onChange}
+              label={field.field_label}
+            />
+          </View>
+        );
+      } else {
+        return (
+          <View>
+            {renderLabel()}
+            <DateTimePicker
+              value={parseTimeString(value)}
+              mode="time"
+              display="default"
+              onChange={(event, selectedDate) => {
+                if (event.type === "set" && selectedDate) {
+                  onChange(formatTimeString(selectedDate));
+                }
+              }}
+            />
+          </View>
+        );
+      }
+
     default:
       return (
         <View>

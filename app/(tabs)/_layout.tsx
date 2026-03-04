@@ -1,16 +1,19 @@
 import React from "react";
 import { Tabs } from "expo-router";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { Platform } from "react-native";
 
 // defining the tab layout and routing for the app
 export default function TabLayout() {
+  const iconSize = Platform.OS === "web" ? 16 : 24;
+
   return (
     <Tabs
       screenOptions={{
         animation: "shift",
         headerShown: false,
         tabBarLabelStyle: {
-          fontSize: 12,
+          ...(Platform.OS === "web" ? { fontSize: 10 } : { fontSize: 12 }),
           fontWeight: "bold",
         },
         tabBarActiveTintColor: "#007AFF",
@@ -23,21 +26,21 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: () => <FontAwesome name="home" size={24} />,
+          tabBarIcon: () => <FontAwesome name="home" size={iconSize} />,
         }}
       />
       <Tabs.Screen
         name="project"
         options={{
           title: "Project Details",
-          tabBarIcon: () => <FontAwesome name="file-text-o" size={24} />,
+          tabBarIcon: () => <FontAwesome name="file-text-o" size={iconSize} />,
         }}
       />
       <Tabs.Screen
         name="observations"
         options={{
           title: "Observations",
-          tabBarIcon: () => <FontAwesome name="list-ul" size={24} />,
+          tabBarIcon: () => <FontAwesome name="list-ul" size={iconSize} />,
         }}
       />
     </Tabs>
