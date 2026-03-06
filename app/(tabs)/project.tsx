@@ -21,7 +21,7 @@ export default function ProjectScreen() {
         }
       };
       loadObservations();
-    }, [])
+    }, []),
   );
 
   const projectTitle = useProjectInfo((state) => state.projectTitle);

@@ -20,7 +20,7 @@ export default async function fetchObservationList() {
   try {
     const response = await fetch(url);
     const observationList = await response.json();
-    useObservationInfo.getState().setObservationData(observationList.data); 
+    useObservationInfo.getState().setObservationData(observationList.data);
     console.log("Observation list updated");
   } catch (e) {
     console.error("Failed to fetch observation list: ", e);

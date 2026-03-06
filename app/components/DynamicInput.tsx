@@ -10,6 +10,7 @@ import {
   Checkbox,
   RadioGroup,
   Paragraph,
+  Text,
 } from "tamagui";
 import { Calendar } from "react-native-calendars";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -32,7 +33,12 @@ interface InputProps {
 // state tracking
 const DynamicInput = ({ field, value, onChange }: InputProps) => {
   const renderLabel = () => {
-    return <Label style={{ marginTop: 15 }}>{field.field_label}</Label>;
+    return (
+      <Label style={{ marginTop: 15 }}>
+        {field.field_label}
+        {field.field_required ? <Text color="$red10"> *</Text> : null}
+      </Label>
+    );
   };
 
   // helps to map array of strings to label/value options in checkbox group

@@ -5,13 +5,17 @@ import { Stack } from "expo-router";
 import "@tamagui/native/setup-gesture-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { Platform, StyleSheet, View } from "react-native";
+import { Platform, View } from "react-native";
 import { AlertContainer } from "react-native-alert-queue";
 import { FullWindowOverlay } from "react-native-screens";
 import { TamaguiProvider } from "tamagui";
 import { config } from "../tamagui.config";
 import NetInfo from "@react-native-community/netinfo";
-import { useConnectionStatus, useOfflineQueue, useSyncStatus } from "./stores/offline_queue";
+import {
+  useConnectionStatus,
+  useOfflineQueue,
+  useSyncStatus,
+} from "./stores/offline_queue";
 import { syncQueue } from "../utility_functions/sync_handler";
 import { appStyles } from "./styles/styles";
 

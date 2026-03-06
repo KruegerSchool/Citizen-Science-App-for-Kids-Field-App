@@ -14,6 +14,7 @@ import {
   FieldData,
   updateObservationHandler,
 } from "../utility_functions/create_update_observation";
+import { getMissingRequiredFieldLabels } from "../utility_functions/required_fields";
 import { ChevronLeft } from "@tamagui/lucide-icons";
 import { useModalResults } from "./stores/modal_results";
 
@@ -85,12 +86,13 @@ export default function EditObservation() {
       <SafeAreaView style={{ margin: 20, flex: 1 }}>
         <YStack flex={1} p="$2" items="center" justify="center">
           <Paragraph size="$5">Observation not found.</Paragraph>
-          { Platform.OS === "web" ? (
+          {Platform.OS === "web" ? (
             <Button mt="$4" theme="blue_accent" onPress={() => router.back()}>
               Go Back
             </Button>
-          ) : (<></>)
-          }
+          ) : (
+            <></>
+          )}
         </YStack>
       </SafeAreaView>
     );
@@ -100,23 +102,38 @@ export default function EditObservation() {
     <SafeAreaView style={{ margin: 20, flex: 1 }}>
       <YStack flex={1} p="$2">
         {/* Only show back button on web */}
-        { Platform.OS === "web" ? (
-          <Button mt="$2"
+        {Platform.OS === "web" ? (
+          <Button
+            mt="$2"
             theme="blue_accent"
             maxW={100}
             icon={ChevronLeft}
-            onPress={() =>
-            router.back()}>
+            onPress={() => router.back()}
+          >
             Go Back
           </Button>
-          ) : (<></>)
-        }
+        ) : (
+          <></>
+        )}
         <H2 self="center" mb={"$4"}>
           Edit Observation
         </H2>
         <Form
           flex={1}
           onSubmit={async () => {
+            const missingRequiredFields = getMissingRequiredFieldLabels(
+              fields,
+              values,
+            );
+            if (missingRequiredFields.length > 0) {
+              alert.show({
+                title: "Required fields missing",
+                message: `Please complete: ${missingRequiredFields.join(", ")}`,
+                buttons: [{ text: "OK" }],
+              });
+              return;
+            }
+
             const updateCheck: boolean = await alert.confirm({
               message: `Updating this observation will overwrite any values that have been changed. Are you sure you want to continue?`,
             });

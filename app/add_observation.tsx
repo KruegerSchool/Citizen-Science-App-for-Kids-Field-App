@@ -1,6 +1,6 @@
 // allows for adding new observations to the project that has been joined
 // dynamically renders input fields based on project details and field values
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FlatList, Platform } from "react-native";
@@ -11,6 +11,7 @@ import {
   createObservationHandler,
   FieldData,
 } from "../utility_functions/create_update_observation";
+import { getMissingRequiredFieldLabels } from "../utility_functions/required_fields";
 import { ChevronLeft } from "@tamagui/lucide-icons";
 import fetchProjectInfo from "../utility_functions/fetch_project";
 import { alert } from "react-native-alert-queue";
@@ -53,7 +54,7 @@ export default function AddObservation() {
 
   const fields = useProjectInfo((state) => state.fields);
 
-  // default certain fields to make sure they are logged even if they don't get edited 
+  // default certain fields to make sure they are logged even if they don't get edited
   // when adding observations
   useEffect(() => {
     const checkboxDefaults: { [key: string]: string } = {};
@@ -63,7 +64,9 @@ export default function AddObservation() {
       if (field.field_type === "checkbox") {
         checkboxDefaults[field.field_id] = "false";
       } else if (field.field_type === "time") {
-        const hours = (((new Date().getHours() + 11) % 12) + 1).toString().padStart(2, "0");
+        const hours = (((new Date().getHours() + 11) % 12) + 1)
+          .toString()
+          .padStart(2, "0");
         const minutes = new Date().getMinutes().toString().padStart(2, "0");
         const am_pm = new Date().getHours() >= 12 ? "PM" : "AM";
         timeDefaults[field.field_id] = `${hours}:${minutes} ${am_pm}`;
@@ -79,14 +82,6 @@ export default function AddObservation() {
     }));
   }, [fields]);
 
-  // ref https://tamagui.dev/ui/toast#single-toast 
-  const [open, setOpen] = useState(false);
-  const timerRef = useRef(0)
-
-  useEffect(() => {
-    return () => clearTimeout(timerRef.current)
-  }, []);
-
   const mapValuestoFieldData = (): FieldData => {
     const data = Object.entries(values).map(([field_id, value]) => ({
       field_id: parseInt(field_id, 10),
@@ -98,38 +93,49 @@ export default function AddObservation() {
   return (
     <SafeAreaView style={{ margin: 20, flex: 1 }}>
       <YStack flex={1} p="$2">
-        { Platform.OS === "web" ? (
-          <Button mt="$2"
+        {Platform.OS === "web" ? (
+          <Button
+            mt="$2"
             theme="blue_accent"
             icon={ChevronLeft}
             maxW={100}
-            onPress={() =>
-            router.back()}>
+            onPress={() => router.back()}
+          >
             Go Back
           </Button>
-          ) : (<></>)
-        }
+        ) : (
+          <></>
+        )}
         <H2 self="center" mb={"$4"}>
           Add Observation
         </H2>
         <Form
           flex={1}
           onSubmit={async () => {
+            const missingRequiredFields = getMissingRequiredFieldLabels(
+              fields,
+              values,
+            );
+            if (missingRequiredFields.length > 0) {
+              alert.show({
+                title: "Required fields missing",
+                message: `Please complete: ${missingRequiredFields.join(", ")}`,
+                buttons: [{ text: "OK" }],
+              });
+              return;
+            }
+
             const mappedData = mapValuestoFieldData();
             const result = await createObservationHandler(mappedData);
             if (result === 1) {
-              setOpen(false);
-              window.clearTimeout(timerRef.current);
-              timerRef.current = window.setTimeout(() => {
-                setOpen(true);
-              }, 150);
               useModalResults.getState().setResult("Observation recorded!");
               router.back();
             } else {
               // intended to handle unexpected server errors
               alert.show({
                 title: "Error",
-                message: "There was an error recording your observation. Please try again.",
+                message:
+                  "There was an error recording your observation. Please try again.",
                 buttons: [{ text: "OK" }],
               });
             }

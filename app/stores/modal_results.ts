@@ -7,6 +7,6 @@ type ModalResultsState = {
 };
 
 export const useModalResults = create<ModalResultsState>((set) => ({
-    result: null,
-    setResult: (result: string | null) => set({ result }),
+  result: null,
+  setResult: (result: string | null) => set({ result }),
 }));

@@ -28,8 +28,7 @@ const appStyles = StyleSheet.create({
     alignItems: "center",
     zIndex: 999,
   },
-  }
-);
+});
 
 const projectStyles = StyleSheet.create({
   page: {

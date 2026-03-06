@@ -41,7 +41,7 @@ export default function ObservationsScreen() {
         }
       };
       loadObservations();
-    }, [])
+    }, []),
   );
 
   // pull observation list from zustand store
@@ -112,18 +112,15 @@ export default function ObservationsScreen() {
             )}
           />
         </Accordion>
-        { /* Toast for add and save confirmation messages */ }
-        <View
-          pointerEvents="box-none"
-          style={appStyles.toast}
-        >
+        {/* Toast for add and save confirmation messages */}
+        <View pointerEvents="box-none" style={appStyles.toast}>
           <Toast
             visible={modalResult !== null}
             position="bottom"
             text={modalResult as string}
             duration={1000}
             setVisible={() => useModalResults.getState().setResult(null)}
-            />
+          />
         </View>
       </View>
     </SafeAreaView>

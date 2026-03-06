@@ -1,6 +1,14 @@
 // handles creating or updating observations in the project
-import { useSyncStatus, useOfflineQueue, useConnectionStatus, OfflineRequest } from "@/app/stores/offline_queue";
-import { useObservationInfo, CompletedField } from "@/app/stores/observation_info";
+import {
+  useSyncStatus,
+  useOfflineQueue,
+  useConnectionStatus,
+  OfflineRequest,
+} from "@/app/stores/offline_queue";
+import {
+  useObservationInfo,
+  CompletedField,
+} from "@/app/stores/observation_info";
 import { useProjectInfo, useStudentID } from "../app/stores/project_info";
 import fetchObservationList from "./fetch_observation_list";
 
@@ -21,7 +29,9 @@ type ObservationRequestBody = {
   field_data: Record<string, string>;
 };
 
-function buildObservationRequestBody(fieldData: FieldData): ObservationRequestBody {
+function buildObservationRequestBody(
+  fieldData: FieldData,
+): ObservationRequestBody {
   const studentID = useStudentID.getState().studentID;
   return {
     student_id: studentID,
@@ -52,9 +62,12 @@ async function createObservationHandler(fieldData: FieldData) {
 
   result = (await createObservation(requestBody)) as number;
   return result;
-};
+}
 
-async function updateObservationHandler(observationId: number, fieldData: FieldData) {
+async function updateObservationHandler(
+  observationId: number,
+  fieldData: FieldData,
+) {
   const syncStatus = useSyncStatus.getState().isSyncing;
   const isConnected = useConnectionStatus.getState().isConnected;
   const requestBody = buildObservationRequestBody(fieldData);
@@ -67,7 +80,7 @@ async function updateObservationHandler(observationId: number, fieldData: FieldD
       // observation was created offline - find and replace in queue by localObservationId
       const queue = useOfflineQueue.getState().queue;
       const index = queue.findIndex(
-        (item) => item.localObservationId === observationId
+        (item) => item.localObservationId === observationId,
       );
       // if observation is found, replace with updated data
       if (index >= 0) {
@@ -89,20 +102,20 @@ async function updateObservationHandler(observationId: number, fieldData: FieldD
     offlineObsListUpdate(observationId, fieldData);
     return 1;
 
-  // online and not syncing
+    // online and not syncing
   } else if (isConnected && !syncStatus) {
     const response = await updateObservation(observationId, requestBody);
     return response as number;
 
-  // syncing and connected (rare case)
+    // syncing and connected (rare case)
   } else {
     console.log("Currently syncing, logging offline request");
 
     if (observationId < 0) {
-      // observation was created offline 
+      // observation was created offline
       const queue = useOfflineQueue.getState().queue;
       const index = queue.findIndex(
-        (item) => item.localObservationId === observationId
+        (item) => item.localObservationId === observationId,
       );
       // if observation is found, replace with updated data
       if (index >= 0) {
@@ -124,7 +137,7 @@ async function updateObservationHandler(observationId: number, fieldData: FieldD
     offlineObsListUpdate(observationId, fieldData);
     return 1;
   }
-};
+}
 
 // logic to create an observation or log an offline request if no connection
 async function createObservation(requestBody: ObservationRequestBody) {
@@ -155,10 +168,13 @@ async function createObservation(requestBody: ObservationRequestBody) {
     return 2;
   }
   return 1;
-};
+}
 
 // logic to update an observation or log an offline request if no connection
-async function updateObservation(observationId: number, requestBody: ObservationRequestBody) {
+async function updateObservation(
+  observationId: number,
+  requestBody: ObservationRequestBody,
+) {
   const projectID = useProjectInfo.getState().projectID;
   const URL = `${URL_BASE}/${projectID}/observations/${observationId}`;
 
@@ -186,7 +202,7 @@ async function updateObservation(observationId: number, requestBody: Observation
     return 2;
   }
   return 1;
-};
+}
 
 // offline observation create
 const offlineObsListCreate = (fieldData: FieldData, tempId: number) => {
@@ -215,7 +231,7 @@ const offlineObsListUpdate = (observationId: number, fieldData: FieldData) => {
     student_name: studentID,
     field_data: buildCompletedFields(fieldData),
     // remove trailing Z to match server format
-    submitted_at: new Date().toISOString().slice(0, -1), 
+    submitted_at: new Date().toISOString().slice(0, -1),
   });
 };
 
@@ -223,7 +239,7 @@ const offlineObsListUpdate = (observationId: number, fieldData: FieldData) => {
 function logOfflineRequest(request: OfflineRequest) {
   const { appendQueueItem } = useOfflineQueue.getState();
   appendQueueItem(request);
-};
+}
 
 // helper to build CompletedField[] from FieldData using project field definitions
 function buildCompletedFields(fieldData: FieldData): CompletedField[] {
@@ -243,4 +259,11 @@ function buildCompletedFields(fieldData: FieldData): CompletedField[] {
   });
 }
 
-export { createObservationHandler, updateObservationHandler, createObservation, updateObservation, FieldData, ObservationRequestBody };
+export {
+  createObservationHandler,
+  updateObservationHandler,
+  createObservation,
+  updateObservation,
+  FieldData,
+  ObservationRequestBody,
+};
