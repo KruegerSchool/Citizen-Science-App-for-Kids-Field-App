@@ -15,7 +15,11 @@ type Props = {
   onChange: (vals: string[]) => void;
 };
 
-function MultiCheckboxField({ options, value, onChange }: Props) {
+export default function MultiCheckboxField({
+  options,
+  value,
+  onChange,
+}: Props) {
   const toggle = (val: string) => {
     if (value.includes(val)) {
       onChange(value.filter((v) => v !== val));
@@ -49,4 +53,4 @@ function MultiCheckboxField({ options, value, onChange }: Props) {
   );
 }
 
-export { MultiCheckboxField, Option };
+export { Option };

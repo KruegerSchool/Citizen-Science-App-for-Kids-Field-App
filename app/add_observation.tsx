@@ -3,30 +3,45 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { FlatList } from "react-native";
+import { FlatList, Platform } from "react-native";
 import DynamicInput from "./components/DynamicInput";
 import { useProjectInfo, Field } from "./stores/project_info";
 import { Button, H2, Form, YStack } from "tamagui";
 import {
-  createObservation,
+  createObservationHandler,
   FieldData,
 } from "../utility_functions/create_update_observation";
+import { getMissingRequiredFieldLabels } from "../utility_functions/required_fields";
+import { ChevronLeft } from "@tamagui/lucide-icons";
+import fetchProjectInfo from "../utility_functions/fetch_project";
+import { alert } from "react-native-alert-queue";
+import { useModalResults } from "./stores/modal_results";
 
 export default function AddObservation() {
   const router = useRouter();
 
-  // Track values for each field per https://react.dev/reference/react/useState
+  // pulls latest fields when adding an observation
+  useEffect(() => {
+    // fetch latest project info
+    const loadProjectInfo = async () => {
+      try {
+        await fetchProjectInfo(useProjectInfo.getState().projectCode);
+      } catch (e) {
+        console.error("Failed to load project info: ", e);
+      }
+    };
+    loadProjectInfo();
+  }, []);
+
+  // Track values for each field ref https://react.dev/reference/react/useState
   const [values, setValues] = useState<{ [key: string]: string | string[] }>(
     {},
   );
-
-  // handles changes to field values
   const handleChange = (field_id: string, value: string | string[]) => {
     setValues((prev) => ({
       ...prev,
       [field_id]: value,
     }));
-    console.log(`Field ID: ${field_id}, Value: ${value}`);
   };
 
   const renderItem = ({ item }: { item: Field }) => (
@@ -39,7 +54,8 @@ export default function AddObservation() {
 
   const fields = useProjectInfo((state) => state.fields);
 
-  // default certain fields to make sure they are logged if they don't get edited when adding observations
+  // default certain fields to make sure they are logged even if they don't get edited
+  // when adding observations
   useEffect(() => {
     const checkboxDefaults: { [key: string]: string } = {};
     const timeDefaults: { [key: string]: string } = {};
@@ -77,18 +93,51 @@ export default function AddObservation() {
   return (
     <SafeAreaView style={{ margin: 20, flex: 1 }}>
       <YStack flex={1} p="$2">
+        {Platform.OS === "web" ? (
+          <Button
+            mt="$2"
+            theme="blue_accent"
+            icon={ChevronLeft}
+            maxW={100}
+            onPress={() => router.back()}
+          >
+            Go Back
+          </Button>
+        ) : (
+          <></>
+        )}
         <H2 self="center" mb={"$4"}>
           Add Observation
         </H2>
         <Form
           flex={1}
           onSubmit={async () => {
+            const missingRequiredFields = getMissingRequiredFieldLabels(
+              fields,
+              values,
+            );
+            if (missingRequiredFields.length > 0) {
+              alert.show({
+                title: "Required fields missing",
+                message: `Please complete: ${missingRequiredFields.join(", ")}`,
+                buttons: [{ text: "OK" }],
+              });
+              return;
+            }
+
             const mappedData = mapValuestoFieldData();
-            const result = await createObservation(mappedData);
+            const result = await createObservationHandler(mappedData);
             if (result === 1) {
+              useModalResults.getState().setResult("Observation recorded!");
               router.back();
             } else {
-              console.log("Failed to create observation");
+              // intended to handle unexpected server errors
+              alert.show({
+                title: "Error",
+                message:
+                  "There was an error recording your observation. Please try again.",
+                buttons: [{ text: "OK" }],
+              });
             }
           }}
         >

@@ -24,7 +24,7 @@ interface CompletedField {
 interface Observation {
   observation_id: number;
   project_id: number;
-  student_id: number;
+  student_id: string;
   student_name: string;
   field_data: CompletedField[];
   submitted_at: string;
@@ -35,6 +35,7 @@ interface ObservationStore {
   observations: Observation[];
   setObservationData: (info: Observation[]) => void;
   appendObservationData: (info: Observation) => void;
+  updateObservationData: (info: Observation) => void;
   reset: () => void;
 }
 
@@ -45,11 +46,17 @@ const useObservationInfo = create<ObservationStore>()(
       observations: [],
       setObservationData: (info: Observation[]) =>
         set({
-          observations: info,
+          observations: Array.isArray(info) ? info : [],
         }),
       appendObservationData: (info: Observation) =>
         set((state) => ({
           observations: [...state.observations, info],
+        })),
+      updateObservationData: (info: Observation) =>
+        set((state) => ({
+          observations: state.observations.map((obs) =>
+            obs.observation_id === info.observation_id ? info : obs,
+          ),
         })),
       reset: () => {
         set(useObservationInfo.getInitialState());

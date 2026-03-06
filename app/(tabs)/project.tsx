@@ -2,15 +2,28 @@
  * Project details screen. Allows user to join a project by
  * using a project code.
  */
-import React from "react";
+import React, { useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { H2, H4, Card, YStack, Paragraph } from "tamagui";
 import { useProjectInfo } from "../stores/project_info";
+import fetchProjectInfo from "../../utility_functions/fetch_project";
 
-// project details screen for the app
-// displays information about the project goals, and data collection
-// requirements
 export default function ProjectScreen() {
+  // on screen focus reload project info from backend
+  useFocusEffect(
+    useCallback(() => {
+      const loadObservations = async () => {
+        try {
+          await fetchProjectInfo(useProjectInfo.getState().projectCode);
+        } catch (e) {
+          console.error("Failed to load project info: ", e);
+        }
+      };
+      loadObservations();
+    }, []),
+  );
+
   const projectTitle = useProjectInfo((state) => state.projectTitle);
   const projectDescription = useProjectInfo(
     (state) => state.projectDescription,

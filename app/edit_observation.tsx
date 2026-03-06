@@ -4,16 +4,19 @@
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState } from "react";
-import { FlatList } from "react-native";
+import { FlatList, Platform } from "react-native";
 import DynamicEditInput from "./components/DynamicEdit";
 import { useProjectInfo, Field } from "./stores/project_info";
 import { useObservationInfo } from "./stores/observation_info";
 import { Button, H2, Form, YStack, Paragraph } from "tamagui";
+import { alert } from "react-native-alert-queue";
 import {
-  updateObservation,
   FieldData,
+  updateObservationHandler,
 } from "../utility_functions/create_update_observation";
+import { getMissingRequiredFieldLabels } from "../utility_functions/required_fields";
 import { ChevronLeft } from "@tamagui/lucide-icons";
+import { useModalResults } from "./stores/modal_results";
 
 export default function EditObservation() {
   const router = useRouter();
@@ -21,14 +24,14 @@ export default function EditObservation() {
     observation_id: string;
   }>();
 
-  // look up the observation from the zustand store
+  // look up the observation
   const observation = useObservationInfo((state) =>
     state.observations.find(
       (obs) => obs.observation_id.toString() === observation_id,
     ),
   );
 
-  // build initial values from the existing observation field data
+  // populate initial values from the existing observation field data
   const initialValues = (() => {
     if (!observation) return {};
     const init: { [key: string]: string | string[] } = {};
@@ -51,8 +54,6 @@ export default function EditObservation() {
   const [values, setValues] = useState<{ [key: string]: string | string[] }>(
     initialValues,
   );
-
-  // handles changes to field values
   const handleChange = (field_id: string, value: string | string[]) => {
     setValues((prev) => ({
       ...prev,
@@ -85,9 +86,13 @@ export default function EditObservation() {
       <SafeAreaView style={{ margin: 20, flex: 1 }}>
         <YStack flex={1} p="$2" items="center" justify="center">
           <Paragraph size="$5">Observation not found.</Paragraph>
-          <Button mt="$4" theme="blue_accent" onPress={() => router.back()}>
-            Go Back
-          </Button>
+          {Platform.OS === "web" ? (
+            <Button mt="$4" theme="blue_accent" onPress={() => router.back()}>
+              Go Back
+            </Button>
+          ) : (
+            <></>
+          )}
         </YStack>
       </SafeAreaView>
     );
@@ -96,31 +101,55 @@ export default function EditObservation() {
   return (
     <SafeAreaView style={{ margin: 20, flex: 1 }}>
       <YStack flex={1} p="$2">
-        {/* TODO: consider absolute positioning this to avoid extra space at top of modal */}
-        <Button
-          size="$3"
-          theme="blue_accent"
-          icon={ChevronLeft}
-          self="flex-start"
-          circular
-          mb="$2"
-          onPress={() => router.back()}
-        ></Button>
+        {/* Only show back button on web */}
+        {Platform.OS === "web" ? (
+          <Button
+            mt="$2"
+            theme="blue_accent"
+            maxW={100}
+            icon={ChevronLeft}
+            onPress={() => router.back()}
+          >
+            Go Back
+          </Button>
+        ) : (
+          <></>
+        )}
         <H2 self="center" mb={"$4"}>
           Edit Observation
         </H2>
         <Form
           flex={1}
           onSubmit={async () => {
-            const mappedData = mapValuestoFieldData();
-            const result = await updateObservation(
-              parseInt(observation_id as string, 10),
-              mappedData,
+            const missingRequiredFields = getMissingRequiredFieldLabels(
+              fields,
+              values,
             );
-            if (result === 1) {
-              router.back();
-            } else {
-              console.log("Failed to update observation");
+            if (missingRequiredFields.length > 0) {
+              alert.show({
+                title: "Required fields missing",
+                message: `Please complete: ${missingRequiredFields.join(", ")}`,
+                buttons: [{ text: "OK" }],
+              });
+              return;
+            }
+
+            const updateCheck: boolean = await alert.confirm({
+              message: `Updating this observation will overwrite any values that have been changed. Are you sure you want to continue?`,
+            });
+            if (updateCheck) {
+              const mappedData = mapValuestoFieldData();
+              const result = await updateObservationHandler(
+                parseInt(observation_id as string, 10),
+                mappedData,
+              );
+              console.log("Update result: ", result);
+              if (result === 1) {
+                useModalResults.getState().setResult("Observation updated!");
+                router.back();
+              } else {
+                console.log("Failed to update observation");
+              }
             }
           }}
         >

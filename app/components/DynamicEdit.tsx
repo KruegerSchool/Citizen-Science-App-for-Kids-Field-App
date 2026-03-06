@@ -11,11 +11,12 @@ import {
   Checkbox,
   RadioGroup,
   Paragraph,
+  Text,
 } from "tamagui";
 import { Calendar } from "react-native-calendars";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import WebTimePicker from "./WebTimePicker";
-import { MultiCheckboxField, Option } from "./GroupCheckbox";
+import MultiCheckboxField, { Option } from "./GroupCheckbox";
 import { Field } from "../stores/project_info";
 import RadioItem from "./RadioItem";
 import { Check as CheckIcon } from "@tamagui/lucide-icons";
@@ -34,7 +35,12 @@ interface InputProps {
 // correctly pre-load existing values for editing
 const DynamicEditInput = ({ field, value, onChange }: InputProps) => {
   const renderLabel = () => {
-    return <Label style={{ marginTop: 15 }}>{field.field_label}</Label>;
+    return (
+      <Label style={{ marginTop: 15 }}>
+        {field.field_label}
+        {field.field_required ? <Text color="$red10"> *</Text> : null}
+      </Label>
+    );
   };
 
   // helps to map array of strings to label/value options in checkbox group
