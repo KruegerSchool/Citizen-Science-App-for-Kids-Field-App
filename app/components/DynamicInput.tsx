@@ -13,7 +13,7 @@ import {
 } from "tamagui";
 import { Calendar } from "react-native-calendars";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { MultiCheckboxField, Option } from "./GroupCheckbox";
+import MultiCheckboxField, { Option } from "./GroupCheckbox";
 import { Field } from "../stores/project_info";
 import RadioItem from "./RadioItem";
 import { Check as CheckIcon } from "@tamagui/lucide-icons";

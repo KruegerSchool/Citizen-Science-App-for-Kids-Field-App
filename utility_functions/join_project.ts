@@ -27,7 +27,7 @@ const joinProject = async (code: string) => {
     message: `Joining project with code: ${code}.`,
   });
 
-  // set to joining status
+  // set to joining status for spinner display
   useProjectJoinStatus.getState().setJoinStatus("joining");
 
   if (!result) {
@@ -35,20 +35,18 @@ const joinProject = async (code: string) => {
     return;
   }
 
+  // join project and fetch data then show as joined
   try {
-    // fetch project data first — only save if successful
     await fetchProject(code);
+    await fetchObservationList();
     useProjectJoinStatus.getState().setJoinStatus("joined");
-    console.log("fetching observation list...");
-    // fetch current observation list
-    fetchObservationList();
   } catch (e) {
     console.error("Failed to join project: ", e);
     useProjectJoinStatus.getState().setJoinStatus("");
     alert.show({
       title: "Error",
       message:
-        "Failed to join the project. Please confirm the project code and try again.",
+        "Failed to join the project. Please confirm the project code is correct and try again.",
       buttons: [{ text: "OK" }],
     });
   }

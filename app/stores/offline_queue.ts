@@ -18,11 +18,24 @@ type ConnectionActions = {
   setIsConnected: (status: boolean) => void;
 };
 
-// creates types for offline queue
+type SyncStatus = {
+  isSyncing: boolean;
+};
+
+type SyncActions = {
+  setIsSyncing: (status: boolean) => void;
+};
+
+type ObservationRequestBody = {
+  student_id: string;
+  field_data: Record<string, string>;
+};
+
 type OfflineRequest = {
   method: string;
   endpoint: string;
-  data: object[];
+  data: ObservationRequestBody; // changed from object[]
+  localObservationId?: number;
 };
 
 type OfflineQueue = {
@@ -33,6 +46,7 @@ type OfflineQueue = {
 type OfflineQueueActions = {
   appendQueueItem: (request: OfflineRequest) => void;
   popQueueItem: () => void;
+  replaceQueueItem: (index: number, request: OfflineRequest) => void;
 };
 
 // create store for connection status, null by default
@@ -43,6 +57,12 @@ const useConnectionStatus = create<ConnectionState & ConnectionActions>(
   }),
 );
 
+// create store for sync status, false by default (not persisted - runtime only)
+const useSyncStatus = create<SyncStatus & SyncActions>((set) => ({
+  isSyncing: false,
+  setIsSyncing: (status: boolean) => set({ isSyncing: status }),
+}));
+
 // create store for offline queue, empty by default, with persistence
 const useOfflineQueue = create<OfflineQueue & OfflineQueueActions>()(
   persist(
@@ -51,6 +71,10 @@ const useOfflineQueue = create<OfflineQueue & OfflineQueueActions>()(
       appendQueueItem: (request: OfflineRequest) =>
         set((state) => ({ queue: [...state.queue, request] })),
       popQueueItem: () => set((state) => ({ queue: state.queue.slice(1) })),
+      replaceQueueItem: (index: number, request: OfflineRequest) =>
+        set((state) => ({
+          queue: state.queue.map((item, i) => (i === index ? request : item)),
+        })),
     }),
     {
       name: "offline-queue-storage",
@@ -59,4 +83,4 @@ const useOfflineQueue = create<OfflineQueue & OfflineQueueActions>()(
   ),
 );
 
-export { useConnectionStatus, useOfflineQueue };
+export { useConnectionStatus, useOfflineQueue, useSyncStatus, OfflineRequest };

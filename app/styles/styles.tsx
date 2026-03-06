@@ -15,7 +15,21 @@ const appStyles = StyleSheet.create({
     alignItems: "flex-start",
     margin: 10,
   },
-});
+  alertHost: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 9999,
+    elevation: 9999,
+  },
+  toast: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    alignItems: "center",
+    zIndex: 999,
+  },
+  }
+);
 
 const projectStyles = StyleSheet.create({
   page: {
