@@ -8,6 +8,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { H2, H4, Card, YStack, Paragraph } from "tamagui";
 import { useProjectInfo } from "../stores/project_info";
 import fetchProjectInfo from "../../utility_functions/fetch_project";
+import { projectStyles } from "../styles/styles";
 
 export default function ProjectScreen() {
   // on screen focus reload project info from backend
@@ -33,7 +34,7 @@ export default function ProjectScreen() {
   );
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={projectStyles.page}>
       <YStack gap={"$2"} p={8} width={"100%"} flex={1}>
         <Card theme={"blue_accent"} p={10} boxShadow="0 3px 5px grey">
           <H2 self="center">{projectTitle || "Project Title"}</H2>
