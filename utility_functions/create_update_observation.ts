@@ -26,25 +26,40 @@ const URL_BASE = "https://csafk-277534145495.us-east4.run.app/api/projects";
 // observation handlers
 type ObservationRequestBody = {
   student_id: string;
+  student_name?: string;
+  latitude?: number;
+  longitude?: number;
   field_data: Record<string, string>;
+};
+
+type ObservationMetadata = {
+  latitude?: number;
+  longitude?: number;
 };
 
 function buildObservationRequestBody(
   fieldData: FieldData,
+  metadata?: ObservationMetadata,
 ): ObservationRequestBody {
   const studentID = useStudentID.getState().studentID;
   return {
     student_id: studentID,
+    student_name: studentID,
+    latitude: metadata?.latitude,
+    longitude: metadata?.longitude,
     field_data: Object.fromEntries(
       fieldData.data.map((field) => [field.field_id.toString(), field.value]),
     ),
   };
 }
 
-async function createObservationHandler(fieldData: FieldData) {
+async function createObservationHandler(
+  fieldData: FieldData,
+  metadata?: ObservationMetadata,
+) {
   const syncStatus = useSyncStatus.getState().isSyncing;
   const isConnected = useConnectionStatus.getState().isConnected;
-  const requestBody = buildObservationRequestBody(fieldData);
+  const requestBody = buildObservationRequestBody(fieldData, metadata);
   let result: number;
 
   // treat null and false as offline
@@ -67,10 +82,11 @@ async function createObservationHandler(fieldData: FieldData) {
 async function updateObservationHandler(
   observationId: number,
   fieldData: FieldData,
+  metadata?: ObservationMetadata,
 ) {
   const syncStatus = useSyncStatus.getState().isSyncing;
   const isConnected = useConnectionStatus.getState().isConnected;
-  const requestBody = buildObservationRequestBody(fieldData);
+  const requestBody = buildObservationRequestBody(fieldData, metadata);
 
   // offline (treat null as offline too)
   if (!isConnected) {
@@ -143,6 +159,8 @@ async function updateObservationHandler(
 async function createObservation(requestBody: ObservationRequestBody) {
   const projectID = useProjectInfo.getState().projectID;
   const URL = `${URL_BASE}/${projectID}/observations`;
+
+  console.log("Create observation payload:", requestBody);
 
   const response = await fetch(URL, {
     method: "POST",
@@ -265,5 +283,6 @@ export {
   createObservation,
   updateObservation,
   FieldData,
+  ObservationMetadata,
   ObservationRequestBody,
 };

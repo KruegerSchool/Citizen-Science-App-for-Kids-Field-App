@@ -32,6 +32,12 @@
       "favicon": "./assets/images/laboratory.png"
     },
     "plugins": [
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Allow $(PRODUCT_NAME) to access your location while you are using the app."
+        }
+      ],
       "expo-router",
       [
         "expo-splash-screen",
