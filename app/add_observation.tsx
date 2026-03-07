@@ -6,16 +6,27 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { FlatList, Platform } from "react-native";
 import DynamicInput from "./components/DynamicInput";
 import { useProjectInfo, Field } from "./stores/project_info";
-import { Button, H2, Form, YStack } from "tamagui";
+import {
+  Button,
+  H2,
+  Form,
+  YStack,
+  Switch,
+  XStack,
+  Label,
+  Separator,
+} from "tamagui";
 import {
   createObservationHandler,
   FieldData,
+  ObservationMetadata,
 } from "../utility_functions/create_update_observation";
 import { getMissingRequiredFieldLabels } from "../utility_functions/required_fields";
 import { ChevronLeft } from "@tamagui/lucide-icons";
 import fetchProjectInfo from "../utility_functions/fetch_project";
 import { alert } from "react-native-alert-queue";
 import { useModalResults } from "./stores/modal_results";
+import { getCurrentCoordinates } from "../utility_functions/geolocation_tagging";
 
 export default function AddObservation() {
   const router = useRouter();
@@ -37,6 +48,8 @@ export default function AddObservation() {
   const [values, setValues] = useState<{ [key: string]: string | string[] }>(
     {},
   );
+  const [includeLocation, setIncludeLocation] = useState<boolean>(false);
+
   const handleChange = (field_id: string, value: string | string[]) => {
     setValues((prev) => ({
       ...prev,
@@ -82,8 +95,10 @@ export default function AddObservation() {
     }));
   }, [fields]);
 
-  const mapValuestoFieldData = (): FieldData => {
-    const data = Object.entries(values).map(([field_id, value]) => ({
+  const mapValuestoFieldData = (
+    formValues: Record<string, string | string[]>,
+  ): FieldData => {
+    const data = Object.entries(formValues).map(([field_id, value]) => ({
       field_id: parseInt(field_id, 10),
       value: Array.isArray(value) ? value.join(",") : value,
     }));
@@ -112,6 +127,26 @@ export default function AddObservation() {
         <Form
           flex={1}
           onSubmit={async () => {
+            let locationMetadata: ObservationMetadata | undefined;
+
+            if (includeLocation) {
+              try {
+                const coordinates = await getCurrentCoordinates();
+                locationMetadata = {
+                  latitude: coordinates.latitude,
+                  longitude: coordinates.longitude,
+                };
+              } catch {
+                alert.show({
+                  title: "Location unavailable",
+                  message:
+                    "Unable to get your location. Please check permissions and try again.",
+                  buttons: [{ text: "OK" }],
+                });
+                return;
+              }
+            }
+
             const missingRequiredFields = getMissingRequiredFieldLabels(
               fields,
               values,
@@ -125,8 +160,11 @@ export default function AddObservation() {
               return;
             }
 
-            const mappedData = mapValuestoFieldData();
-            const result = await createObservationHandler(mappedData);
+            const mappedData = mapValuestoFieldData(values);
+            const result = await createObservationHandler(
+              mappedData,
+              locationMetadata,
+            );
             if (result === 1) {
               useModalResults.getState().setResult("Observation recorded!");
               router.back();
@@ -151,6 +189,26 @@ export default function AddObservation() {
             automaticallyAdjustKeyboardInsets={true}
             style={{ flex: 1 }}
           />
+          <XStack style={{ alignItems: "center" }} mt={"$2"}>
+            <Label pr="$0" minW={90} justify="flex-end" size={"$3"}>
+              Include Location?
+            </Label>
+            <Separator vertical mx="$2" />
+            <Switch
+              transition="300ms"
+              size={"$3"}
+              checked={includeLocation}
+              onCheckedChange={(checked) =>
+                setIncludeLocation(Boolean(checked))
+              }
+              activeStyle={{
+                backgroundColor: "$green10",
+              }}
+            >
+              <Switch.Thumb transition="quickest" />
+            </Switch>
+          </XStack>
+
           <Form.Trigger asChild>
             <Button mt={"$4"} mb={"$4"} theme="blue_accent">
               Record Observation

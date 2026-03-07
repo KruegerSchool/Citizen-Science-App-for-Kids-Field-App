@@ -57,6 +57,11 @@ type ProjectActions = {
   reset: () => void;
 };
 
+type locationStore = {
+  granted: boolean;
+  setGranted: (status: boolean) => void;
+};
+
 // create store for project information, empty by default, with persistence
 const useProjectInfo = create<ProjectInfo & ProjectActions>()(
   persist(
@@ -116,4 +121,23 @@ const useProjectJoinStatus = create<ProjectJoinStatus>()(
   ),
 );
 
-export { useProjectInfo, useStudentID, useProjectJoinStatus, Field };
+const useLocationStore = create<locationStore>()(
+  persist(
+    (set) => ({
+      granted: false,
+      setGranted: (status: boolean) => set({ granted: status }),
+    }),
+    {
+      name: "location_store_storage",
+      storage: createJSONStorage(() => AsyncStorage),
+    },
+  ),
+);
+
+export {
+  useProjectInfo,
+  useStudentID,
+  useProjectJoinStatus,
+  useLocationStore,
+  Field,
+};

@@ -28,6 +28,9 @@ type SyncActions = {
 
 type ObservationRequestBody = {
   student_id: string;
+  student_name?: string;
+  latitude?: number;
+  longitude?: number;
   field_data: Record<string, string>;
 };
 
