@@ -30,8 +30,15 @@ For the fastest way to get started with this app, visit the [web hosted version]
 
 ## Test Project
 
-To test the Field App, a project is required. If you do not want to create one through the Admin Website, you can use the following project code to test adding and editing observations. Please note that if you choose to include the location information with an observation, it will be stored in the backend database. This can be deleted via the Admin Website but this is not as straightfoward in the provided test project as it will require messaging me directly.
+To test the Field App, a project code is required. If you do not want to create one through the Admin Website, you can use the following project code to test adding and editing observations. Please note that if you choose to include the location information with an observation, it will be stored in the backend database. This can be deleted via the Admin Website but this is not as straightfoward in the provided test project as it will require messaging me directly.
 
 #### Test Project Code: LDMJHDJM
 
 #### Admin Website [Hosted Link](https://citizen-science-app-for-kids-admin.vercel.app/) | [GitHub Repository](https://github.com/ekacala/Citizen-Science-App-for-Kids---Admin-Website-Frontend)
+
+Creating an account on the Admin Website will generate a project code for you to test in the Field App. By doing this, you have control over deleting observations or the entire project when you are finished.
+
+## Additional Notes:
+- In order to test filter functionality, you will need to access the Field App via two different devices (Expo Go Mobile & Web) or you can access on the web and clear the persistent storage in the browser before refreshing the app.
+
+<img src="./readme_assets/clear_persistence_screenshot.png" alt="Clear Persistence Screenshot">
