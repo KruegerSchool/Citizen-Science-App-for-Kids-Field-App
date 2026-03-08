@@ -17,11 +17,10 @@ export default function TabLayout() {
           lineHeight: 12,
         },
         tabBarInactiveTintColor: "#EEEEEE",
-        tabBarActiveTintColor: "#e88870",
+        tabBarActiveTintColor: "#e59a87",
         tabBarAllowFontScaling: true,
         tabBarHideOnKeyboard: true,
-        tabBarStyle: { backgroundColor: "#4A6161" },
-        ...(Platform.OS === "web" ? { tabBarIconStyle: { marginTop: -2, marginBottom: 2 } } : {}),
+        tabBarStyle: { backgroundColor: "#4A6161", justifyContent: "center" },
       }}
     >
       {/* TODO investigate custom tabs to allow for disabling before project code is entered */}

@@ -1,5 +1,4 @@
 // handles syncing of offline queue when connection is back
-
 import { useOfflineQueue, useSyncStatus } from "../app/stores/offline_queue";
 import { useObservationInfo } from "../app/stores/observation_info";
 import {

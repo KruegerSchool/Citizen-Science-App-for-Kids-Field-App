@@ -7,13 +7,12 @@ import {
   XStack,
   XGroup,
   Button,
-  Separator,
   H2,
   View,
 } from "tamagui";
 import { useFocusEffect } from "@react-navigation/native";
 import { useObservationInfo } from "../stores/observation_info";
-import { useStudentID } from "../stores/project_info";
+import { useProjectInfo, useStudentID } from "../stores/project_info";
 import ObservationList from "../components/ObservationList";
 import { Plus, ListFilter } from "@tamagui/lucide-icons";
 import fetchObservationList from "@/utility_functions/fetch_observation_list";
@@ -40,7 +39,9 @@ export default function ObservationsScreen() {
           console.error("Failed to load observations: ", e);
         }
       };
-      loadObservations();
+      if (useProjectInfo.getState().projectCode) {
+        loadObservations();
+      }
     }, []),
   );
 
@@ -71,7 +72,9 @@ export default function ObservationsScreen() {
               <XGroup.Item>
                 <Button
                   size="$2.5"
-                  theme={filterMine ? "blue_accent" : "blue"}
+                  bg={filterMine ? "#E05B3A" : "#EbA18FE0"}
+                  color={filterMine ? "#EEEEEE" : "#000000"}
+                  style={{ alignItems: "center", justifyContent: "center" }}
                   onPress={() => setFilterMine(true)}
                 >
                   Only Mine
@@ -80,7 +83,9 @@ export default function ObservationsScreen() {
               <XGroup.Item>
                 <Button
                   size="$2.5"
-                  theme={filterMine ? "blue" : "blue_accent"}
+                  bg={filterMine ? "#EbA18FE0" : "#E05B3A"}
+                  color={filterMine ? "#000000" : "#EEEEEE"}
+                  style={{ alignItems: "center", justifyContent: "center" }}
                   onPress={() => setFilterMine(false)}
                 >
                   All
@@ -92,7 +97,9 @@ export default function ObservationsScreen() {
           {/* add obs */}
           <Button
             size="$2.5"
-            theme="blue_accent"
+            bg={"#E05B3A"}
+            color={"#EEEEEE"}
+            style={{ alignItems: "center", justifyContent: "center" }}
             icon={Plus}
             onPress={() => router.push("/add_observation")}
           >

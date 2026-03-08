@@ -4,7 +4,7 @@
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState } from "react";
-import { FlatList, Platform } from "react-native";
+import { FlatList, Platform, View } from "react-native";
 import DynamicEditInput from "./components/DynamicEdit";
 import { useProjectInfo, Field } from "./stores/project_info";
 import { useObservationInfo } from "./stores/observation_info";
@@ -17,6 +17,7 @@ import {
 import { getMissingRequiredFieldLabels } from "../utility_functions/required_fields";
 import { ChevronLeft } from "@tamagui/lucide-icons";
 import { useModalResults } from "./stores/modal_results";
+import { observationStyles } from "./styles/styles";
 
 export default function EditObservation() {
   const router = useRouter();
@@ -87,7 +88,7 @@ export default function EditObservation() {
         <YStack flex={1} p="$2" items="center" justify="center">
           <Paragraph size="$5">Observation not found.</Paragraph>
           {Platform.OS === "web" ? (
-            <Button mt="$4" theme="blue_accent" onPress={() => router.back()}>
+            <Button mt="$4" bg={"#E05B3A"} color={"#EEEEEE"} onPress={() => router.back()}>
               Go Back
             </Button>
           ) : (
@@ -99,77 +100,80 @@ export default function EditObservation() {
   }
 
   return (
-    <SafeAreaView style={{ margin: 20, flex: 1 }}>
-      <YStack flex={1} p="$2">
-        {/* Only show back button on web */}
-        {Platform.OS === "web" ? (
-          <Button
-            size={"$2"}
-            theme="blue_accent"
-            maxW={100}
-            icon={ChevronLeft}
-            onPress={() => router.back()}
-          >
-          Back
-          </Button>
-        ) : (
-          <></>
-        )}
-        <H2 self="center" mb={"$4"}>
-          Edit Observation
-        </H2>
-        <Form
-          flex={1}
-          onSubmit={async () => {
-            const missingRequiredFields = getMissingRequiredFieldLabels(
-              fields,
-              values,
-            );
-            if (missingRequiredFields.length > 0) {
-              alert.show({
-                title: "Required fields missing",
-                message: `Please complete: ${missingRequiredFields.join(", ")}`,
-                buttons: [{ text: "OK" }],
-              });
-              return;
-            }
-
-            const updateCheck: boolean = await alert.confirm({
-              message: `Updating this observation will overwrite any values that have been changed. Are you sure you want to continue?`,
-            });
-            if (updateCheck) {
-              const mappedData = mapValuestoFieldData();
-              const result = await updateObservationHandler(
-                parseInt(observation_id as string, 10),
-                mappedData,
-              );
-              console.log("Update result: ", result);
-              if (result === 1) {
-                useModalResults.getState().setResult("Observation updated!");
-                router.back();
-              } else {
-                console.log("Failed to update observation");
-              }
-            }
-          }}
-        >
-          <FlatList
-            data={fields}
-            keyExtractor={(item: Field) => item.field_id}
-            renderItem={renderItem}
-            contentContainerStyle={{ paddingBottom: 30 }}
-            keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}
-            automaticallyAdjustKeyboardInsets={true}
-            style={{ flex: 1 }}
-          />
-          <Form.Trigger asChild>
-            <Button mt={"$4"} mb={"$4"} theme="blue_accent">
-              Save Changes
+    <SafeAreaView style={ observationStyles.background }>
+      <View style={ observationStyles.page }>
+        <YStack flex={1} p="$2">
+          {/* Only show back button on web */}
+          {Platform.OS === "web" ? (
+            <Button
+              size={"$2"}
+              bg={"#E05B3A"}
+              color={"#EEEEEE"}
+              maxW={100}
+              icon={ChevronLeft}
+              onPress={() => router.back()}
+            >
+            Back
             </Button>
-          </Form.Trigger>
-        </Form>
-      </YStack>
+          ) : (
+            <></>
+          )}
+          <H2 self="center" mb={"$4"}>
+            Edit Observation
+          </H2>
+          <Form
+            flex={1}
+            onSubmit={async () => {
+              const missingRequiredFields = getMissingRequiredFieldLabels(
+                fields,
+                values,
+              );
+              if (missingRequiredFields.length > 0) {
+                alert.show({
+                  title: "Required fields missing",
+                  message: `Please complete: ${missingRequiredFields.join(", ")}`,
+                  buttons: [{ text: "OK" }],
+                });
+                return;
+              }
+
+              const updateCheck: boolean = await alert.confirm({
+                message: `Updating this observation will overwrite any values that have been changed. Are you sure you want to continue?`,
+              });
+              if (updateCheck) {
+                const mappedData = mapValuestoFieldData();
+                const result = await updateObservationHandler(
+                  parseInt(observation_id as string, 10),
+                  mappedData,
+                );
+                console.log("Update result: ", result);
+                if (result === 1) {
+                  useModalResults.getState().setResult("Observation updated!");
+                  router.back();
+                } else {
+                  console.log("Failed to update observation");
+                }
+              }
+            }}
+          >
+            <FlatList
+              data={fields}
+              keyExtractor={(item: Field) => item.field_id}
+              renderItem={renderItem}
+              contentContainerStyle={{ paddingBottom: 30 }}
+              keyboardShouldPersistTaps="handled"
+              showsVerticalScrollIndicator={false}
+              automaticallyAdjustKeyboardInsets={true}
+              style={{ flex: 1 }}
+            />
+            <Form.Trigger asChild>
+              <Button mt={"$4"} mb={"$4"} bg={"#E05B3A"} color={"#EEEEEE"}>
+                Save Changes
+              </Button>
+            </Form.Trigger>
+          </Form>
+        </YStack>
+      </View>
     </SafeAreaView>
   );
 }

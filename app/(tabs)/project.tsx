@@ -15,14 +15,16 @@ export default function ProjectScreen() {
   // on screen focus reload project info from backend
   useFocusEffect(
     useCallback(() => {
-      const loadObservations = async () => {
+      const loadProjectInfo = async () => {
         try {
           await fetchProjectInfo(useProjectInfo.getState().projectCode);
         } catch (e) {
           console.error("Failed to load project info: ", e);
         }
       };
-      loadObservations();
+      if (useProjectInfo.getState().projectCode) {
+        loadProjectInfo();
+      }
     }, []),
   );
 

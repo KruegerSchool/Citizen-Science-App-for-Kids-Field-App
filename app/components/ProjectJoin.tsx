@@ -1,13 +1,13 @@
 // component to handle dynamically rendering the components used to join
 // and change projects
 import React, { useState } from "react";
-import { Text, View, Button, Spinner } from "tamagui";
+import { Text, View, Button, Spinner, Input } from "tamagui";
 import { useProjectInfo, useProjectJoinStatus } from "../stores/project_info";
 import { landingStyles } from "../styles/styles";
-import { Input } from "rn-inkpad";
 import { ArrowRight } from "@tamagui/lucide-icons";
 import joinProject from "../../utility_functions/join_project";
 import { useObservationInfo } from "../stores/observation_info";
+import { alert } from "react-native-alert-queue";
 
 export default function ProjectJoin() {
   const currentProjectCode = useProjectInfo((state) => state.projectCode);
@@ -20,23 +20,22 @@ export default function ProjectJoin() {
       <View>
         <View style={landingStyles.joinView}>
           <Input
+            unstyled={true}
             style={landingStyles.input}
-            borderRadius={5}
-            label="Project Code"
-            value={projectCode}
+            bg={"#EEEEEE"}
+            marginEnd={5}
             placeholder="Enter Project Code"
-            placeholderColor="grey"
-            type="outlined"
+            placeholderTextColor="$gray10"
+            value={projectCode}
             onChangeText={setProjectCode}
-            textStyle={{ fontSize: 24 }}
-            onPress={() => joinProject(projectCode)}
           />
           <Button
             unstyled={true}
             size="$4"
             bg="#E05B3A"
+            border="1px solid #B7B7B7"
             style={{ alignItems: "center", justifyContent: "center" }}
-            icon={<ArrowRight color="white" />}
+            icon={<ArrowRight color="#EEEEEE" />}
             iconSize="$8"
             circular={true}
             onPress={() => joinProject(projectCode)}
@@ -61,9 +60,21 @@ export default function ProjectJoin() {
           Current Project: {currentProjectCode}
         </Text>
         <Button
-          theme="blue_accent"
-          onPress={() => {
+          unstyled={true}
+          size="$4"
+          bg="#E05B3A"
+          color="#EEEEEE"
+          width={250}
+          alignSelf="center"
+          border="1px solid #B7B7B7"
+          style={{ alignItems: "center", justifyContent: "center" }}
+          onPress={async () => {
             try {
+              const result: boolean = await alert.confirm({
+                title: "Leave Project?",
+                message: "Are you sure you want to leave the current project?"
+              });
+              if (!result) return;
               // remove project code from persistent storage and set to empty string
               console.log("Removing project code from storage");
               useProjectInfo.getState().reset();

@@ -33,7 +33,7 @@ export default function ObservationList({ item, appUser }: InputProps) {
         overflow="hidden"
         style={{ boxShadow: "0 2px 3px lightgrey", borderRadius: 5 }}
       >
-        <Accordion.Item value={`${item.observation_id}`}>
+        <Accordion.Item value={`${item.observation_id}`} bg={"#EEEEEE"}>
           <Accordion.Trigger flexDirection="row" justify="space-between">
             {({ open }: { open: boolean }) => (
               <View
@@ -82,7 +82,8 @@ export default function ObservationList({ item, appUser }: InputProps) {
               <View style={{ alignItems: "flex-end" }}>
                 {item.student_id.toString() === appUser && (
                   <Button
-                    theme={"blue_accent"}
+                    bg={"#E05B3A"}
+                    color={"#EEEEEE"}
                     size="$2.5"
                     mt={5}
                     icon={PenLine}

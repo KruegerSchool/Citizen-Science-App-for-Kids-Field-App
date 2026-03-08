@@ -128,7 +128,7 @@ const DynamicInput = ({ field, value, onChange }: InputProps) => {
         <View>
           {renderLabel()}
           <Calendar
-            style={{ borderColor: "grey", borderRadius: 8, borderWidth: 1 }}
+            style={{ borderColor: "#B7B7B7", borderRadius: 8, borderWidth: 1 }}
             onDayPress={(day) => {
               onChange(day.dateString);
             }}
@@ -136,7 +136,7 @@ const DynamicInput = ({ field, value, onChange }: InputProps) => {
               [value as string]: {
                 selected: true,
                 disableTouchEvent: true,
-                selectedColor: "#0B507D",
+                selectedColor: "#E05B3A",
               },
             }}
           />

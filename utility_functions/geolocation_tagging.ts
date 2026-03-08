@@ -1,4 +1,5 @@
 // utility function to handle permissions and location tagging for observations
+// reference: GitHub copilot assisted coding and expo-location docs
 import { useLocationStore } from "../app/stores/project_info";
 import * as Location from "expo-location";
 
@@ -17,12 +18,6 @@ const ensureForegroundLocationPermission = async (): Promise<void> => {
 
   const granted = permission.status === "granted";
   useLocationStore.getState().setGranted(granted);
-
-  if (!granted) {
-    throw new Error(
-      "Location permission was denied. Please enable location permissions and try again.",
-    );
-  }
 };
 
 // get current location object and extract lat and lon
