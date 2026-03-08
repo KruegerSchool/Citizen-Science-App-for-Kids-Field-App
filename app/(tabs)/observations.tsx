@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { useRouter } from "expo-router";
-import { FlatList } from "react-native";
+import { FlatList, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Accordion,
@@ -19,7 +19,7 @@ import { Plus, ListFilter } from "@tamagui/lucide-icons";
 import fetchObservationList from "@/utility_functions/fetch_observation_list";
 import { Toast } from "rn-inkpad";
 import { useModalResults } from "../stores/modal_results";
-import { appStyles } from "../styles/styles";
+import { appStyles, observationStyles } from "../styles/styles";
 
 // observations list for the project
 // displays the list of observations made in the project. observations made by
@@ -57,8 +57,8 @@ export default function ObservationsScreen() {
   const modalResult = useModalResults((state) => state.result);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1, minHeight: 0 }}>
+    <SafeAreaView style={observationStyles.background}>
+      <View style={observationStyles.page}>
         <H2 self="center" mb={10}>
           Project Observations
         </H2>
@@ -100,8 +100,7 @@ export default function ObservationsScreen() {
           </Button>
         </XStack>
 
-        <Separator mb={4} />
-        <Accordion type="multiple" style={{ flex: 1, marginBottom: -30 }}>
+        <Accordion type="multiple" style={{ flex: 1, marginBottom: Platform.OS === 'web' ? -15 : -30 }}>
           <FlatList
             style={{ flex: 1 }}
             data={filteredObservations}
@@ -117,6 +116,7 @@ export default function ObservationsScreen() {
           <Toast
             visible={modalResult !== null}
             position="bottom"
+            backgroundColor="#B7B7B7"
             text={modalResult as string}
             duration={1000}
             setVisible={() => useModalResults.getState().setResult(null)}

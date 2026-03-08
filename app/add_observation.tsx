@@ -110,13 +110,13 @@ export default function AddObservation() {
       <YStack flex={1} p="$2">
         {Platform.OS === "web" ? (
           <Button
-            mt="$2"
+            size="$2"
             theme="blue_accent"
             icon={ChevronLeft}
             maxW={100}
             onPress={() => router.back()}
           >
-            Go Back
+          Back
           </Button>
         ) : (
           <></>
@@ -202,7 +202,7 @@ export default function AddObservation() {
                 setIncludeLocation(Boolean(checked))
               }
               activeStyle={{
-                backgroundColor: "$green10",
+                backgroundColor: "#3AE070",
               }}
             >
               <Switch.Thumb transition="quickest" />

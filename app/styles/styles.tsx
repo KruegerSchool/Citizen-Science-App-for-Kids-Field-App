@@ -31,6 +31,11 @@ const appStyles = StyleSheet.create({
 });
 
 const projectStyles = StyleSheet.create({
+  background: {
+    flex: 1,
+    width: "100%",
+    backgroundColor: "#B4CDCD",
+  },
   page: {
     flex: 1,
     width: "100%",
@@ -68,10 +73,16 @@ const landingStyles = StyleSheet.create({
     fontWeight: "bold",
     alignSelf: "center",
   },
+  background: {
+    flex: 1,
+    width: "100%",
+    backgroundColor: "#B4CDCD",
+  },
   page: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#B4CDCD",
   },
   project: {
     fontSize: 24,
@@ -104,6 +115,11 @@ const landingStyles = StyleSheet.create({
 });
 
 const observationStyles = StyleSheet.create({
+  background: {
+    flex: 1,
+    width: "100%",
+    backgroundColor: "#B4CDCD",
+  },
   page: {
     flex: 1,
     maxWidth: 800,

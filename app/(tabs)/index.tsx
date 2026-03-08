@@ -46,7 +46,7 @@ const LandingPage = () => {
 
   // Landing page rendering
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={landingStyles.background}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : undefined}

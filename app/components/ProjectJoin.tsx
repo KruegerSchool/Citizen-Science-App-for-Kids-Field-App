@@ -32,8 +32,10 @@ export default function ProjectJoin() {
             onPress={() => joinProject(projectCode)}
           />
           <Button
+            unstyled={true}
             size="$4"
-            theme={"blue_accent"}
+            bg="#E05B3A"
+            style={{ alignItems: "center", justifyContent: "center" }}
             icon={<ArrowRight color="white" />}
             iconSize="$8"
             circular={true}

@@ -104,13 +104,13 @@ export default function EditObservation() {
         {/* Only show back button on web */}
         {Platform.OS === "web" ? (
           <Button
-            mt="$2"
+            size={"$2"}
             theme="blue_accent"
             maxW={100}
             icon={ChevronLeft}
             onPress={() => router.back()}
           >
-            Go Back
+          Back
           </Button>
         ) : (
           <></>
