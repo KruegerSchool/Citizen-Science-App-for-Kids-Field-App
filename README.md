@@ -53,21 +53,22 @@ Creating an account on the Admin Website will generate a project code for you to
 ## User Interface Examples
 
 <figure>
-   <img src="./readme_assets/iphone.PNG" alt="iPhone 16 Pro">
+   <img src="./readme_assets/iphone.PNG" width="200" alt="iPhone 16 Pro">
    <figcaption>iPhone 16 Pro (iOS)</figcaption>
 </figure>
-
+<hr>
 <figure>
-   <img src="./readme_assets/android.png" alt="Lenovo TB-8505FS">
+   <img src="./readme_assets/android.png" width="250" alt="Lenovo TB-8505FS">
    <figcaption>Lenovo TB-8505FS (Android)</figcaption>
 </figure>
-
+<hr>
 <figure>
-   <img src="./readme_assets/laptop.png" alt="Web">
+   <img src="./readme_assets/laptop.png" width="400" alt="Web">
    <figcaption>Dell Laptop - Brave Browser (Web)</figcaption>
 </figure>
+<hr>
+NOTE: Above screenshots were taken from actual devices and inset on mock devices for demonstration. Links are included below for the tools used to generate the device frames:
 
-> NOTE: Above screenshots were taken from actual devices and inset on mock devices for demonstration. Links are included below for the tools used to generate the device frames:
-> [iPhone](https://withfra.me/shot/iphone-16-pro)
-> [Android](https://developer.android.com/distribute/marketing-tools/device-art-generator)
-> [Laptop](https://deviceshots.com/)
+[iPhone](https://withfra.me/shot/iphone-16-pro)
+[Android](https://developer.android.com/distribute/marketing-tools/device-art-generator)
+[Laptop](https://deviceshots.com/)
