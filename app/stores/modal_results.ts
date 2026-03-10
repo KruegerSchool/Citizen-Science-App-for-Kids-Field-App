@@ -10,3 +10,5 @@ export const useModalResults = create<ModalResultsState>((set) => ({
   result: null,
   setResult: (result: string | null) => set({ result }),
 }));
+
+export default useModalResults;

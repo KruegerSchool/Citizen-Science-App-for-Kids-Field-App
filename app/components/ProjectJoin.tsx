@@ -21,6 +21,7 @@ export default function ProjectJoin() {
         <View style={landingStyles.joinView}>
           <Input
             unstyled={true}
+            autoCapitalize="characters"
             style={landingStyles.input}
             bg={"#EEEEEE"}
             marginEnd={5}
@@ -28,6 +29,7 @@ export default function ProjectJoin() {
             placeholderTextColor="$gray10"
             value={projectCode}
             onChangeText={setProjectCode}
+            onSubmitEditing={() => joinProject(projectCode)}
           />
           <Button
             unstyled={true}
@@ -76,7 +78,6 @@ export default function ProjectJoin() {
               });
               if (!result) return;
               // remove project code from persistent storage and set to empty string
-              console.log("Removing project code from storage");
               useProjectInfo.getState().reset();
               useObservationInfo.getState().reset();
               setProjectCode("");

@@ -22,7 +22,6 @@ export default async function fetchProject(projectCode: string) {
 
     const projectData = await response.json();
     useProjectInfo.getState().setProjectData(projectData.data);
-    console.log("Project data updated");
   } catch (e) {
     console.error("Failed to fetch project data: ", e);
   }

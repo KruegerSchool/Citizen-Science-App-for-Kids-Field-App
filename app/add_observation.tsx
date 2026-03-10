@@ -35,6 +35,10 @@ export default function AddObservation() {
   // pulls latest fields when adding an observation
   useEffect(() => {
     // fetch latest project info
+    if (!useProjectInfo.getState().projectCode) {
+      // no project code
+      return;
+    }
     const loadProjectInfo = async () => {
       try {
         await fetchProjectInfo(useProjectInfo.getState().projectCode);

@@ -33,12 +33,6 @@ export default function RootLayout() {
       const isConnected = networkState.isConnected ?? false;
       setConnectionStatus(isConnected);
 
-      if (isConnected) {
-        console.log("Device is online");
-      } else {
-        console.log("Device is offline");
-      }
-
       // only trigger sync when coming online and queue has items
       if (isConnected) {
         const queue = useOfflineQueue.getState().queue;

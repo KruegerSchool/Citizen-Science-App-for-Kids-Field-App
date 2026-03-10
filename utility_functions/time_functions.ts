@@ -1,6 +1,9 @@
 /**
  * Parses a "HH:MM AM/PM" string into a Date object for use with DateTimePicker.
  * Returns current time if parsing fails.
+ * 
+ * Reference: Claude
+ * Prompt: "Move time parsing and formatting logic to a separate utility function." 
  */
 export function parseTimeString(val: string | string[]): Date {
   if (typeof val === "string" && val) {
@@ -18,9 +21,7 @@ export function parseTimeString(val: string | string[]): Date {
   return new Date();
 }
 
-/**
- * Formats a Date object into "HH:MM AM/PM" string.
- */
+// Formats a Date object into "HH:MM AM/PM" string.
 export function formatTimeString(date: Date): string {
   const hours = (((date.getHours() + 11) % 12) + 1).toString().padStart(2, "0");
   const minutes = date.getMinutes().toString().padStart(2, "0");
@@ -28,9 +29,6 @@ export function formatTimeString(date: Date): string {
   return `${hours}:${minutes} ${am_pm}`;
 }
 
-/**
- * Returns the current time as "HH:MM AM/PM".
- */
 export function currentTimeString(): string {
   return formatTimeString(new Date());
 }
