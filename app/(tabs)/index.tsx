@@ -1,3 +1,4 @@
+import "@tamagui/native/setup-zeego";
 import React, { useEffect } from "react";
 import {
   Keyboard,
@@ -32,7 +33,6 @@ const LandingPage = () => {
   useEffect(() => {
     const loadStoredProjectCode = async () => {
       // check for existing student ID, generate if empty
-      // TODO: confirm not duplicate with backend when connected
       if (!studentID) {
         generateStudentID();
       }
@@ -46,10 +46,10 @@ const LandingPage = () => {
 
   // Landing page rendering
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={landingStyles.background}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <Pressable
           onPress={() => {

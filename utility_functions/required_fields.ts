@@ -1,3 +1,4 @@
+// utility function to check if all required fields have values
 type FieldValue = string | string[] | undefined;
 
 type RequiredValidatableField = {
@@ -7,6 +8,7 @@ type RequiredValidatableField = {
   field_type: string;
 };
 
+// Checks if a required field is missing a value based on its type and requirements.
 const isFieldMissingRequiredValue = (
   field: RequiredValidatableField,
   fieldValue: FieldValue,
@@ -26,6 +28,7 @@ const isFieldMissingRequiredValue = (
   return !fieldValue || fieldValue.trim() === "";
 };
 
+// gets the labels of required fields
 const getMissingRequiredFieldLabels = (
   fields: RequiredValidatableField[],
   values: Record<string, string | string[]>,

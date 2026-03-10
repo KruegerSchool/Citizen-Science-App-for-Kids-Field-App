@@ -141,3 +141,10 @@ export {
   useLocationStore,
   Field,
 };
+
+export default {
+  useProjectInfo,
+  useStudentID,
+  useProjectJoinStatus,
+  useLocationStore,
+};

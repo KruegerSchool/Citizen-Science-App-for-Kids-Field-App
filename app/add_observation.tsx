@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { FlatList, Platform } from "react-native";
+import { FlatList, Platform, View } from "react-native";
 import DynamicInput from "./components/DynamicInput";
 import { useProjectInfo, Field } from "./stores/project_info";
 import {
@@ -27,6 +27,7 @@ import fetchProjectInfo from "../utility_functions/fetch_project";
 import { alert } from "react-native-alert-queue";
 import { useModalResults } from "./stores/modal_results";
 import { getCurrentCoordinates } from "../utility_functions/geolocation_tagging";
+import { observationStyles } from "./styles/styles";
 
 export default function AddObservation() {
   const router = useRouter();
@@ -34,6 +35,10 @@ export default function AddObservation() {
   // pulls latest fields when adding an observation
   useEffect(() => {
     // fetch latest project info
+    if (!useProjectInfo.getState().projectCode) {
+      // no project code
+      return;
+    }
     const loadProjectInfo = async () => {
       try {
         await fetchProjectInfo(useProjectInfo.getState().projectCode);
@@ -106,116 +111,119 @@ export default function AddObservation() {
   };
 
   return (
-    <SafeAreaView style={{ margin: 20, flex: 1 }}>
-      <YStack flex={1} p="$2">
-        {Platform.OS === "web" ? (
-          <Button
-            mt="$2"
-            theme="blue_accent"
-            icon={ChevronLeft}
-            maxW={100}
-            onPress={() => router.back()}
-          >
-            Go Back
-          </Button>
-        ) : (
-          <></>
-        )}
-        <H2 self="center" mb={"$4"}>
-          Add Observation
-        </H2>
-        <Form
-          flex={1}
-          onSubmit={async () => {
-            let locationMetadata: ObservationMetadata | undefined;
+    <SafeAreaView style={observationStyles.background}>
+      <View style={observationStyles.page}>
+        <YStack flex={1} p="$2">
+          {Platform.OS === "web" ? (
+            <Button
+              size="$2"
+              bg={"#E05B3A"}
+              color={"#EEEEEE"}
+              icon={ChevronLeft}
+              maxW={100}
+              onPress={() => router.back()}
+            >
+              Back
+            </Button>
+          ) : (
+            <></>
+          )}
+          <H2 self="center" mb={"$4"}>
+            Add Observation
+          </H2>
+          <Form
+            flex={1}
+            onSubmit={async () => {
+              let locationMetadata: ObservationMetadata | undefined;
 
-            if (includeLocation) {
-              try {
-                const coordinates = await getCurrentCoordinates();
-                locationMetadata = {
-                  latitude: coordinates.latitude,
-                  longitude: coordinates.longitude,
-                };
-              } catch {
+              if (includeLocation) {
+                try {
+                  const coordinates = await getCurrentCoordinates();
+                  locationMetadata = {
+                    latitude: coordinates.latitude,
+                    longitude: coordinates.longitude,
+                  };
+                } catch {
+                  alert.show({
+                    title: "Location unavailable",
+                    message:
+                      "Unable to get your location. Please check permissions and try again.",
+                    buttons: [{ text: "OK" }],
+                  });
+                  return;
+                }
+              }
+
+              const missingRequiredFields = getMissingRequiredFieldLabels(
+                fields,
+                values,
+              );
+              if (missingRequiredFields.length > 0) {
                 alert.show({
-                  title: "Location unavailable",
-                  message:
-                    "Unable to get your location. Please check permissions and try again.",
+                  title: "Required fields missing",
+                  message: `Please complete: ${missingRequiredFields.join(", ")}`,
                   buttons: [{ text: "OK" }],
                 });
                 return;
               }
-            }
 
-            const missingRequiredFields = getMissingRequiredFieldLabels(
-              fields,
-              values,
-            );
-            if (missingRequiredFields.length > 0) {
-              alert.show({
-                title: "Required fields missing",
-                message: `Please complete: ${missingRequiredFields.join(", ")}`,
-                buttons: [{ text: "OK" }],
-              });
-              return;
-            }
-
-            const mappedData = mapValuestoFieldData(values);
-            const result = await createObservationHandler(
-              mappedData,
-              locationMetadata,
-            );
-            if (result === 1) {
-              useModalResults.getState().setResult("Observation recorded!");
-              router.back();
-            } else {
-              // intended to handle unexpected server errors
-              alert.show({
-                title: "Error",
-                message:
-                  "There was an error recording your observation. Please try again.",
-                buttons: [{ text: "OK" }],
-              });
-            }
-          }}
-        >
-          <FlatList
-            data={fields}
-            keyExtractor={(item: Field) => item.field_id}
-            renderItem={renderItem}
-            contentContainerStyle={{ paddingBottom: 30 }}
-            keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}
-            automaticallyAdjustKeyboardInsets={true}
-            style={{ flex: 1 }}
-          />
-          <XStack style={{ alignItems: "center" }} mt={"$2"}>
-            <Label pr="$0" minW={90} justify="flex-end" size={"$3"}>
-              Include Location?
-            </Label>
-            <Separator vertical mx="$2" />
-            <Switch
-              transition="300ms"
-              size={"$3"}
-              checked={includeLocation}
-              onCheckedChange={(checked) =>
-                setIncludeLocation(Boolean(checked))
+              const mappedData = mapValuestoFieldData(values);
+              const result = await createObservationHandler(
+                mappedData,
+                locationMetadata,
+              );
+              if (result === 1) {
+                useModalResults.getState().setResult("Observation recorded!");
+                router.back();
+              } else {
+                // intended to handle unexpected server errors
+                alert.show({
+                  title: "Error",
+                  message:
+                    "There was an error recording your observation. Please try again.",
+                  buttons: [{ text: "OK" }],
+                });
               }
-              activeStyle={{
-                backgroundColor: "$green10",
-              }}
-            >
-              <Switch.Thumb transition="quickest" />
-            </Switch>
-          </XStack>
+            }}
+          >
+            <FlatList
+              data={fields}
+              keyExtractor={(item: Field) => item.field_id}
+              renderItem={renderItem}
+              contentContainerStyle={{ paddingBottom: 30 }}
+              keyboardShouldPersistTaps="handled"
+              showsVerticalScrollIndicator={false}
+              automaticallyAdjustKeyboardInsets={true}
+              style={{ flex: 1 }}
+            />
+            <XStack style={{ alignItems: "center" }} mt={"$2"}>
+              <Label pr="$0" minW={90} justify="flex-end" size={"$3"}>
+                Include Location?
+              </Label>
+              <Separator vertical mx="$2" />
+              <Switch
+                transition="300ms"
+                size={"$3"}
+                checked={includeLocation}
+                onCheckedChange={(checked) =>
+                  setIncludeLocation(Boolean(checked))
+                }
+                activeStyle={{
+                  backgroundColor: "#3AE070",
+                }}
+              >
+                <Switch.Thumb transition="quickest" />
+              </Switch>
+            </XStack>
 
-          <Form.Trigger asChild>
-            <Button mt={"$4"} mb={"$4"} theme="blue_accent">
-              Record Observation
-            </Button>
-          </Form.Trigger>
-        </Form>
-      </YStack>
+            <Form.Trigger asChild>
+              <Button mt={"$4"} mb={"$4"} bg={"#E05B3A"} color={"#EEEEEE"}>
+                Record Observation
+              </Button>
+            </Form.Trigger>
+          </Form>
+        </YStack>
+      </View>
     </SafeAreaView>
   );
 }

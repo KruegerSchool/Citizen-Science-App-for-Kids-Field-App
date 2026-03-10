@@ -1,52 +1,74 @@
 # Citizen Science App for Kids - Field App Repository
 
-# Welcome to your Expo app 👋
+## Webhosted Version
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+For the fastest way to get started with this app, visit the [web hosted version](https://field-app--development.expo.app). If you would like to use the mobile version of the app, please use Expo Go via the instructions in the next section. Note: the instructions below can also be used to launch a localhost webserver version of the web app.
 
-## Get started
+## Get started - Locally Hosted Version (iOS / Android / Web)
 
-1. Install dependencies
+1. Clone this GitHub repository.
+
+2. Install dependencies
 
    ```bash
    npm install
    ```
 
-2. Start the app
+   To access the mobile version using ExpoGo, the ExpoGo app must be [downloaded and installed](https://expo.dev/go) on your device.
+
+3. Start the app
 
    ```bash
-   npx expo start
+   npm run start
    ```
 
-In the output, you'll find options to open the app in a
+4. Scan the QR Code
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+> Note: This should either open ExpoGo or a link prompting you whether you wish to open in ExpoGo. Once opened, the app will bundle and be available on your device for use. If this does not happen, switch to ExpoGo by entering 's' in the terminal and re-scan the code.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+<img src="./readme_assets/qr_switch_image.png" width="400" alt="QR Scan Screenshot">
 
-## Get a fresh project
+## Native Bundling
 
-When you're ready, run:
+Expo can be used to bundle and test native application versions in a simulator or for loading into a test Android or iOS developer account. Please follow the instructions [here](https://docs.expo.dev/get-started/set-up-your-environment/?mode=development-build) for more details.
 
-```bash
-npm run reset-project
-```
+## Test Project
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+To test the Field App, a project code is required. If you do not want to create one through the Admin Website, you can use the following project code to test adding and editing observations.
 
-## Learn more
+> Please note that if you choose to include the location information with an observation, it will be stored in the backend database. This can be deleted via the Admin Website, however, this will require messaging me directly as the creator of the test project.
 
-To learn more about developing your project with Expo, look at the following resources:
+#### Test Project Code: LDMJHDJM
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+#### Admin Website [Hosted Link](https://citizen-science-app-for-kids-admin.vercel.app/) | [GitHub Repository](https://github.com/ekacala/Citizen-Science-App-for-Kids---Admin-Website-Frontend)
 
-## Join the community
+Creating an account on the Admin Website will generate a project code for you to test in the Field App. By doing this, you have control over deleting observations or the entire project when you are finished.
 
-Join our community of developers creating universal apps.
+## Additional Notes:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- In order to test filter functionality, you will need to access the Field App via two different 'devices' (Expo Go Mobile & Web) or you can access on the web and clear the persistent storage in the browser before refreshing the app.
+
+<img src="./readme_assets/clear_persistence_screenshot.png" alt="Clear Persistence Screenshot">
+
+## User Interface Examples
+
+<figure>
+   <img src="./readme_assets/iphone.PNG" width="200" alt="iPhone 16 Pro">
+   <figcaption>iPhone 16 Pro (iOS)</figcaption>
+</figure>
+<hr>
+<figure>
+   <img src="./readme_assets/android.png" width="250" alt="Lenovo TB-8505FS">
+   <figcaption>Lenovo TB-8505FS (Android)</figcaption>
+</figure>
+<hr>
+<figure>
+   <img src="./readme_assets/laptop.png" width="400" alt="Web">
+   <figcaption>Dell Laptop - Brave Browser (Web)</figcaption>
+</figure>
+<hr>
+NOTE: Above screenshots were taken from actual devices and inset on mock devices for demonstration. Links are included below for the tools used to generate the device frames:
+
+[iPhone](https://withfra.me/shot/iphone-16-pro)
+[Android](https://developer.android.com/distribute/marketing-tools/device-art-generator)
+[Laptop](https://deviceshots.com/)

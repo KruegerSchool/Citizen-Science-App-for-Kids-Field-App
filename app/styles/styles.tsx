@@ -1,6 +1,6 @@
-/**
- * Central file for all the styles used in the app.
- */
+// central file for all react-native styles used in the app
+// NOTE: Tamagui components prefer inline 'tailwind' style props
+// and are therefore not included here.
 import { Dimensions, Platform, StyleSheet } from "react-native";
 
 const imageWidth = Math.min(Dimensions.get("window").width * 0.75, 400);
@@ -31,34 +31,19 @@ const appStyles = StyleSheet.create({
 });
 
 const projectStyles = StyleSheet.create({
+  background: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#B4CDCD",
+  },
   page: {
     flex: 1,
     width: "100%",
+    height: "100%",
     maxWidth: 800,
     alignSelf: "center",
-    padding: 16,
-  },
-  mainContent: {
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-  },
-  headers: {
-    marginBottom: 10,
-    fontWeight: "bold",
-    fontSize: 18,
-  },
-  descriptionText: {
-    padding: 10,
-  },
-  descriptionBox: {
-    borderWidth: 1,
-    borderRadius: 5,
-    width: "100%",
-    padding: 5,
-    marginBottom: 20,
-  },
-  observationDetails: {
-    padding: 10,
+    paddingHorizontal: 10,
   },
 });
 
@@ -68,10 +53,16 @@ const landingStyles = StyleSheet.create({
     fontWeight: "bold",
     alignSelf: "center",
   },
+  background: {
+    flex: 1,
+    width: "100%",
+    backgroundColor: "#B4CDCD",
+  },
   page: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#B4CDCD",
   },
   project: {
     fontSize: 24,
@@ -87,12 +78,15 @@ const landingStyles = StyleSheet.create({
     alignItems: "center",
   },
   input: {
-    padding: 5,
-    alignSelf: "flex-start",
-    outline: "none",
-    minWidth: 0,
-    boxSizing: "border-box",
-    alignContent: "space-around",
+    backgroundColor: "#EEEEEE",
+    borderRadius: 8,
+    borderColor: "#B7B7B7",
+    borderWidth: 1,
+    fontSize: 24,
+    textAlign: "center",
+    textAlignVertical: "center",
+    padding: 8,
+    width: "100%",
     // dynamically set max width based on platform
     ...(Platform.OS === "web" ? { maxWidth: 400 } : { maxWidth: 300 }),
   },
@@ -104,6 +98,11 @@ const landingStyles = StyleSheet.create({
 });
 
 const observationStyles = StyleSheet.create({
+  background: {
+    flex: 1,
+    width: "100%",
+    backgroundColor: "#B4CDCD",
+  },
   page: {
     flex: 1,
     maxWidth: 800,

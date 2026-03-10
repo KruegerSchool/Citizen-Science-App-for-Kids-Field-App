@@ -13,12 +13,14 @@ export default function TabLayout() {
         animation: "shift",
         headerShown: false,
         tabBarLabelStyle: {
-          ...(Platform.OS === "web" ? { fontSize: 10 } : { fontSize: 12 }),
-          fontWeight: "bold",
+          ...(Platform.OS === "web" ? { fontSize: 14 } : { fontSize: 12 }),
+          lineHeight: 12,
         },
-        tabBarActiveTintColor: "#007AFF",
+        tabBarInactiveTintColor: "#EEEEEE",
+        tabBarActiveTintColor: "#e59a87",
         tabBarAllowFontScaling: true,
         tabBarHideOnKeyboard: true,
+        tabBarStyle: { backgroundColor: "#4A6161", justifyContent: "center" },
       }}
     >
       {/* TODO investigate custom tabs to allow for disabling before project code is entered */}
@@ -26,21 +28,27 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: () => <FontAwesome name="home" size={iconSize} />,
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="home" size={iconSize} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="project"
         options={{
           title: "Project Details",
-          tabBarIcon: () => <FontAwesome name="file-text-o" size={iconSize} />,
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="file-text-o" size={iconSize} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="observations"
         options={{
           title: "Observations",
-          tabBarIcon: () => <FontAwesome name="list-ul" size={iconSize} />,
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="list-ul" size={iconSize} color={color} />
+          ),
         }}
       />
     </Tabs>

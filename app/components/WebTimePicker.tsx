@@ -1,5 +1,7 @@
 // Native HTML time input for web platforms.
 // Drop-in replacement for DateTimePicker's "time" mode when running in a browser.
+// Reference: Claud
+// Prompt: "I need to implement the native web picker for Time entry for a react native app."
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Label } from "tamagui";

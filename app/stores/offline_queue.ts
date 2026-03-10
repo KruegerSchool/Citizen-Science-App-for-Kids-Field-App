@@ -87,3 +87,5 @@ const useOfflineQueue = create<OfflineQueue & OfflineQueueActions>()(
 );
 
 export { useConnectionStatus, useOfflineQueue, useSyncStatus, OfflineRequest };
+
+export default { useConnectionStatus, useOfflineQueue, useSyncStatus };

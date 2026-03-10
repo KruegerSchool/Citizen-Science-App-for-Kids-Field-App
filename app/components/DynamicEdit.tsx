@@ -132,7 +132,7 @@ const DynamicEditInput = ({ field, value, onChange }: InputProps) => {
           {renderLabel()}
           <Calendar
             style={{
-              borderColor: "grey",
+              borderColor: "#B7B7B7",
               borderRadius: 8,
               borderWidth: 1,
             }}
@@ -144,7 +144,7 @@ const DynamicEditInput = ({ field, value, onChange }: InputProps) => {
               [value as string]: {
                 selected: true,
                 disableTouchEvent: true,
-                selectedColor: "#0B507D",
+                selectedColor: "#E05B3A",
               },
             }}
           />

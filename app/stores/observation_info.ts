@@ -70,3 +70,5 @@ const useObservationInfo = create<ObservationStore>()(
 );
 
 export { useObservationInfo, CompletedField, Observation };
+
+export default useObservationInfo;
