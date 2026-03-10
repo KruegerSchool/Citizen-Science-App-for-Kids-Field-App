@@ -2,7 +2,10 @@
 // will also compare response against existing data and refresh if there are
 // any changes
 import { useProjectInfo } from "../app/stores/project_info";
-import { useOfflineQueue, useConnectionStatus } from "../app/stores/offline_queue";
+import {
+  useOfflineQueue,
+  useConnectionStatus,
+} from "../app/stores/offline_queue";
 
 export default async function fetchProject(projectCode: string) {
   // block fetch if offline queue has pending items to avoid overwriting local data

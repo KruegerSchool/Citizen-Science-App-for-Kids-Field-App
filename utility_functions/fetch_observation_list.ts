@@ -4,7 +4,10 @@
 
 import { useProjectInfo } from "../app/stores/project_info";
 import { useObservationInfo } from "../app/stores/observation_info";
-import { useOfflineQueue, useConnectionStatus } from "../app/stores/offline_queue";
+import {
+  useOfflineQueue,
+  useConnectionStatus,
+} from "../app/stores/offline_queue";
 
 export default async function fetchObservationList() {
   // block fetch if offline queue has pending items to avoid overwriting local data
