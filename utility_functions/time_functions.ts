@@ -1,9 +1,9 @@
 /**
  * Parses a "HH:MM AM/PM" string into a Date object for use with DateTimePicker.
  * Returns current time if parsing fails.
- * 
+ *
  * Reference: Claude
- * Prompt: "Move time parsing and formatting logic to a separate utility function." 
+ * Prompt: "Move time parsing and formatting logic to a separate utility function."
  */
 export function parseTimeString(val: string | string[]): Date {
   if (typeof val === "string" && val) {

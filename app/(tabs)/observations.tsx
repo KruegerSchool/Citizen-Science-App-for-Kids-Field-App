@@ -2,14 +2,7 @@ import { useState, useCallback } from "react";
 import { useRouter } from "expo-router";
 import { FlatList, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  Accordion,
-  XStack,
-  XGroup,
-  Button,
-  H2,
-  View,
-} from "tamagui";
+import { Accordion, XStack, XGroup, Button, H2, View } from "tamagui";
 import { useFocusEffect } from "@react-navigation/native";
 import { useObservationInfo } from "../stores/observation_info";
 import { useProjectInfo, useStudentID } from "../stores/project_info";
@@ -107,7 +100,10 @@ export default function ObservationsScreen() {
           </Button>
         </XStack>
 
-        <Accordion type="multiple" style={{ flex: 1, marginBottom: Platform.OS === 'web' ? -15 : -30 }}>
+        <Accordion
+          type="multiple"
+          style={{ flex: 1, marginBottom: Platform.OS === "web" ? -15 : -30 }}
+        >
           <FlatList
             style={{ flex: 1 }}
             data={filteredObservations}

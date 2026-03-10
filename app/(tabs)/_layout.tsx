@@ -28,21 +28,27 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({color}) => <FontAwesome name="home" size={iconSize} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="home" size={iconSize} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="project"
         options={{
           title: "Project Details",
-          tabBarIcon: ({color}) => <FontAwesome name="file-text-o" size={iconSize} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="file-text-o" size={iconSize} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="observations"
         options={{
           title: "Observations",
-          tabBarIcon: ({color}) => <FontAwesome name="list-ul" size={iconSize} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="list-ul" size={iconSize} color={color} />
+          ),
         }}
       />
     </Tabs>

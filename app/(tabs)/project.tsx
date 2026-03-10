@@ -42,7 +42,9 @@ export default function ProjectScreen() {
       <ScrollView style={projectStyles.page}>
         <YStack gap={"$2"} p={5} width={"100%"} flex={1}>
           <Card backgroundColor={"#EEEEEE"} p={5} boxShadow="0 1px 3px grey">
-            <H3 self="center" p={5}>{projectTitle || "Project Title"}</H3>
+            <H3 self="center" p={5}>
+              {projectTitle || "Project Title"}
+            </H3>
           </Card>
           <Card backgroundColor={"#EEEEEE"} p={5} boxShadow="0 1px 3px grey">
             <Card.Header p={15}>

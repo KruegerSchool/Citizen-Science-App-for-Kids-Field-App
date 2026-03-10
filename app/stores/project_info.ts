@@ -146,4 +146,5 @@ export default {
   useProjectInfo,
   useStudentID,
   useProjectJoinStatus,
-  useLocationStore };
+  useLocationStore,
+};

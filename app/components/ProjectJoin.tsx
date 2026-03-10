@@ -74,7 +74,7 @@ export default function ProjectJoin() {
             try {
               const result: boolean = await alert.confirm({
                 title: "Leave Project?",
-                message: "Are you sure you want to leave the current project?"
+                message: "Are you sure you want to leave the current project?",
               });
               if (!result) return;
               // remove project code from persistent storage and set to empty string

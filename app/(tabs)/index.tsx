@@ -1,4 +1,4 @@
-import '@tamagui/native/setup-zeego'
+import "@tamagui/native/setup-zeego";
 import React, { useEffect } from "react";
 import {
   Keyboard,

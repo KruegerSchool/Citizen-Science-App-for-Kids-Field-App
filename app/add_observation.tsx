@@ -111,8 +111,8 @@ export default function AddObservation() {
   };
 
   return (
-    <SafeAreaView style={ observationStyles.background }>
-      <View style={ observationStyles.page }>
+    <SafeAreaView style={observationStyles.background}>
+      <View style={observationStyles.page}>
         <YStack flex={1} p="$2">
           {Platform.OS === "web" ? (
             <Button
@@ -123,7 +123,7 @@ export default function AddObservation() {
               maxW={100}
               onPress={() => router.back()}
             >
-            Back
+              Back
             </Button>
           ) : (
             <></>

@@ -88,7 +88,12 @@ export default function EditObservation() {
         <YStack flex={1} p="$2" items="center" justify="center">
           <Paragraph size="$5">Observation not found.</Paragraph>
           {Platform.OS === "web" ? (
-            <Button mt="$4" bg={"#E05B3A"} color={"#EEEEEE"} onPress={() => router.back()}>
+            <Button
+              mt="$4"
+              bg={"#E05B3A"}
+              color={"#EEEEEE"}
+              onPress={() => router.back()}
+            >
               Go Back
             </Button>
           ) : (
@@ -100,8 +105,8 @@ export default function EditObservation() {
   }
 
   return (
-    <SafeAreaView style={ observationStyles.background }>
-      <View style={ observationStyles.page }>
+    <SafeAreaView style={observationStyles.background}>
+      <View style={observationStyles.page}>
         <YStack flex={1} p="$2">
           {/* Only show back button on web */}
           {Platform.OS === "web" ? (
@@ -113,7 +118,7 @@ export default function EditObservation() {
               icon={ChevronLeft}
               onPress={() => router.back()}
             >
-            Back
+              Back
             </Button>
           ) : (
             <></>
