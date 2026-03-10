@@ -4,12 +4,13 @@
 
 import { useProjectInfo } from "../app/stores/project_info";
 import { useObservationInfo } from "../app/stores/observation_info";
-import { useOfflineQueue } from "../app/stores/offline_queue";
+import { useOfflineQueue, useConnectionStatus } from "../app/stores/offline_queue";
 
 export default async function fetchObservationList() {
   // block fetch if offline queue has pending items to avoid overwriting local data
   const queue = useOfflineQueue.getState().queue;
-  if (queue.length > 0) {
+  const isOnline = useConnectionStatus.getState().isConnected;
+  if (queue.length > 0 || !isOnline) {
     console.log("Offline Queue Found: Skip Fetch");
     return;
   }
